@@ -66,7 +66,8 @@ public class ChannelStateTransformation {
      * @param value The incoming value
      * @return The transformed value
      */
-    protected String processValue(String value) {
+    // protected String processValue(String value) {
+    protected @Nullable String processValue(String value) {    // ptro: modified to fix regex filter
         TransformationService transformationService = this.transformationService.get();
         if (transformationService == null) {
             transformationService = provider.getTransformationService(serviceName);
@@ -82,6 +83,8 @@ public class ChannelStateTransformation {
         } catch (TransformationException e) {
             logger.warn("Executing the {}-transformation failed: {}", serviceName, e.getMessage());
         }
-        return (temp != null) ? temp : value;
+        // ptro: modified to fix regex filter
+        // return (temp != null) ? temp : value;
+        return temp;     // ptro: fix return null allowed
     }
 }

@@ -155,7 +155,16 @@ public class ChannelState implements MqttMessageSubscriber {
         // String value: Apply transformations
         String strvalue = new String(payload, StandardCharsets.UTF_8);
         for (ChannelStateTransformation t : transformationsIn) {
-            strvalue = t.processValue(strvalue);
+        // poo: fix regex filter to return null if not matched
+        String transformedValue = t.processValue(strvalue);
+            if (transformedValue != null) {
+                strvalue = transformedValue;
+            } else {
+                logger.warn("(ptro240/mqtt) Transformation '{}' returned null on '{}', discarding message", strvalue,
+                        t.serviceName);
+                receivedOrTimeout();
+                return;
+            }
         }
 
         // Is trigger?: Special handling
