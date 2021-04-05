@@ -160,7 +160,7 @@ public class ChannelState implements MqttMessageSubscriber {
             if (transformedValue != null) {
                 strvalue = transformedValue;
             } else {
-                logger.warn("(ptro240/mqtt) Transformation '{}' returned null on '{}', discarding message", strvalue,
+                logger.debug("(ptro240/mqtt) Transformation '{}' returned null on '{}', discarding message", strvalue,
                         t.serviceName);
                 receivedOrTimeout();
                 return;
