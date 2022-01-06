@@ -9,6 +9,8 @@ bin/
 .DS_Store
 *.iml
 .idea/
+.project
+.settings
 
 distribution/smarthome/logs/*.log
 distribution/smarthome/*.zip
