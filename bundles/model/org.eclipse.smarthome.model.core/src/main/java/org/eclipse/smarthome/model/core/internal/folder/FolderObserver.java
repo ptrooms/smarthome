@@ -232,8 +232,10 @@ public class FolderObserver extends AbstractWatchService {
         if (modelRepo != null && file != null) {
             try {
                 synchronized (FolderObserver.class) {
-                    if ((kind == ENTRY_CREATE || kind == ENTRY_MODIFY)) {
+                //  if ((kind == ENTRY_CREATE || kind == ENTRY_MODIFY)) { // disabled
+                    if ((kind == ENTRY_MODIFY)) { // new PtrO
                         if (parsers.contains(getExtension(file.getName()))) {
+							logger.trace("ptro/Model changed file: {}", file.getAbsolutePath()); // 28jun20 ptro		
                             try (FileInputStream inputStream = FileUtils.openInputStream(file)) {
                                 nameFileMap.put(file.getName(), file);
                                 modelRepo.addOrRefreshModel(file.getName(), inputStream);
@@ -243,6 +245,8 @@ public class FolderObserver extends AbstractWatchService {
                         } else {
                             ignoredFiles.add(file);
                         }
+                    } else if (kind == ENTRY_CREATE) {
+							logger.trace("ptro/Model ignore created file: {}", file.getAbsolutePath()); // 28jun20 ptro
                     } else if (kind == ENTRY_DELETE) {
                         modelRepo.removeModel(file.getName());
                         nameFileMap.remove(file.getName());

@@ -67,11 +67,11 @@
 <unit id="org.slf4j.log4j" version="1.7.2.v20130115-1340"/>
 <unit id="org.slf4j.log4j.source" version="1.7.2.v20130115-1340"/>
 <unit id="org.apache.felix.gogo.runtime" version="0.10.0.v201209301036"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
+<repository location="https://archive.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.lsp4j.sdk.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/lsp4j/updates/releases/0.4.1"/>
+<repository location="https://archive.eclipse.org/lsp4j/updates/releases/0.4.1"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.codehaus.groovy23.feature.feature.group" version="2.9.1.xx-201411061335-e44-RELEASE"/>
