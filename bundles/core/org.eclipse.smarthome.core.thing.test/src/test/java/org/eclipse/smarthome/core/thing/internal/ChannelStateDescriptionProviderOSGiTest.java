@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -109,13 +109,13 @@ public class ChannelStateDescriptionProviderOSGiTest extends JavaOSGiTest {
         final ChannelType channelType2 = new ChannelType(new ChannelTypeUID("hue:num"), false, "Number", " ", "", null,
                 null, state2, null);
         final ChannelType channelType3 = new ChannelType(new ChannelTypeUID("hue:info"), true, "String", " ", "", null,
-                null, (StateDescription) null, null);
+                null, null, null);
         final ChannelType channelType4 = new ChannelType(new ChannelTypeUID("hue:color"), false, "Color", "Color", "",
-                "ColorLight", null, (StateDescription) null, null);
+                "ColorLight", null, null, null);
         final ChannelType channelType5 = new ChannelType(new ChannelTypeUID("hue:brightness"), false, "Dimmer",
-                "Brightness", "", "DimmableLight", null, (StateDescription) null, null);
+                "Brightness", "", "DimmableLight", null, null, null);
         final ChannelType channelType6 = new ChannelType(new ChannelTypeUID("hue:switch"), false, "Switch", "Switch",
-                "", "Light", null, (StateDescription) null, null);
+                "", "Light", null, null, null);
         final ChannelType channelType7 = new ChannelType(new ChannelTypeUID("hue:num-dynamic"), false, "Number", " ",
                 "", "Light", null, state, null);
 

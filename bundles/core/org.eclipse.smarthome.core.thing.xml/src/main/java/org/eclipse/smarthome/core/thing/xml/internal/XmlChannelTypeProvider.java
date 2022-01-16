@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -65,7 +65,6 @@ public class XmlChannelTypeProvider extends AbstractXmlBasedProvider<UID, Channe
         if (channelTypeI18nLocalizationService == null) {
             return null;
         }
-
         return channelTypeI18nLocalizationService.createLocalizedChannelType(bundle, channelType, locale);
     }
 

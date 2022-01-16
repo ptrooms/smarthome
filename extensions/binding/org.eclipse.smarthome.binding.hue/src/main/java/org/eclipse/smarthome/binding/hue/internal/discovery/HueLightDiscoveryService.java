@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -37,7 +37,6 @@ import org.eclipse.smarthome.binding.hue.internal.handler.SensorStatusListener;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.DimmerSwitchHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.LightLevelHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.PresenceHandler;
-import org.eclipse.smarthome.binding.hue.internal.handler.sensors.TapSwitchHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.TemperatureHandler;
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResult;
@@ -65,8 +64,8 @@ public class HueLightDiscoveryService extends AbstractDiscoveryService
         implements LightStatusListener, SensorStatusListener {
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.unmodifiableSet(Stream
             .of(HueLightHandler.SUPPORTED_THING_TYPES.stream(), DimmerSwitchHandler.SUPPORTED_THING_TYPES.stream(),
-                    TapSwitchHandler.SUPPORTED_THING_TYPES.stream(), PresenceHandler.SUPPORTED_THING_TYPES.stream(),
-                    TemperatureHandler.SUPPORTED_THING_TYPES.stream(), LightLevelHandler.SUPPORTED_THING_TYPES.stream())
+                    PresenceHandler.SUPPORTED_THING_TYPES.stream(), TemperatureHandler.SUPPORTED_THING_TYPES.stream(),
+                    LightLevelHandler.SUPPORTED_THING_TYPES.stream())
             .flatMap(i -> i).collect(Collectors.toSet()));
 
     private final Logger logger = LoggerFactory.getLogger(HueLightDiscoveryService.class);
@@ -83,7 +82,6 @@ public class HueLightDiscoveryService extends AbstractDiscoveryService
             new SimpleEntry<>("extended_color_light", "0210"),
             new SimpleEntry<>("color_temperature_light", "0220"),
             new SimpleEntry<>("zllswitch", "0820"),
-            new SimpleEntry<>("zgpswitch", "0830"),
             new SimpleEntry<>("zllpresence", "0107"),
             new SimpleEntry<>("zlltemperature", "0302"),
             new SimpleEntry<>("zlllightlevel", "0106")
@@ -144,15 +142,13 @@ public class HueLightDiscoveryService extends AbstractDiscoveryService
         ThingUID thingUID = getThingUID(light);
         ThingTypeUID thingTypeUID = getThingTypeUID(light);
 
-        String modelId = light.getNormalizedModelID();
+        String modelId = light.getModelID().replaceAll(HueLightHandler.NORMALIZE_ID_REGEX, "_");
 
         if (thingUID != null && thingTypeUID != null) {
             ThingUID bridgeUID = hueBridgeHandler.getThing().getUID();
             Map<String, Object> properties = new HashMap<>();
             properties.put(LIGHT_ID, light.getId());
-            if (modelId != null) {
-                properties.put(Thing.PROPERTY_MODEL_ID, modelId);
-            }
+            properties.put(Thing.PROPERTY_MODEL_ID, modelId);
             String uniqueID = light.getUniqueID();
             if (uniqueID != null) {
                 properties.put(UNIQUE_ID, uniqueID);
@@ -196,7 +192,7 @@ public class HueLightDiscoveryService extends AbstractDiscoveryService
 
     private @Nullable ThingTypeUID getThingTypeUID(FullHueObject hueObject) {
         String thingTypeId = TYPE_TO_ZIGBEE_ID_MAP
-                .get(hueObject.getType().replaceAll(NORMALIZE_ID_REGEX, "_").toLowerCase());
+                .get(hueObject.getType().replaceAll(HueLightHandler.NORMALIZE_ID_REGEX, "_").toLowerCase());
 
         return thingTypeId != null ? new ThingTypeUID(BINDING_ID, thingTypeId) : null;
     }
@@ -210,15 +206,13 @@ public class HueLightDiscoveryService extends AbstractDiscoveryService
         ThingUID thingUID = getThingUID(sensor);
         ThingTypeUID thingTypeUID = getThingTypeUID(sensor);
 
-        String modelId = sensor.getNormalizedModelID();
+        String modelId = sensor.getModelID().replaceAll(HueLightHandler.NORMALIZE_ID_REGEX, "_");
 
         if (thingUID != null && thingTypeUID != null) {
             ThingUID bridgeUID = hueBridgeHandler.getThing().getUID();
             Map<String, Object> properties = new HashMap<>();
             properties.put(SENSOR_ID, sensor.getId());
-            if (modelId != null) {
-                properties.put(Thing.PROPERTY_MODEL_ID, modelId);
-            }
+            properties.put(Thing.PROPERTY_MODEL_ID, modelId);
             String uniqueID = sensor.getUniqueID();
             if (uniqueID != null) {
                 properties.put(UNIQUE_ID, uniqueID);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -71,17 +71,13 @@ public class XMLResponseProcessor {
         // info message states
         Map<String, XMLHandlerState> infoMap = new HashMap<>();
         stateSwitchingMap.put(XMLHandlerState.Info, infoMap);
-        infoMap.put("components", XMLHandlerState.Info);
-        infoMap.put("component", XMLHandlerState.Info);
+        infoMap.put("components", XMLHandlerState.Unprocessed); // TODO read software version and serial number
         infoMap.put("name", XMLHandlerState.InfoName);
         infoMap.put("type", XMLHandlerState.InfoType);
-        infoMap.put("componentCategory", XMLHandlerState.Unprocessed);
-        infoMap.put("softwareVersion", XMLHandlerState.InfoFirmwareVersion);
-        infoMap.put("serialNumber", XMLHandlerState.Unprocessed);
         infoMap.put("networkInfo", XMLHandlerState.Unprocessed);
         infoMap.put("margeAccountUUID", XMLHandlerState.Unprocessed);
         infoMap.put("margeURL", XMLHandlerState.Unprocessed);
-        infoMap.put("moduleType", XMLHandlerState.InfoModuleType);
+        infoMap.put("moduleType", XMLHandlerState.Unprocessed);
         infoMap.put("variant", XMLHandlerState.Unprocessed);
         infoMap.put("variantMode", XMLHandlerState.Unprocessed);
         infoMap.put("countryCode", XMLHandlerState.Unprocessed);

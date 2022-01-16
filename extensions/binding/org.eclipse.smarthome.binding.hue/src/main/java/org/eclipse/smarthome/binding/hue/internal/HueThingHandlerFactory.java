@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -30,7 +30,6 @@ import org.eclipse.smarthome.binding.hue.internal.handler.HueLightHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.DimmerSwitchHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.LightLevelHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.PresenceHandler;
-import org.eclipse.smarthome.binding.hue.internal.handler.sensors.TapSwitchHandler;
 import org.eclipse.smarthome.binding.hue.internal.handler.sensors.TemperatureHandler;
 import org.eclipse.smarthome.config.core.Configuration;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
@@ -56,11 +55,11 @@ import org.osgi.service.component.annotations.Component;
 @NonNullByDefault
 @Component(service = ThingHandlerFactory.class, configurationPid = "binding.hue")
 public class HueThingHandlerFactory extends BaseThingHandlerFactory {
-    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.unmodifiableSet(
-            Stream.of(HueBridgeHandler.SUPPORTED_THING_TYPES.stream(), HueLightHandler.SUPPORTED_THING_TYPES.stream(),
-                    DimmerSwitchHandler.SUPPORTED_THING_TYPES.stream(), TapSwitchHandler.SUPPORTED_THING_TYPES.stream(),
-                    PresenceHandler.SUPPORTED_THING_TYPES.stream(), TemperatureHandler.SUPPORTED_THING_TYPES.stream(),
-                    LightLevelHandler.SUPPORTED_THING_TYPES.stream()).flatMap(i -> i).collect(Collectors.toSet()));
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.unmodifiableSet(Stream
+            .of(HueBridgeHandler.SUPPORTED_THING_TYPES.stream(), HueLightHandler.SUPPORTED_THING_TYPES.stream(),
+                    DimmerSwitchHandler.SUPPORTED_THING_TYPES.stream(), PresenceHandler.SUPPORTED_THING_TYPES.stream(),
+                    TemperatureHandler.SUPPORTED_THING_TYPES.stream(), LightLevelHandler.SUPPORTED_THING_TYPES.stream())
+            .flatMap(i -> i).collect(Collectors.toSet()));
 
     private final Map<ThingUID, @Nullable ServiceRegistration<?>> discoveryServiceRegs = new HashMap<>();
 
@@ -73,7 +72,6 @@ public class HueThingHandlerFactory extends BaseThingHandlerFactory {
             ThingUID hueLightUID = getLightUID(thingTypeUID, thingUID, configuration, bridgeUID);
             return super.createThing(thingTypeUID, configuration, hueLightUID, bridgeUID);
         } else if (DimmerSwitchHandler.SUPPORTED_THING_TYPES.contains(thingTypeUID)
-                || TapSwitchHandler.SUPPORTED_THING_TYPES.contains(thingTypeUID)
                 || PresenceHandler.SUPPORTED_THING_TYPES.contains(thingTypeUID)
                 || TemperatureHandler.SUPPORTED_THING_TYPES.contains(thingTypeUID)
                 || LightLevelHandler.SUPPORTED_THING_TYPES.contains(thingTypeUID)) {
@@ -125,8 +123,6 @@ public class HueThingHandlerFactory extends BaseThingHandlerFactory {
             return new HueLightHandler(thing);
         } else if (DimmerSwitchHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
             return new DimmerSwitchHandler(thing);
-        } else if (TapSwitchHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
-            return new TapSwitchHandler(thing);
         } else if (PresenceHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
             return new PresenceHandler(thing);
         } else if (TemperatureHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {

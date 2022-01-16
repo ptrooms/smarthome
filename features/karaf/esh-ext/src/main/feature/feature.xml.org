@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+	Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
+
+	See the NOTICE file(s) distributed with this work for additional
+	information regarding copyright ownership.
+
+	This program and the accompanying materials are made available under the
+	terms of the Eclipse Public License 2.0 which is available at
+	http://www.eclipse.org/legal/epl-2.0
+
+	SPDX-License-Identifier: EPL-2.0
+
+-->
+<features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
+
+  <feature name="esh-binding-astro" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.astro/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-bluetooth" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.bluetooth/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-bluetooth-bluegiga" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-binding-bluetooth</feature>
+    <feature>esh-io-transport-serial</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.bluetooth.bluegiga/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-bluetooth-bluez" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-binding-bluetooth</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.bluetooth.bluez/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-bluetooth-blukii" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-binding-bluetooth</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.bluetooth.blukii/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-bosesoundtouch" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-http</feature>
+    <feature>esh-io-transport-mdns</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.bosesoundtouch/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-digitalstrom" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-mdns</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.digitalstrom/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-dmx" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.dmx/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-fsinternetradio" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-upnp</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.fsinternetradio/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-homematic" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-upnp</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.homematic/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-hue" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-upnp</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.hue/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-lifx" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.lifx/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-lirc" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.lirc/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-meteoblue" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.meteoblue/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-mqtt" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-mqtt</feature>
+    <feature>esh-automation-api</feature>
+
+    <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
+    <feature dependency="true">esh.tp-commons-net</feature>
+
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.mqtt/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-mqtt-generic" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-mqtt</feature>
+    <feature>esh-binding-mqtt</feature>
+
+    <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
+    <feature dependency="true">esh.tp-commons-net</feature>
+
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.mqtt.generic/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-ntp" version="${project.version}">
+    <feature>esh-base</feature>
+
+    <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
+    <feature dependency="true">esh.tp-commons-net</feature>
+
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.ntp/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-onewire" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.onewire/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-openweathermap" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.openweathermap/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-serialbutton" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-serial</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.serialbutton/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-sonos" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-upnp</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.sonos/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-sonyaudio" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-upnp</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.sonyaudio/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-tradfri" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-coap</feature>
+    <feature>esh-io-transport-mdns</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.tradfri/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-weatherunderground" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.weatherunderground/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-wemo" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-upnp</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.wemo/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-binding-yahooweather" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.binding/org.eclipse.smarthome.binding.yahooweather/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-extensionservice-marketplace" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.extensionservice/org.eclipse.smarthome.extensionservice.marketplace/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-extensionservice-marketplace-automation" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-automation-api</feature>
+    <feature>esh-extensionservice-marketplace</feature>
+    <bundle>mvn:org.eclipse.smarthome.extensionservice/org.eclipse.smarthome.extensionservice.marketplace.automation/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-exec" description="Exec Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.exec/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-javascript" description="Javascript Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.javascript/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-jsonpath" description="JSONPath Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.jsonpath/${project.version}</bundle>
+    <bundle dependency="true">mvn:com.jayway.jsonpath/json-path/2.1.0</bundle>
+    <bundle dependency="true">mvn:net.minidev/accessors-smart/1.1</bundle>
+    <bundle dependency="true">mvn:net.minidev/json-smart/2.2</bundle>
+  </feature>
+
+  <feature name="esh-transform-map" description="Map Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.map/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-regex" description="RegEx Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.regex/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-scale" description="Scale Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.scale/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-xpath" description="XPath Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.xpath/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-transform-xslt" description="XSLT Transformation" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle start-level="75">mvn:org.eclipse.smarthome.transform/org.eclipse.smarthome.transform.xslt/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-ui-basic" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-ui</feature>
+    <feature dependency="true">esh-io-rest-sitemap</feature>
+
+    <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
+    <feature dependency="true">esh.tp-commons-net</feature>
+
+    <bundle>mvn:org.eclipse.smarthome.extension.ui/org.eclipse.smarthome.ui.basic/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-ui-classic" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-ui</feature>
+    <bundle>mvn:org.eclipse.smarthome.extension.ui/org.eclipse.smarthome.ui.classic/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-ui-paper" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.extension.ui/org.eclipse.smarthome.ui.paper/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-ui-iconset-classic" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-ui-icon</feature>
+    <bundle>mvn:org.eclipse.smarthome.extension.ui.iconset/org.eclipse.smarthome.ui.iconset.classic/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-io-mqttembeddedbroker" description="Embedded MQTT Broker" version="${project.version}">
+    <feature>esh-base</feature>
+    <feature>esh-io-transport-mqtt</feature>
+
+    <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
+    <feature dependency="true">esh.tp-commons-net</feature>
+
+    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.mqttembeddedbroker/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-io-javasound" description="JavaSound Audio Support" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.javasound/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-io-webaudio" description="Web Audio Support" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.webaudio/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-voice-mactts" description="macOS Text-to-Speech" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.voice/org.eclipse.smarthome.voice.mactts/${project.version}</bundle>
+  </feature>
+
+</features>

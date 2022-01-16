@@ -55,8 +55,6 @@
 			<!-- Extended SONOS channels -->
 			<channel id="linein" typeId="linein" />
 			<channel id="playlinein" typeId="playlinein" />
-			<channel id="nightmode" typeId="nightmode" />
-			<channel id="speechenhancement" typeId="speechenhancement" />
 		</channels>
 
 		<properties>

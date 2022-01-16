@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+	Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
 
 	See the NOTICE file(s) distributed with this work for additional
 	information regarding copyright ownership.
@@ -144,11 +144,6 @@
     <bundle>mvn:org.eclipse.kura/org.eclipse.soda.dk.comm.armv6hf/1.2.201</bundle>
     <bundle>mvn:org.eclipse.kura/org.eclipse.soda.dk.comm.aarch64/1.2.201</bundle>
     <bundle>mvn:org.eclipse.kura/org.eclipse.soda.dk.comm.x86_64/1.2.201</bundle>
-  </feature>
-
-  <feature name="esh.tp-serial-rxtx" version="${project.version}">
-    <capability>esh.tp;feature=serial;impl=rxtx</capability>
-    <bundle>mvn:com.neuronrobotics/nrjavaserial/3.14.0</bundle>
   </feature>
 
   <feature name="esh.tp-xtext" description="Xtext - Language Engineering Made Easy" version="${project.version}">

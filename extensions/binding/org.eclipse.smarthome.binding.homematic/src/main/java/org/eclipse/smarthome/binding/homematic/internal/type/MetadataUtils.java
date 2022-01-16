@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -294,13 +294,20 @@ public class MetadataUtils {
                 // determine QuantityType
                 String unit = dp.getUnit() != null ? dp.getUnit() : "";
                 switch (unit) {
-                    case "Â°C":
                     case "°C":
                         return ITEM_TYPE_NUMBER + ":Temperature";
                     case "V":
                         return ITEM_TYPE_NUMBER + ":ElectricPotential";
                     case "%":
+                    case "":
                         return ITEM_TYPE_NUMBER + ":Dimensionless";
+                    case "s":
+                    case "min":
+                    case "minutes":
+                    case "day":
+                    case "month":
+                    case "year":
+                        return ITEM_TYPE_NUMBER + ":Time";
                     case "mHz":
                     case "Hz":
                         return ITEM_TYPE_NUMBER + ":Frequency";
@@ -320,17 +327,8 @@ public class MetadataUtils {
                         return ITEM_TYPE_NUMBER + ":Energy";
                     case "m3":
                         return ITEM_TYPE_NUMBER + ":Volume";
-                    case "s":
-                    case "min":
-                    case "minutes":
-                    case "day":
-                    case "month":
-                    case "year":
-                    case "100%":
-                    case "":
-                    default:
-                        return ITEM_TYPE_NUMBER;
                 }
+                return ITEM_TYPE_NUMBER;
             }
         } else if (dp.isDateTimeType()) {
             return ITEM_TYPE_DATETIME;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -17,7 +17,6 @@ import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.binding.onewire.internal.OwException;
-import org.eclipse.smarthome.binding.onewire.internal.SensorId;
 import org.eclipse.smarthome.binding.onewire.internal.handler.OwBaseBridgeHandler;
 import org.eclipse.smarthome.binding.onewire.internal.handler.OwBaseThingHandler;
 import org.eclipse.smarthome.core.library.types.OnOffType;
@@ -34,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractOwDevice {
     private final Logger logger = LoggerFactory.getLogger(AbstractOwDevice.class);
 
-    protected SensorId sensorId;
+    protected String sensorId;
     protected OwSensorType sensorType = OwSensorType.UNKNOWN;
     protected OwBaseThingHandler callback;
     protected Boolean isConfigured = false;
@@ -47,7 +46,7 @@ public abstract class AbstractOwDevice {
      * @param sensorId onewire ID of the sensor
      * @param callback ThingHandler callback for posting updates
      */
-    public AbstractOwDevice(SensorId sensorId, OwBaseThingHandler callback) {
+    public AbstractOwDevice(String sensorId, OwBaseThingHandler callback) {
         this.sensorId = sensorId;
         this.callback = callback;
     }
@@ -94,7 +93,7 @@ public abstract class AbstractOwDevice {
      *
      * @return sensor ID
      */
-    public SensorId getSensorId() {
+    public String getSensorId() {
         return sensorId;
     }
 

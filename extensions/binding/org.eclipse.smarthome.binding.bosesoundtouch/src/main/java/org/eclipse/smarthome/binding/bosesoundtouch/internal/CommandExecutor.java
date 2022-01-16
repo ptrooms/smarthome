@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -14,6 +14,7 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 import static org.eclipse.smarthome.binding.bosesoundtouch.BoseSoundTouchBindingConstants.*;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,8 +119,12 @@ public class CommandExecutor implements AvailableSources {
     public void getInformations(APIRequest apiRequest) {
         String msg = "<msg><header " + "deviceID=\"" + handler.getMacAddress() + "\"" + " url=\"" + apiRequest
                 + "\" method=\"GET\"><request requestID=\"0\"><info type=\"new\"/></request></header></msg>";
-        handler.getSession().getRemote().sendStringByFuture(msg);
-        logger.debug("{}: sending request: {}", handler.getDeviceName(), msg);
+        try {
+            handler.getSession().getRemote().sendString(msg);
+            logger.debug("{}: sending request: {}", handler.getDeviceName(), msg);
+        } catch (IOException e) {
+            handler.onWebSocketError(e);
+        }
     }
 
     /**
@@ -375,9 +380,9 @@ public class CommandExecutor implements AvailableSources {
                 + "\" method=\"POST\"><request requestID=\"" + id + "\"><info " + infoAddon
                 + " type=\"new\"/></request></header><body>" + postData + "</body></msg>";
         try {
-            handler.getSession().getRemote().sendStringByFuture(msg);
+            handler.getSession().getRemote().sendString(msg);
             logger.debug("{}: sending request: {}", handler.getDeviceName(), msg);
-        } catch (NullPointerException e) {
+        } catch (IOException | NullPointerException e) {
             handler.onWebSocketError(e);
         }
     }

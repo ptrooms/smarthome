@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -17,9 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 
-import org.eclipse.smarthome.binding.onewire.internal.OwException;
-import org.eclipse.smarthome.binding.onewire.internal.SensorId;
-import org.eclipse.smarthome.binding.onewire.internal.device.OwSensorType;
 import org.eclipse.smarthome.binding.onewire.internal.handler.TemperatureSensorThingHandler;
 import org.eclipse.smarthome.binding.onewire.test.AbstractThingHandlerTest;
 import org.eclipse.smarthome.config.core.Configuration;
@@ -30,9 +27,9 @@ import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.builder.ChannelBuilder;
 import org.eclipse.smarthome.core.thing.binding.builder.ThingBuilder;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 /**
@@ -49,12 +46,15 @@ public class TemperatureSensorThingHandlerTest extends AbstractThingHandlerTest 
     protected Channel channel;
 
     @Before
-    public void setup() throws OwException {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         initializeBridge();
 
         thingConfiguration.put(CONFIG_ID, TEST_ID);
+        thingProperties.put(PROPERTY_SENSORCOUNT, "1");
+        thingProperties.put(PROPERTY_MODELID, "UNKNOWN");
+        thingProperties.put(PROPERTY_VENDOR, "generic");
 
         channels.add(ChannelBuilder.create(CHANNEL_UID_PRESENT, "Switch").build());
         channels.add(ChannelBuilder.create(CHANNEL_UID_TEMPERATURE, "Number").build());
@@ -72,9 +72,6 @@ public class TemperatureSensorThingHandlerTest extends AbstractThingHandlerTest 
 
         initializeHandlerMocks();
 
-        Mockito.doAnswer(answer -> {
-            return OwSensorType.DS18B20;
-        }).when(secondBridgeHandler).getType(any());
     }
 
     @Test
@@ -85,15 +82,16 @@ public class TemperatureSensorThingHandlerTest extends AbstractThingHandlerTest 
     }
 
     @Test
-    public void testRefresh() throws OwException {
+    public void testRefresh() {
         thingHandler.initialize();
-        waitForAssert(() -> assertEquals(ThingStatus.UNKNOWN, thing.getStatusInfo().getStatus()));
-
         thingHandler.refresh(bridgeHandler, System.currentTimeMillis());
+        try {
+            inOrder.verify(bridgeHandler, times(1)).checkPresence(TEST_ID);
+            inOrder.verify(bridgeHandler, times(1)).readDecimalType(eq(TEST_ID), any());
 
-        inOrder.verify(bridgeHandler, times(1)).checkPresence(new SensorId(TEST_ID));
-        inOrder.verify(bridgeHandler, times(1)).readDecimalType(eq(new SensorId(TEST_ID)), any());
-
-        inOrder.verifyNoMoreInteractions();
+            inOrder.verifyNoMoreInteractions();
+        } catch (OwException e) {
+            Assert.fail("caught unexpected OwException");
+        }
     }
 }

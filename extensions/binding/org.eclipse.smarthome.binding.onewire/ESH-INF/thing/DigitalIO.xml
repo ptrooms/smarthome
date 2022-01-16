@@ -14,7 +14,10 @@
 				<label>Digital I/O 0</label>
 			</channel>
 		</channels>
-		<config-description-ref uri="thing-type:onewire:fastthingconfig" />
+		<properties>
+			<property name="sensorCount">1</property>
+		</properties>
+		<config-description-ref uri="thing-type:onewire:digitalioconfig" />
 	</thing-type>
 	<thing-type id="digitalio2">
 		<supported-bridge-type-refs>
@@ -30,7 +33,10 @@
 				<label>Digital I/O 1</label>
 			</channel>
 		</channels>
-		<config-description-ref uri="thing-type:onewire:fastthingconfig" />
+		<properties>
+			<property name="sensorCount">1</property>
+		</properties>
+		<config-description-ref uri="thing-type:onewire:digitalioconfig" />
 	</thing-type>
 	<thing-type id="digitalio8">
 		<supported-bridge-type-refs>
@@ -64,6 +70,9 @@
 				<label>Digital I/O 7</label>
 			</channel>
 		</channels>
-		<config-description-ref uri="thing-type:onewire:fastthingconfig" />
+		<properties>
+			<property name="sensorCount">1</property>
+		</properties>
+		<config-description-ref uri="thing-type:onewire:digitalioconfig" />
 	</thing-type>
 </thing:thing-descriptions>

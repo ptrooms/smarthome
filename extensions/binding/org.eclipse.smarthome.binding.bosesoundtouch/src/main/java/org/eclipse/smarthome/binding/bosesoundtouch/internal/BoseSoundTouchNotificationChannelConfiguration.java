@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -19,9 +19,6 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
  */
 public class BoseSoundTouchNotificationChannelConfiguration {
 
-    public static final String MIN_FIRMWARE = "14";
-    public static final String MODEL_TYPE = "sm2";
-
     public static final String NOTIFICATION_VOLUME = "notificationVolume";
     public static final String NOTIFICATION_SERVICE = "notificationService";
     public static final String NOTIFICATION_REASON = "notificationReason";
@@ -31,12 +28,4 @@ public class BoseSoundTouchNotificationChannelConfiguration {
     public String notificationService;
     public String notificationReason;
     public String notificationMessage;
-    
-    public static boolean isSupportedFirmware(String firmware) {
-        return firmware != null && firmware.compareTo(MIN_FIRMWARE) > 0;
-    }
-    
-    public static boolean isSupportedHardware(String hardware) {
-        return MODEL_TYPE.equals(hardware);
-    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -13,6 +13,7 @@
 package org.eclipse.smarthome.core.persistence.internal;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,8 +44,9 @@ import org.eclipse.smarthome.core.persistence.config.SimpleGroupConfig;
 import org.eclipse.smarthome.core.persistence.config.SimpleItemConfig;
 import org.eclipse.smarthome.core.persistence.strategy.SimpleCronStrategy;
 import org.eclipse.smarthome.core.persistence.strategy.SimpleStrategy;
-import org.eclipse.smarthome.core.scheduler.CronScheduler;
-import org.eclipse.smarthome.core.scheduler.ScheduledCompletableFuture;
+import org.eclipse.smarthome.core.scheduler.CronExpression;
+import org.eclipse.smarthome.core.scheduler.ExpressionThreadPoolManager;
+import org.eclipse.smarthome.core.scheduler.ExpressionThreadPoolManager.ExpressionThreadPoolExecutor;
 import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.core.types.UnDefType;
 import org.osgi.service.component.annotations.Component;
@@ -66,7 +68,7 @@ public class PersistenceManagerImpl implements PersistenceManager, ItemRegistryC
     private final Logger logger = LoggerFactory.getLogger(PersistenceManagerImpl.class);
 
     // the scheduler used for timer events
-    private CronScheduler scheduler;
+    private ExpressionThreadPoolExecutor scheduler;
 
     private ItemRegistry itemRegistry;
     private SafeCaller safeCaller;
@@ -74,12 +76,13 @@ public class PersistenceManagerImpl implements PersistenceManager, ItemRegistryC
 
     final Map<String, PersistenceService> persistenceServices = new HashMap<>();
     final Map<String, PersistenceServiceConfiguration> persistenceServiceConfigs = new HashMap<>();
-    private final Map<String, Set<ScheduledCompletableFuture<?>>> persistenceJobs = new HashMap<>();
+    private final Map<String, Set<Runnable>> persistenceJobs = new HashMap<>();
 
     public PersistenceManagerImpl() {
     }
 
     protected void activate() {
+        scheduler = ExpressionThreadPoolManager.getExpressionScheduledPool("persist");
         allItemsChanged(null);
         started = true;
         itemRegistry.addRegistryChangeListener(this);
@@ -90,15 +93,7 @@ public class PersistenceManagerImpl implements PersistenceManager, ItemRegistryC
         started = false;
         removeTimers();
         removeItemStateChangeListeners();
-    }
-
-    @Reference
-    protected void setCronScheduler(CronScheduler scheduler) {
-        this.scheduler = scheduler;
-    }
-
-    protected void unsetCronScheduler(CronScheduler scheduler) {
-        this.scheduler = null;
+        scheduler = null;
     }
 
     @Reference
@@ -338,17 +333,24 @@ public class PersistenceManagerImpl implements PersistenceManager, ItemRegistryC
             if (strategy instanceof SimpleCronStrategy) {
                 SimpleCronStrategy cronStrategy = (SimpleCronStrategy) strategy;
                 String cronExpression = cronStrategy.getCronExpression();
+                final CronExpression expression;
+                try {
+                    expression = new CronExpression(cronExpression);
+                } catch (final ParseException ex) {
+                    logger.warn("Cannot parse cron expression ({}).", cronExpression, ex);
+                    continue;
+                }
 
                 final PersistItemsJob job = new PersistItemsJob(this, dbId, cronStrategy.getName());
-                ScheduledCompletableFuture<?> schedule = scheduler.schedule(job, cronExpression);
                 if (persistenceJobs.containsKey(dbId)) {
-                    persistenceJobs.get(dbId).add(schedule);
+                    persistenceJobs.get(dbId).add(job);
                 } else {
-                    final Set<ScheduledCompletableFuture<?>> jobs = new HashSet<>();
-                    jobs.add(schedule);
+                    final Set<Runnable> jobs = new HashSet<>();
+                    jobs.add(job);
                     persistenceJobs.put(dbId, jobs);
                 }
 
+                scheduler.schedule(job, expression);
                 logger.debug("Scheduled strategy {} with cron expression {}", cronStrategy.getName(), cronExpression);
             }
         }
@@ -363,9 +365,13 @@ public class PersistenceManagerImpl implements PersistenceManager, ItemRegistryC
         if (!persistenceJobs.containsKey(dbId)) {
             return;
         }
-        for (final ScheduledCompletableFuture<?> job : persistenceJobs.get(dbId)) {
-            job.cancel(true);
-            logger.debug("Removed scheduled cron job for persistence service '{}'", dbId);
+        for (final Runnable job : persistenceJobs.get(dbId)) {
+            boolean success = scheduler.remove(job);
+            if (success) {
+                logger.debug("Removed scheduled cron job for persistence service '{}'", dbId);
+            } else {
+                logger.warn("Failed to delete cron job for persistence service '{}'", dbId);
+            }
         }
         persistenceJobs.remove(dbId);
     }

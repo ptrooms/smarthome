@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,9 +20,6 @@ import org.eclipse.smarthome.core.storage.DeletableStorageService;
 import org.eclipse.smarthome.core.storage.StorageService;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +31,6 @@ import org.slf4j.LoggerFactory;
  * @author Alex Tugarev - Added getStorage for name only
  * @author Markus Rathgeb - Use {@link DeletableStorageService}
  */
-@Component(name = "org.eclipse.smarthome.storage.mapdb", immediate = true, service = { StorageService.class,
-        DeletableStorageService.class }, property = "storage.format=mapdb")
 public class MapDbStorageService implements DeletableStorageService {
 
     private final Logger logger = LoggerFactory.getLogger(MapDbStorageService.class);
@@ -49,7 +44,6 @@ public class MapDbStorageService implements DeletableStorageService {
     /** the folder name to store mapdb databases ({@code mapdb} by default) */
     private String dbFolderName = "mapdb";
 
-    @Activate
     public void activate() {
         dbFolderName = ConfigConstants.getUserDataFolder() + File.separator + dbFolderName;
         File folder = new File(dbFolderName);
@@ -63,7 +57,6 @@ public class MapDbStorageService implements DeletableStorageService {
         logger.debug("Opened MapDB file at '{}'.", dbFile.getAbsolutePath());
     }
 
-    @Deactivate
     public void deactivate() {
         db.close();
         logger.debug("Deactivated MapDB Storage Service.");

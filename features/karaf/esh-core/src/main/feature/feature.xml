@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+	Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
 
 	See the NOTICE file(s) distributed with this work for additional
 	information regarding copyright ownership.
@@ -246,13 +246,6 @@
     <bundle>mvn:org.eclipse.smarthome.automation/org.eclipse.smarthome.automation.rest/${project.version}</bundle>
   </feature>
 
-  <feature name="esh-config-serial" version="${project.version}">
-    <feature>esh-base</feature>
-
-    <feature>esh-io-transport-serial</feature>
-    <bundle>mvn:org.eclipse.smarthome.config/org.eclipse.smarthome.config.serial/${project.version}</bundle>
-  </feature>
-
   <feature name="esh-config-discovery-usbserial" version="${project.version}">
     <feature>esh-base</feature>
     <bundle>mvn:org.eclipse.smarthome.config/org.eclipse.smarthome.config.discovery.usbserial/${project.version}</bundle>
@@ -285,10 +278,6 @@
     <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.rest.auth/${project.version}</bundle>
   </feature>
 
-  <feature name="esh-io-rest-log" version="${project.version}">
-    <feature>esh-base</feature>
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.rest.log/${project.version}</bundle>
-  </feature>
 
   <feature name="esh-io-rest-sitemap" version="${project.version}">
     <feature>esh-base</feature>
@@ -296,10 +285,6 @@
     <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.rest.sitemap/${project.version}</bundle>
   </feature>
 
-  <feature name="esh-io-rest-voice" version="${project.version}">
-    <feature>esh-base</feature>
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.rest.voice/${project.version}</bundle>
-  </feature>
 
   <feature name="esh-io-rest-mdns" version="${project.version}">
     <feature>esh-base</feature>
@@ -312,11 +297,6 @@
 
     <requirement>esh.tp;filter:="(feature=coap)"</requirement>
     <feature dependency="true">esh.tp-coap</feature>
-  </feature>
-
-  <feature name="esh-io-transport-dbus" version="${project.version}">
-    <feature>esh-base</feature>
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.dbus/${project.version}</bundle>
   </feature>
 
   <feature name="esh-io-transport-http" version="${project.version}">
@@ -349,49 +329,6 @@
     <capability>
       osgi.service;objectClass=org.eclipse.smarthome.io.transport.mqtt.MqttService
     </capability>
-  </feature>
-
-  <feature name="esh-io-transport-serial" version="${project.version}">
-    <feature>esh-base</feature>
-    <requirement>osgi.service;filter:="(objectClass=org.eclipse.smarthome.io.transport.serial.SerialPortManager)"</requirement>
-    <requirement>osgi.service;filter:="(objectClass=org.eclipse.smarthome.io.transport.serial.SerialPortProvider)"</requirement>
-    <feature dependency="true">esh-io-transport-serial-rxtx</feature>
-
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial/${project.version}</bundle>
-  </feature>
-
-  <feature name="esh-io-transport-serial-javacomm" version="${project.version}">
-    <feature>esh-base</feature>
-
-    <requirement>esh.tp;filter:="(&amp;(feature=serial)(impl=javacomm))"</requirement>
-    <feature dependency="true">esh.tp-serial-javacomm</feature>
-
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial/${project.version}</bundle>
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial.javacomm/${project.version}</bundle>
-  </feature>
-
-  <feature name="esh-io-transport-serial-rxtx" version="${project.version}">
-    <feature>esh-base</feature>
-
-    <requirement>esh.tp;filter:="(&amp;(feature=serial)(impl=rxtx))"</requirement>
-    <feature dependency="true">esh.tp-serial-rxtx</feature>
-
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial/${project.version}</bundle>
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial.rxtx/${project.version}</bundle>
-  </feature>
-
-  <feature name="esh-io-transport-serial-rfc2217" version="${project.version}">
-    <feature>esh-base</feature>
-
-    <requirement>esh.tp;filter:="(&amp;(feature=serial)(impl=rxtx))"</requirement>
-    <feature dependency="true">esh-io-transport-serial-rxtx</feature>
-
-
-    <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
-    <feature dependency="true">esh.tp-commons-net</feature>
-
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial/${project.version}</bundle>
-    <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.transport.serial.rxtx.rfc2217/${project.version}</bundle>
   </feature>
 
   <feature name="esh-io-transport-upnp" version="${project.version}">

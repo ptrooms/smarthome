@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -28,7 +28,6 @@ import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.smarthome.binding.openweathermap.internal.discovery.OpenWeatherMapDiscoveryService;
 import org.eclipse.smarthome.binding.openweathermap.internal.handler.AbstractOpenWeatherMapHandler;
 import org.eclipse.smarthome.binding.openweathermap.internal.handler.OpenWeatherMapAPIHandler;
-import org.eclipse.smarthome.binding.openweathermap.internal.handler.OpenWeatherMapUVIndexHandler;
 import org.eclipse.smarthome.binding.openweathermap.internal.handler.OpenWeatherMapWeatherAndForecastHandler;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
 import org.eclipse.smarthome.core.i18n.LocaleProvider;
@@ -77,15 +76,13 @@ public class OpenWeatherMapHandlerFactory extends BaseThingHandlerFactory {
         if (THING_TYPE_WEATHER_API.equals(thingTypeUID)) {
             OpenWeatherMapAPIHandler handler = new OpenWeatherMapAPIHandler((Bridge) thing, httpClient, localeProvider);
             // register discovery service
-            OpenWeatherMapDiscoveryService discoveryService = new OpenWeatherMapDiscoveryService(handler,
-                    locationProvider, localeProvider, i18nProvider);
+            OpenWeatherMapDiscoveryService discoveryService = new OpenWeatherMapDiscoveryService(
+                    handler, locationProvider, localeProvider, i18nProvider);
             discoveryServiceRegs.put(handler.getThing().getUID(), bundleContext
                     .registerService(DiscoveryService.class.getName(), discoveryService, new Hashtable<>()));
             return handler;
         } else if (THING_TYPE_WEATHER_AND_FORECAST.equals(thingTypeUID)) {
             return new OpenWeatherMapWeatherAndForecastHandler(thing);
-        } else if (THING_TYPE_UVINDEX.equals(thingTypeUID)) {
-            return new OpenWeatherMapUVIndexHandler(thing);
         }
 
         return null;

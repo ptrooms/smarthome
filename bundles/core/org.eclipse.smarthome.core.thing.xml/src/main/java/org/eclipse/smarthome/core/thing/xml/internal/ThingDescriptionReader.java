@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -29,7 +29,6 @@ import org.eclipse.smarthome.config.xml.util.NodeListConverter;
 import org.eclipse.smarthome.config.xml.util.NodeValue;
 import org.eclipse.smarthome.config.xml.util.NodeValueConverter;
 import org.eclipse.smarthome.config.xml.util.XmlDocumentReader;
-import org.eclipse.smarthome.core.types.CommandDescription;
 import org.eclipse.smarthome.core.types.EventDescription;
 import org.eclipse.smarthome.core.types.StateDescription;
 
@@ -69,7 +68,6 @@ public class ThingDescriptionReader extends XmlDocumentReader<List<?>> {
         xstream.registerConverter(new ChannelTypeConverter());
         xstream.registerConverter(new ChannelGroupTypeConverter());
         xstream.registerConverter(new StateDescriptionConverter());
-        xstream.registerConverter(new CommandDescriptionConverter());
         xstream.registerConverter(new EventDescriptionConverter());
         xstream.registerConverter(new ConfigDescriptionConverter());
         xstream.registerConverter(new ConfigDescriptionParameterConverter());
@@ -99,7 +97,6 @@ public class ThingDescriptionReader extends XmlDocumentReader<List<?>> {
         xstream.alias("tags", NodeList.class);
         xstream.alias("tag", NodeValue.class);
         xstream.alias("state", StateDescription.class);
-        xstream.alias("command", CommandDescription.class);
         xstream.alias("event", EventDescription.class);
         xstream.alias("options", NodeList.class);
         xstream.alias("option", NodeValue.class);
@@ -113,7 +110,6 @@ public class ThingDescriptionReader extends XmlDocumentReader<List<?>> {
         xstream.alias("properties", NodeList.class);
         xstream.alias("property", NodeValue.class);
         xstream.alias("representation-property", NodeValue.class);
-        xstream.alias("command-options", NodeList.class);
         xstream.alias("autoUpdatePolicy", NodeValue.class);
     }
 

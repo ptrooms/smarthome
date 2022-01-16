@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -10,6 +10,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
+/** -----------------------------------------------------------------------
+ * 10jan22 - modified to monitor files
+  ------------------------------------------------------------------------*/
 package org.eclipse.smarthome.model.core.internal.folder;
 
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -183,6 +186,7 @@ public class FolderObserver extends AbstractWatchService {
                         for (File file : files) {
                             // we omit parsing of hidden files possibly created by editors or operating systems
                             if (!file.isHidden()) {
+								logger.info("Adding model/ptro file {} .",file);	// 09jan22 ptro
                                 checkFile(modelRepo, file, ENTRY_CREATE);
                             }
                         }
@@ -232,24 +236,37 @@ public class FolderObserver extends AbstractWatchService {
         if (modelRepo != null && file != null) {
             try {
                 synchronized (FolderObserver.class) {
-                //  if ((kind == ENTRY_CREATE || kind == ENTRY_MODIFY)) { // disabled
-                    if ((kind == ENTRY_MODIFY)) { // new PtrO
+                    if ((kind == ENTRY_CREATE || kind == ENTRY_MODIFY)) { // disabled
+                //    if ((kind == ENTRY_CREATE)) { // new PtrO oh240
                         if (parsers.contains(getExtension(file.getName()))) {
-							logger.trace("ptro/Model changed file: {}", file.getAbsolutePath()); // 28jun20 ptro		
-                            try (FileInputStream inputStream = FileUtils.openInputStream(file)) {
-                                nameFileMap.put(file.getName(), file);
-                                modelRepo.addOrRefreshModel(file.getName(), inputStream);
+                            if (kind == ENTRY_MODIFY) {
+                                logger.debug("Model/ptro changed file: {}", file.getName()); // 09jan22 ptro
+                            } else {
+                                logger.debug("Model/ptro created file: {}", file.getAbsolutePath()); // 09jan22 ptro
+                            }
+							try (FileInputStream inputStream = FileUtils.openInputStream(file)) {
+                                if (nameFileMap.containsValue(file) && 		// if check files exist, ignore already processed file
+										(	(kind == ENTRY_CREATE && parsers.contains(getExtension("NO-CREATE-model.rules"))) ||
+											(kind == ENTRY_MODIFY && parsers.contains(getExtension("NO-MODIFY-model.rules")))
+										)
+									) {	// if already added, ignore repo
+                                    logger.warn("Model/ptro already processed, file {} ignored.", file.getName()); // 09jan22 ptro
+                                } else {
+                                    nameFileMap.put(file.getName(), file);
+                                    modelRepo.addOrRefreshModel(file.getName(), inputStream);
+                                }
                             } catch (IOException e) {
                                 logger.warn("Error while opening file during update: {}", file.getAbsolutePath());
                             }
                         } else {
                             ignoredFiles.add(file);
                         }
-                    } else if (kind == ENTRY_CREATE) {
-							logger.trace("ptro/Model ignore created file: {}", file.getAbsolutePath()); // 28jun20 ptro
                     } else if (kind == ENTRY_DELETE) {
+                        logger.debug("Model/ptro deleted from queue file: {}", file.getName()); // 09jan22 ptro
                         modelRepo.removeModel(file.getName());
                         nameFileMap.remove(file.getName());
+                    } else {
+                        logger.trace("Model/ptro trigger-only by file: {}", file.getAbsolutePath()); // 09jan22 ptro
                     }
                 }
             } catch (Exception e) {

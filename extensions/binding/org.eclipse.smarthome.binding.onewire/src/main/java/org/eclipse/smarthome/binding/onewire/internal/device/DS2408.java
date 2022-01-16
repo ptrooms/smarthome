@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -17,7 +17,6 @@ import static org.eclipse.smarthome.binding.onewire.internal.OwBindingConstants.
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.binding.onewire.internal.DigitalIoConfig;
 import org.eclipse.smarthome.binding.onewire.internal.OwException;
-import org.eclipse.smarthome.binding.onewire.internal.SensorId;
 import org.eclipse.smarthome.binding.onewire.internal.handler.OwBaseThingHandler;
 import org.eclipse.smarthome.binding.onewire.internal.owserver.OwserverDeviceParameter;
 
@@ -29,7 +28,7 @@ import org.eclipse.smarthome.binding.onewire.internal.owserver.OwserverDevicePar
 @NonNullByDefault
 public class DS2408 extends AbstractDigitalOwDevice {
 
-    public DS2408(SensorId sensorId, OwBaseThingHandler callback) {
+    public DS2408(String sensorId, OwBaseThingHandler callback) {
         super(sensorId, callback);
     }
 
@@ -37,10 +36,12 @@ public class DS2408 extends AbstractDigitalOwDevice {
     public void configureChannels() throws OwException {
         ioConfig.clear();
 
-        for (int i = 0; i < 8; i++) {
-            OwDeviceParameterMap inParam = new OwDeviceParameterMap();
-            OwDeviceParameterMap outParam = new OwDeviceParameterMap();
+        OwDeviceParameterMap inParam = new OwDeviceParameterMap();
+        OwDeviceParameterMap outParam = new OwDeviceParameterMap();
 
+        inParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("uncached/", "/sensed"));
+        outParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("/PIO"));
+        for (int i = 0; i < 8; i++) {
             inParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("uncached/", String.format("/sensed.%d", i)));
             outParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter(String.format("/PIO.%d", i)));
             ioConfig.add(new DigitalIoConfig(callback.getThing(), i, inParam, outParam));

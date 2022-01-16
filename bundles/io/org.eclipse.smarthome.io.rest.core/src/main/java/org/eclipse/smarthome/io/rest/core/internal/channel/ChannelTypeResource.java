@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -207,8 +207,7 @@ public class ChannelTypeResource implements RESTResource {
 
         return new ChannelTypeDTO(channelType.getUID().toString(), channelType.getLabel(), channelType.getDescription(),
                 channelType.getCategory(), channelType.getItemType(), channelType.getKind(), parameters,
-                parameterGroups, channelType.getState(), channelType.getTags(), channelType.isAdvanced(),
-                channelType.getCommandDescription());
+                parameterGroups, channelType.getState(), channelType.getTags(), channelType.isAdvanced());
     }
 
     @Override

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -12,9 +12,6 @@
  */
 package org.eclipse.smarthome.binding.hue.internal;
 
-import static org.eclipse.smarthome.binding.hue.internal.HueBindingConstants.NORMALIZE_ID_REGEX;
-
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
@@ -25,17 +22,16 @@ import com.google.gson.annotations.SerializedName;
  * @author Samuel Leisering - Initial contribution
  * @author Christoph Weitkamp - Initial contribution
  */
-@NonNullByDefault
 public class FullHueObject extends HueObject {
 
-    private @NonNullByDefault({}) String type;
-    private @Nullable String modelid;
+    private String type;
+    private String modelid;
     @SerializedName("manufacturername")
-    private @NonNullByDefault({}) String manufacturerName;
+    private String manufacturerName;
     @SerializedName("productname")
-    private @NonNullByDefault({}) String productName;
-    private @Nullable String swversion;
-    private @Nullable String uniqueid;
+    private String productName;
+    private String swversion;
+    private String uniqueid;
 
     public FullHueObject() {
         super();
@@ -62,12 +58,8 @@ public class FullHueObject extends HueObject {
      *
      * @return model id
      */
-    public @Nullable String getModelID() {
+    public String getModelID() {
         return modelid;
-    }
-
-    public @Nullable String getNormalizedModelID() {
-        return modelid != null ? modelid.replaceAll(NORMALIZE_ID_REGEX, "_") : modelid;
     }
 
     /**
@@ -98,7 +90,7 @@ public class FullHueObject extends HueObject {
      *
      * @return software version
      */
-    public @Nullable String getSoftwareVersion() {
+    public String getSoftwareVersion() {
         return swversion;
     }
 
@@ -108,8 +100,8 @@ public class FullHueObject extends HueObject {
      *
      * @return the unique id, can be null for some virtual types like the daylight sensor
      */
-
-    public @Nullable String getUniqueID() {
+    @Nullable
+    public String getUniqueID() {
         return uniqueid;
     }
 }

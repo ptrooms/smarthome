@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -38,8 +38,6 @@ import org.eclipse.smarthome.automation.module.script.ScriptEngineContainer;
 import org.eclipse.smarthome.automation.module.script.ScriptEngineManager;
 import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.core.service.AbstractWatchService;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * The {@link ScriptFileWatcher} watches the jsr223 directory for files. If a new/modified file is detected, the script
@@ -49,31 +47,25 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kai Kreuzer - improved logging and removed thread pool
  *
  */
-@Component(immediate = true)
 public class ScriptFileWatcher extends AbstractWatchService {
     private static final String FILE_DIRECTORY = "automation" + File.separator + "jsr223";
     private static final long INITIAL_DELAY = 25;
     private static final long RECHECK_INTERVAL = 20;
 
-    private final long earliestStart = System.currentTimeMillis() + INITIAL_DELAY * 1000;
+    private long earliestStart = System.currentTimeMillis() + INITIAL_DELAY * 1000;
 
     private ScriptEngineManager manager;
     ScheduledExecutorService scheduler;
 
-    private final Map<String, Set<URL>> urlsByScriptExtension = new ConcurrentHashMap<>();
-    private final Set<URL> loaded = new HashSet<>();
+    private Map<String, Set<URL>> urlsByScriptExtension = new ConcurrentHashMap<>();
+    private Set<URL> loaded = new HashSet<>();
 
     public ScriptFileWatcher() {
         super(ConfigConstants.getConfigFolder() + File.separator + FILE_DIRECTORY);
     }
 
-    @Reference
     public void setScriptEngineManager(ScriptEngineManager manager) {
         this.manager = manager;
-    }
-
-    public void unsetScriptEngineManager(ScriptEngineManager manager) {
-        this.manager = null;
     }
 
     @Override

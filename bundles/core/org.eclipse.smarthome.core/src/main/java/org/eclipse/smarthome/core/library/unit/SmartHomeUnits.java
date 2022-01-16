@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -50,7 +50,6 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.library.dimension.ArealDensity;
 import org.eclipse.smarthome.core.library.dimension.Density;
 import org.eclipse.smarthome.core.library.dimension.Intensity;
-import org.eclipse.smarthome.core.library.dimension.VolumetricFlowRate;
 
 import tec.uom.se.AbstractSystemOfUnits;
 import tec.uom.se.AbstractUnit;
@@ -140,8 +139,8 @@ public class SmartHomeUnits extends AbstractSystemOfUnits {
     public static final Unit<Volume> LITRE = addUnit(Units.LITRE);
     public static final Unit<Density> KILOGRAM_PER_CUBICMETRE = addUnit(
             new ProductUnit<Density>(Units.KILOGRAM.divide(Units.METRE.pow(3))));
-    public static final Unit<Density> MICROGRAM_PER_CUBICMETRE = addUnit(new TransformedUnit<>(KILOGRAM_PER_CUBICMETRE,
-            new RationalConverter(BigInteger.valueOf(1), BigInteger.valueOf(1000000000))));
+    public static final Unit<Density> MICROGRAM_PER_CUBICMETRE = addUnit(
+            new TransformedUnit<>(KILOGRAM_PER_CUBICMETRE, new RationalConverter(BigInteger.valueOf(1), BigInteger.valueOf(1000000000))));
     public static final Unit<Energy> WATT_SECOND = addUnit(new ProductUnit<Energy>(Units.WATT.multiply(Units.SECOND)));
     public static final Unit<Energy> WATT_HOUR = addUnit(new ProductUnit<Energy>(Units.WATT.multiply(Units.HOUR)));
     public static final Unit<Energy> KILOWATT_HOUR = addUnit(MetricPrefix.KILO(WATT_HOUR));
@@ -152,19 +151,7 @@ public class SmartHomeUnits extends AbstractSystemOfUnits {
     public static final Unit<Pressure> MILLIBAR = addUnit(MetricPrefix.MILLI(BAR));
     public static final Unit<ArealDensity> DOBSON_UNIT = addUnit(
             new ProductUnit<ArealDensity>(MetricPrefix.MILLI(Units.MOLE).multiply(0.4462).divide(Units.METRE.pow(2))));
-    public static final Unit<VolumetricFlowRate> LITRE_PER_MINUTE = addUnit(
-            new ProductUnit<VolumetricFlowRate>(Units.LITRE.divide(Units.MINUTE)));
-    public static final Unit<VolumetricFlowRate> CUBICMETRE_PER_SECOND = addUnit(
-            new ProductUnit<VolumetricFlowRate>(Units.CUBIC_METRE.divide(Units.SECOND)));
-    public static final Unit<VolumetricFlowRate> CUBICMETRE_PER_MINUTE = addUnit(
-            new ProductUnit<VolumetricFlowRate>(Units.CUBIC_METRE.divide(Units.MINUTE)));
-    public static final Unit<VolumetricFlowRate> CUBICMETRE_PER_HOUR = addUnit(
-            new ProductUnit<VolumetricFlowRate>(Units.CUBIC_METRE.divide(Units.HOUR)));
-    public static final Unit<VolumetricFlowRate> CUBICMETRE_PER_DAY = addUnit(
-            new ProductUnit<VolumetricFlowRate>(Units.CUBIC_METRE.divide(Units.DAY)));
-    public static final Unit<AmountOfSubstance> DEUTSCHE_HAERTE = addUnit(new TransformedUnit<AmountOfSubstance>("°dH",
-            (Unit<AmountOfSubstance>) MetricPrefix.MILLI(Units.MOLE).divide(Units.LITRE),
-            RationalConverter.of(5.6, 1)));
+
     /**
      * Add unit symbols for custom ESH units.
      */
@@ -172,9 +159,9 @@ public class SmartHomeUnits extends AbstractSystemOfUnits {
         SimpleUnitFormat.getInstance().label(PARTS_PER_MILLION, "ppm");
         SimpleUnitFormat.getInstance().label(DECIBEL, "dB");
         SimpleUnitFormat.getInstance().label(IRRADIANCE, "W/m²");
-        SimpleUnitFormat.getInstance().label(MICROWATT_PER_SQUARE_CENTIMETRE, "µW/cm²");
+        SimpleUnitFormat.getInstance().label(MICROWATT_PER_SQUARE_CENTIMETRE, "μW/cm²");
         SimpleUnitFormat.getInstance().label(DEGREE_ANGLE, "°");
-        SimpleUnitFormat.getInstance().label(MICROGRAM_PER_CUBICMETRE, "µg/m³");
+        SimpleUnitFormat.getInstance().label(MICROGRAM_PER_CUBICMETRE, "μg/m³");
         SimpleUnitFormat.getInstance().label(WATT_SECOND, "Ws");
         SimpleUnitFormat.getInstance().label(WATT_HOUR, "Wh");
         SimpleUnitFormat.getInstance().label(KILOWATT_HOUR, "kWh");
@@ -183,12 +170,6 @@ public class SmartHomeUnits extends AbstractSystemOfUnits {
         SimpleUnitFormat.getInstance().label(MILLIBAR, "mbar");
         SimpleUnitFormat.getInstance().label(KNOT, KNOT.getSymbol());
         SimpleUnitFormat.getInstance().label(DOBSON_UNIT, "DU");
-        SimpleUnitFormat.getInstance().label(LITRE_PER_MINUTE, "l/min");
-        SimpleUnitFormat.getInstance().label(CUBICMETRE_PER_SECOND, "m³/s");
-        SimpleUnitFormat.getInstance().label(CUBICMETRE_PER_MINUTE, "m³/min");
-        SimpleUnitFormat.getInstance().label(CUBICMETRE_PER_HOUR, "m³/h");
-        SimpleUnitFormat.getInstance().label(CUBICMETRE_PER_DAY, "m³/d");
-        SimpleUnitFormat.getInstance().label(DEUTSCHE_HAERTE, "°dH");
     }
 
     /**

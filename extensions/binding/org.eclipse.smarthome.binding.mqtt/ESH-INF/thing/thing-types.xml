@@ -40,10 +40,10 @@
 				<advanced>true</advanced>
 			</parameter>
 
-			<parameter name="clientID" type="text">
+			<parameter name="clientid" type="text">
 				<label>Client ID</label>
 				<description>Use a fixed client ID. Defaults to empty which means a
-					client ID is generated for this connection.</description>
+					user ID is generated for this connection.</description>
 				<advanced>true</advanced>
 			</parameter>
 

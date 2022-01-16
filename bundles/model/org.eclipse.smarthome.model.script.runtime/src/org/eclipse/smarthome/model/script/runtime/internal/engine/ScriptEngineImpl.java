@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -40,10 +40,6 @@ import org.eclipse.xtext.validation.CheckMode;
 import org.eclipse.xtext.validation.IResourceValidator;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +50,6 @@ import org.slf4j.LoggerFactory;
  * @author Oliver Libutzki - Reorganization of Guice injection
  *
  */
-@Component(immediate = true)
 public class ScriptEngineImpl implements ScriptEngine, ModelParser {
 
     protected XtextResourceSet resourceSet;
@@ -66,7 +61,6 @@ public class ScriptEngineImpl implements ScriptEngine, ModelParser {
     public ScriptEngineImpl() {
     }
 
-    @Activate
     public void activate() {
         ScriptStandaloneSetup.doSetup(scriptServiceUtil, this);
         logger.debug("Registered 'script' configuration parser");
@@ -80,7 +74,6 @@ public class ScriptEngineImpl implements ScriptEngine, ModelParser {
         return resourceSet;
     }
 
-    @Deactivate
     public void deactivate() {
         this.resourceSet = null;
         ScriptStandaloneSetup.unregister();
@@ -95,7 +88,6 @@ public class ScriptEngineImpl implements ScriptEngine, ModelParser {
     protected void unsetScriptRuntime(final ScriptRuntime scriptRuntime) {
     }
 
-    @Reference
     protected void setScriptServiceUtil(ScriptServiceUtil scriptServiceUtil) {
         this.scriptServiceUtil = scriptServiceUtil;
         scriptServiceUtil.setScriptEngine(this);

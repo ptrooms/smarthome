@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,7 +20,6 @@ import java.util.Locale;
 import org.eclipse.smarthome.automation.type.ModuleType;
 import org.eclipse.smarthome.automation.type.ModuleTypeProvider;
 import org.eclipse.smarthome.core.common.registry.ProviderChangeListener;
-import org.osgi.service.component.annotations.Component;
 
 /**
  * The {@link ScriptedCustomModuleTypeProvider} is used in combination with the
@@ -30,7 +29,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Simon Merschjohann - initial contribution
  *
  */
-@Component(immediate = true, service = { ScriptedCustomModuleTypeProvider.class, ModuleTypeProvider.class })
 public class ScriptedCustomModuleTypeProvider implements ModuleTypeProvider {
     private final HashMap<String, ModuleType> modulesTypes = new HashMap<>();
 

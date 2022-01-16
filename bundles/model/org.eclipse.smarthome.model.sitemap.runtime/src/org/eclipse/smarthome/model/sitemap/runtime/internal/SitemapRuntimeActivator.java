@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -14,11 +14,9 @@ package org.eclipse.smarthome.model.sitemap.runtime.internal;
 
 import org.eclipse.smarthome.model.SitemapStandaloneSetup;
 import org.eclipse.smarthome.model.core.ModelParser;
-import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Component(immediate = true)
 public class SitemapRuntimeActivator implements ModelParser {
 
     private final Logger logger = LoggerFactory.getLogger(SitemapRuntimeActivator.class);

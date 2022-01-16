@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -12,7 +12,7 @@
  */
 package org.eclipse.smarthome.binding.openweathermap.internal.handler;
 
-import static org.eclipse.smarthome.binding.openweathermap.internal.OpenWeatherMapBindingConstants.*;
+import static org.eclipse.smarthome.binding.openweathermap.internal.OpenWeatherMapBindingConstants.THING_TYPE_WEATHER_AND_FORECAST;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.measure.Unit;
 
@@ -70,8 +68,8 @@ public abstract class AbstractOpenWeatherMapHandler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractOpenWeatherMapHandler.class);
 
-    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.unmodifiableSet(
-            Stream.of(THING_TYPE_WEATHER_AND_FORECAST, THING_TYPE_UVINDEX).collect(Collectors.toSet()));
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections
+            .singleton(THING_TYPE_WEATHER_AND_FORECAST);
 
     // keeps track of the parsed location
     protected @Nullable PointType location;
@@ -180,10 +178,6 @@ public abstract class AbstractOpenWeatherMapHandler extends BaseThingHandler {
                         ZonedDateTime.ofInstant(Instant.ofEpochSecond(value.longValue()), ZoneId.systemDefault()));
     }
 
-    protected State getDecimalTypeState(@Nullable Double value) {
-        return (value == null) ? UnDefType.UNDEF : new DecimalType(value);
-    }
-
     protected State getPointTypeState(@Nullable Double latitude, @Nullable Double longitude) {
         return ((latitude == null) || (longitude == null)) ? UnDefType.UNDEF
                 : new PointType(new DecimalType(latitude), new DecimalType(longitude));
@@ -208,14 +202,7 @@ public abstract class AbstractOpenWeatherMapHandler extends BaseThingHandler {
         if (callback != null) {
             for (ChannelBuilder channelBuilder : callback.createChannelBuilders(
                     new ChannelGroupUID(getThing().getUID(), channelGroupId), channelGroupTypeUID)) {
-                Channel newChannel = channelBuilder.build(),
-                        existingChannel = getThing().getChannel(newChannel.getUID().getId());
-                if (existingChannel != null) {
-                    logger.trace("Thing '{}' already has an existing channel '{}'. Omit adding new channel '{}'.",
-                            getThing().getUID(), existingChannel.getUID(), newChannel.getUID());
-                    continue;
-                }
-                channels.add(newChannel);
+                channels.add(channelBuilder.build());
             }
         }
         return channels;

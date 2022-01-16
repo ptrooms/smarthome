@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -126,18 +126,11 @@ public class OpenWeatherMapDiscoveryService extends AbstractDiscoveryService {
         String locationString = location.toFullString();
         ThingUID bridgeUID = bridgeHandler.getThing().getUID();
         createWeatherAndForecastResult(locationString, bridgeUID);
-        createUVIndexResult(locationString, bridgeUID);
     }
 
     private void createWeatherAndForecastResult(String location, ThingUID bridgeUID) {
         thingDiscovered(DiscoveryResultBuilder.create(new ThingUID(THING_TYPE_WEATHER_AND_FORECAST, bridgeUID, LOCAL))
                 .withLabel("Local weather and forecast").withProperty(CONFIG_LOCATION, location)
-                .withRepresentationProperty(CONFIG_LOCATION).withBridge(bridgeUID).build());
-    }
-
-    private void createUVIndexResult(String location, ThingUID bridgeUID) {
-        thingDiscovered(DiscoveryResultBuilder.create(new ThingUID(THING_TYPE_UVINDEX, bridgeUID, LOCAL))
-                .withLabel("Local UV Index").withProperty(CONFIG_LOCATION, location)
                 .withRepresentationProperty(CONFIG_LOCATION).withBridge(bridgeUID).build());
     }
 }

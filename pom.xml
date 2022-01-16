@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.eclipse.smarthome</groupId>
   <artifactId>smarthome</artifactId>
-  <version>0.11.0-SNAPSHOT</version>
+  <version>0.10.0.oh240</version>
 
   <packaging>pom</packaging>
 
@@ -40,9 +39,9 @@
 
   <distributionManagement>
     <repository>
-      <id>repo.eclipse.org</id>
-      <name>Eclipse SmartHome Repository - Releases</name>
-      <url>https://repo.eclipse.org/content/repositories/smarthome-releases/</url>
+      <id>bintray</id>
+      <name>openHAB SmartHome Repository - Releases</name>
+      <url>https://api.bintray.com/maven/openhab/mvn/smarthome/;publish=1;override=1</url>
     </repository>
     <snapshotRepository>
       <id>repo.eclipse.org</id>
@@ -51,7 +50,15 @@
     </snapshotRepository>
   </distributionManagement>
 
+  <scm>
+      <connection>scm:git:${scm.gitBaseUrl}/smarthome.git</connection>
+      <developerConnection>scm:git:${scm.gitBaseUrl}/smarthome.git</developerConnection>
+      <url>https://github.com/openhab/smarthome</url>
+<tag>0.10.0.oh240</tag>
+  </scm>
+
   <properties>
+    <scm.gitBaseUrl>https://github.com/openhab</scm.gitBaseUrl>
     <esh.java.version>1.8</esh.java.version>
     <maven.compiler.source>${esh.java.version}</maven.compiler.source>
     <maven.compiler.target>${esh.java.version}</maven.compiler.target>
@@ -98,6 +105,10 @@
       <id>jcenter</id>
       <url>https://jcenter.bintray.com</url>
     </pluginRepository>
+     <pluginRepository> 
+      <id>maven2</id> 
+      <url>https://repo.maven.apache.org/maven2/</url> 
+    </pluginRepository> 
   </pluginRepositories>
 
   <build>
@@ -257,7 +268,7 @@
             </excludes>
             <useDefaultExcludes>true</useDefaultExcludes>
             <properties>
-              <year>2019</year>
+              <year>2018</year>
             </properties>
             <encoding>UTF-8</encoding>
           </configuration>
@@ -343,6 +354,18 @@
               <phase>verify</phase>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.itemis.maven.plugins</groupId>
+          <artifactId>unleash-maven-plugin</artifactId>
+          <version>2.8.0</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.itemis.maven.plugins</groupId>
+              <artifactId>unleash-scm-provider-git</artifactId>
+              <version>2.1.0</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>

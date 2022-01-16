@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -28,8 +28,6 @@ import org.eclipse.smarthome.core.thing.type.ChannelKind;
 import org.eclipse.smarthome.core.thing.type.ChannelType;
 import org.eclipse.smarthome.core.thing.type.ChannelTypeBuilder;
 import org.eclipse.smarthome.core.thing.type.ChannelTypeUID;
-import org.eclipse.smarthome.core.thing.type.StateChannelTypeBuilder;
-import org.eclipse.smarthome.core.types.CommandDescription;
 import org.eclipse.smarthome.core.types.EventDescription;
 import org.eclipse.smarthome.core.types.StateDescription;
 
@@ -142,20 +140,6 @@ public class ChannelTypeConverter extends AbstractDescriptionTypeConverter<Chann
         return null;
     }
 
-    private CommandDescription readCommandDescription(NodeIterator nodeIterator) throws ConversionException {
-        Object nextNode = nodeIterator.next();
-
-        if (nextNode != null) {
-            if (nextNode instanceof CommandDescription) {
-                return (CommandDescription) nextNode;
-            }
-
-            nodeIterator.revert();
-        }
-
-        return null;
-    }
-
     @Override
     protected ChannelTypeXmlResult unmarshalType(HierarchicalStreamReader reader, UnmarshallingContext context,
             Map<String, String> attributes, NodeIterator nodeIterator) throws ConversionException {
@@ -173,7 +157,6 @@ public class ChannelTypeConverter extends AbstractDescriptionTypeConverter<Chann
         Set<String> tags = readTags(nodeIterator);
 
         StateDescription stateDescription = readStateDescription(nodeIterator);
-        CommandDescription commandDescription = readCommandDescription(nodeIterator);
         EventDescription eventDescription = readEventDescription(nodeIterator);
 
         AutoUpdatePolicy autoUpdatePolicy = readAutoUpdatePolicy(nodeIterator);
@@ -189,11 +172,10 @@ public class ChannelTypeConverter extends AbstractDescriptionTypeConverter<Chann
         URI configDescriptionURI = (URI) configDescriptionObjects[0];
         ChannelType channelType = null;
         if (cKind == ChannelKind.STATE) {
-            StateChannelTypeBuilder builder = ChannelTypeBuilder.state(channelTypeUID, label, itemType)
-                    .isAdvanced(advanced).withDescription(description).withCategory(category).withTags(tags)
+            channelType = ChannelTypeBuilder.state(channelTypeUID, label, itemType).isAdvanced(advanced)
+                    .withDescription(description).withCategory(category).withTags(tags)
                     .withConfigDescriptionURI(configDescriptionURI).withStateDescription(stateDescription)
-                    .withAutoUpdatePolicy(autoUpdatePolicy).withCommandDescription(commandDescription);
-            channelType = builder.build();
+                    .withAutoUpdatePolicy(autoUpdatePolicy).build();
         } else if (cKind == ChannelKind.TRIGGER) {
             channelType = ChannelTypeBuilder.trigger(channelTypeUID, label).isAdvanced(advanced)
                     .withDescription(description).withCategory(category).withTags(tags)

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -66,8 +66,7 @@ public class ChannelStateTransformation {
      * @param value The incoming value
      * @return The transformed value
      */
-    // protected String processValue(String value) {
-    protected @Nullable String processValue(String value) {    // ptro: modified to fix regex filter
+    protected String processValue(String value) {
         TransformationService transformationService = this.transformationService.get();
         if (transformationService == null) {
             transformationService = provider.getTransformationService(serviceName);
@@ -83,8 +82,6 @@ public class ChannelStateTransformation {
         } catch (TransformationException e) {
             logger.warn("Executing the {}-transformation failed: {}", serviceName, e.getMessage());
         }
-        // ptro: modified to fix regex filter
-        // return (temp != null) ? temp : value;
-        return temp;     // ptro: fix return null allowed
+        return (temp != null) ? temp : value;
     }
 }

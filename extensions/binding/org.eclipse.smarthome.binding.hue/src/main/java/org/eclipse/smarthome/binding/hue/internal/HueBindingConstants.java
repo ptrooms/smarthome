@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -44,7 +44,6 @@ public class HueBindingConstants {
     public static final ThingTypeUID THING_TYPE_DIMMABLE_PLUG = new ThingTypeUID(BINDING_ID, "0110");
 
     public static final ThingTypeUID THING_TYPE_DIMMER_SWITCH = new ThingTypeUID(BINDING_ID, "0820");
-    public static final ThingTypeUID THING_TYPE_TAP_SWITCH = new ThingTypeUID(BINDING_ID, "0830");
     public static final ThingTypeUID THING_TYPE_PRESENCE_SENSOR = new ThingTypeUID(BINDING_ID, "0107");
     public static final ThingTypeUID THING_TYPE_TEMPERATURE_SENSOR = new ThingTypeUID(BINDING_ID, "0302");
     public static final ThingTypeUID THING_TYPE_LIGHT_LEVEL_SENSOR = new ThingTypeUID(BINDING_ID, "0106");
@@ -57,7 +56,6 @@ public class HueBindingConstants {
     public static final String CHANNEL_EFFECT = "effect";
     public static final String CHANNEL_SWITCH = "switch";
     public static final String CHANNEL_DIMMER_SWITCH = "dimmer_switch";
-    public static final String CHANNEL_TAP_SWITCH = "tap_switch";
     public static final String CHANNEL_PRESENCE = "presence";
     public static final String CHANNEL_TEMPERATURE = "temperature";
     public static final String CHANNEL_LAST_UPDATED = "last_updated";
@@ -70,7 +68,6 @@ public class HueBindingConstants {
 
     // List all triggers
     public static final String EVENT_DIMMER_SWITCH = "dimmer_switch_event";
-    public static final String EVENT_TAP_SWITCH = "tap_switch_event";
 
     // Bridge config properties
     public static final String HOST = "ipAddress";
@@ -81,6 +78,4 @@ public class HueBindingConstants {
     public static final String SENSOR_ID = "sensorId";
     public static final String PRODUCT_NAME = "productName";
     public static final String UNIQUE_ID = "uniqueId";
-
-    public static final String NORMALIZE_ID_REGEX = "[^a-zA-Z0-9_]";
 }

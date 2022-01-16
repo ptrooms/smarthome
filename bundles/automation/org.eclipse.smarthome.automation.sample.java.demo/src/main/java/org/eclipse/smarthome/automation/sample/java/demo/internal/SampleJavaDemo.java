@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -23,10 +23,6 @@ import org.eclipse.smarthome.automation.core.util.ModuleBuilder;
 import org.eclipse.smarthome.automation.core.util.RuleBuilder;
 import org.eclipse.smarthome.config.core.Configuration;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * This class shows how to create a rule, using the Java API.It also shows how to add it to the rule engine via
@@ -34,7 +30,6 @@ import org.osgi.service.component.annotations.Reference;
  *
  * @author Plamen Peev - Initial contribution
  */
-@Component(immediate = true)
 public class SampleJavaDemo {
 
     /**
@@ -73,7 +68,6 @@ public class SampleJavaDemo {
      *
      * @param componentContext - the component's context.
      */
-    @Activate
     protected void activate(ComponentContext componentContext) {
         addRule();
     }
@@ -83,7 +77,6 @@ public class SampleJavaDemo {
      *
      * @param componentContext - the component's context.
      */
-    @Deactivate
     protected void deactivate(ComponentContext componentContext) {
         SampleJavaDemo.ruleRegistry.remove(RULE_UID);
     }
@@ -93,7 +86,6 @@ public class SampleJavaDemo {
      *
      * @param ruleRegistry: RuleRegistry service.
      */
-    @Reference
     protected void setRuleRegistry(RuleRegistry ruleRegistry) {
         SampleJavaDemo.ruleRegistry = ruleRegistry;
     }

@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.eclipse.smarthome.model.core
+Bundle-SymbolicName: org.eclipse.smarthome.model.core;singleton:=true
+Bundle-ActivationPolicy: lazy
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Eclipse.org/SmartHome
+Import-Package: com.google.common.base,com.google.common.collect,com.g
+ oogle.inject,org.apache.commons.collections,org.apache.commons.io,org
+ .apache.commons.lang,org.eclipse.core.runtime;registry=split;resoluti
+ on:=optional,org.eclipse.emf.common.notify,org.eclipse.emf.common.uti
+ l,org.eclipse.emf.ecore,org.eclipse.emf.ecore.resource,org.eclipse.em
+ f.ecore.util,org.eclipse.jdt.annotation;resolution:=optional,org.ecli
+ pse.smarthome.config.core,org.eclipse.smarthome.core.service,org.ecli
+ pse.smarthome.model.core,org.eclipse.xtext.common.types.impl,org.ecli
+ pse.xtext.conversion,org.eclipse.xtext.nodemodel,org.eclipse.xtext.re
+ source,org.eclipse.xtext.resource.impl,org.eclipse.xtext.util,org.osg
+ i.framework,org.osgi.service.component,org.slf4j
+Service-Component: OSGI-INF/*.xml
+Export-Package: org.eclipse.smarthome.model.core,org.eclipse.smarthome
+ .model.core.valueconverter
+Bundle-Name: Eclipse SmartHome Model Core
+Bundle-Version: 0.10.0.oh240
+Bundle-Activator: org.eclipse.smarthome.model.core.internal.ModelCoreA
+ ctivator
+

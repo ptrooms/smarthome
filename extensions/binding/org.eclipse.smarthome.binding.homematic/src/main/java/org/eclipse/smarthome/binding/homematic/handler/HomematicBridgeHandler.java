@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -242,9 +242,6 @@ public class HomematicBridgeHandler extends BaseBridgeHandler implements Homemat
         if (homematicConfig.getCallbackHost() == null) {
             homematicConfig.setCallbackHost(this.ipv4Address);
         }
-        if (homematicConfig.getBindAddress() == null) {
-            homematicConfig.setBindAddress(homematicConfig.getCallbackHost());
-        }
         if (homematicConfig.getXmlCallbackPort() == 0) {
             homematicConfig.setXmlCallbackPort(portPool.getNextPort());
         } else {
@@ -393,7 +390,7 @@ public class HomematicBridgeHandler extends BaseBridgeHandler implements Homemat
 
     /**
      * Returns the last value for the duty cycle ratio that was retrieved from the homematic gateway.
-     *
+     * 
      * @return The duty cycle ratio of the gateway
      */
     public int getDutyCycleRatio() {
@@ -429,7 +426,7 @@ public class HomematicBridgeHandler extends BaseBridgeHandler implements Homemat
 
     /**
      * Updates the {@link HmDatapoint} by reloading the value from the homematic gateway.
-     *
+     * 
      * @param dp The HmDatapoint that shall be updated
      * @throws IOException If there is a problem while communicating to the gateway
      */

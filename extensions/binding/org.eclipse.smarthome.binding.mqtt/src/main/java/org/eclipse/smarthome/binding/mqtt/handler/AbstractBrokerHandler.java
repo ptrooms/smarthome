@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -50,7 +50,7 @@ public abstract class AbstractBrokerHandler extends BaseBridgeHandler implements
 
     @NonNullByDefault({})
     protected MqttBrokerConnection connection;
-    protected CompletableFuture<MqttBrokerConnection> connectionFuture = new CompletableFuture<>();
+    protected final CompletableFuture<MqttBrokerConnection> connectionFuture = new CompletableFuture<>();
 
     public AbstractBrokerHandler(Bridge thing) {
         super(thing);
@@ -140,7 +140,6 @@ public abstract class AbstractBrokerHandler extends BaseBridgeHandler implements
         channelStateByChannelUID.clear();
         connection.removeConnectionObserver(this);
         this.connection = null;
-        connectionFuture = new CompletableFuture<>();
         super.dispose();
     }
 }

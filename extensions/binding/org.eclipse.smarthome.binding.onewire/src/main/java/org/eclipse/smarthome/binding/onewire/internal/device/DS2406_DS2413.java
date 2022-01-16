@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -17,7 +17,6 @@ import static org.eclipse.smarthome.binding.onewire.internal.OwBindingConstants.
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.binding.onewire.internal.DigitalIoConfig;
 import org.eclipse.smarthome.binding.onewire.internal.OwException;
-import org.eclipse.smarthome.binding.onewire.internal.SensorId;
 import org.eclipse.smarthome.binding.onewire.internal.handler.OwBaseThingHandler;
 import org.eclipse.smarthome.binding.onewire.internal.owserver.OwserverDeviceParameter;
 
@@ -29,7 +28,7 @@ import org.eclipse.smarthome.binding.onewire.internal.owserver.OwserverDevicePar
 @NonNullByDefault
 public class DS2406_DS2413 extends AbstractDigitalOwDevice {
 
-    public DS2406_DS2413(SensorId sensorId, OwBaseThingHandler callback) {
+    public DS2406_DS2413(String sensorId, OwBaseThingHandler callback) {
         super(sensorId, callback);
     }
 
@@ -43,9 +42,6 @@ public class DS2406_DS2413 extends AbstractDigitalOwDevice {
         inParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("/sensed.A"));
         outParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("/PIO.A"));
         ioConfig.add(new DigitalIoConfig(callback.getThing(), 0, inParam, outParam));
-
-        inParam = new OwDeviceParameterMap();
-        outParam = new OwDeviceParameterMap();
 
         inParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("/sensed.B"));
         outParam.set(THING_TYPE_OWSERVER, new OwserverDeviceParameter("/PIO.B"));

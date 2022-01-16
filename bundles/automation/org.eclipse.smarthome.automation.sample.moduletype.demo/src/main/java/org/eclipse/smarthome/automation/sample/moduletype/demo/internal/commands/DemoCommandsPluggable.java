@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -17,21 +17,15 @@ import java.util.List;
 
 import org.eclipse.smarthome.io.console.Console;
 import org.eclipse.smarthome.io.console.extensions.AbstractConsoleCommandExtension;
-import org.eclipse.smarthome.io.console.extensions.ConsoleCommandExtension;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.event.EventAdmin;
 
 /**
  * This class provides functionality for defining and executing automation commands for importing, exporting, removing
  * and listing the automation objects.
- *
+ * 
  * @author Plamen Peev - Initial contribution
  */
-@Component(immediate = true, service = ConsoleCommandExtension.class)
 public class DemoCommandsPluggable extends AbstractConsoleCommandExtension {
 
     /**
@@ -58,14 +52,12 @@ public class DemoCommandsPluggable extends AbstractConsoleCommandExtension {
      *
      * @param componentContext
      */
-    @Activate
     protected void activate(ComponentContext componentContext) {
     }
 
     /**
      * Deactivating this component - called from DS.
      */
-    @Deactivate
     protected void deactivate(ComponentContext componentContext) {
         DemoCommandsPluggable.eventAdmin = null;
     }
@@ -76,7 +68,6 @@ public class DemoCommandsPluggable extends AbstractConsoleCommandExtension {
      *
      * @param eventAdmin - a reference to the {@link EventAdmin} service.
      */
-    @Reference
     protected void setEventAdmin(EventAdmin eventAdmin) {
         DemoCommandsPluggable.eventAdmin = eventAdmin;
     }

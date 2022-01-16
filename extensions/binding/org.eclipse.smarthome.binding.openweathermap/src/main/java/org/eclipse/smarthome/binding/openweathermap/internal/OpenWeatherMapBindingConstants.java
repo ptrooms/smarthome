@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -35,7 +35,6 @@ public class OpenWeatherMapBindingConstants {
     // Thing
     public static final ThingTypeUID THING_TYPE_WEATHER_AND_FORECAST = new ThingTypeUID(BINDING_ID,
             "weather-and-forecast");
-    public static final ThingTypeUID THING_TYPE_UVINDEX = new ThingTypeUID(BINDING_ID, "uvindex");
 
     // List of all properties
     public static final String CONFIG_API_KEY = "apikey";
@@ -48,14 +47,12 @@ public class OpenWeatherMapBindingConstants {
             "hourlyForecast");
     public static final ChannelGroupTypeUID CHANNEL_GROUP_TYPE_DAILY_FORECAST = new ChannelGroupTypeUID(BINDING_ID,
             "dailyForecast");
-    public static final ChannelGroupTypeUID CHANNEL_GROUP_TYPE_UVINDEX = new ChannelGroupTypeUID(BINDING_ID, "uvindex");
 
     // List of all channel groups
     public static final String CHANNEL_GROUP_STATION = "station";
     public static final String CHANNEL_GROUP_CURRENT_WEATHER = "current";
     public static final String CHANNEL_GROUP_FORECAST_TODAY = "forecastToday";
     public static final String CHANNEL_GROUP_FORECAST_TOMORROW = "forecastTomorrow";
-    public static final String CHANNEL_GROUP_CURRENT_UVINDEX = "current";
 
     // List of all channels
     public static final String CHANNEL_STATION_ID = "id";
@@ -65,7 +62,6 @@ public class OpenWeatherMapBindingConstants {
     public static final String CHANNEL_CONDITION = "condition";
     public static final String CHANNEL_CONDITION_ID = "condition-id";
     public static final String CHANNEL_CONDITION_ICON = "icon";
-    public static final String CHANNEL_CONDITION_ICON_ID = "icon-id";
     public static final String CHANNEL_TEMPERATURE = "temperature";
     public static final String CHANNEL_MIN_TEMPERATURE = "min-temperature";
     public static final String CHANNEL_MAX_TEMPERATURE = "max-temperature";
@@ -77,7 +73,6 @@ public class OpenWeatherMapBindingConstants {
     public static final String CHANNEL_CLOUDINESS = "cloudiness";
     public static final String CHANNEL_RAIN = "rain";
     public static final String CHANNEL_SNOW = "snow";
-    public static final String CHANNEL_UVINDEX = "uvindex";
 
     // List of all configuration
     public static final String CONFIG_FORECAST_DAYS = "forecastDays";

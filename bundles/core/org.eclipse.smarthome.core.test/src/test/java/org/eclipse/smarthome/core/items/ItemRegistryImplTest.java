@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -36,7 +36,6 @@ import org.eclipse.smarthome.core.library.CoreItemFactory;
 import org.eclipse.smarthome.core.library.items.NumberItem;
 import org.eclipse.smarthome.core.library.items.StringItem;
 import org.eclipse.smarthome.core.library.items.SwitchItem;
-import org.eclipse.smarthome.core.service.CommandDescriptionService;
 import org.eclipse.smarthome.core.service.StateDescriptionService;
 import org.eclipse.smarthome.test.java.JavaTest;
 import org.eclipse.smarthome.test.storage.VolatileStorageService;
@@ -381,30 +380,6 @@ public class ItemRegistryImplTest extends JavaTest {
         assertNull(item.itemStateConverter);
         assertNull(item.unitProvider);
         assertEquals(0, item.listeners.size());
-    }
-
-    @Test
-    public void assertCommandDescriptionServiceGetsInjected() {
-        GenericItem item = spy(new SwitchItem("Item1"));
-        itemProvider.add(item);
-
-        verify(item).setCommandDescriptionService(null);
-
-        ((ItemRegistryImpl) itemRegistry).setCommandDescriptionService(mock(CommandDescriptionService.class));
-        verify(item).setCommandDescriptionService(any(CommandDescriptionService.class));
-    }
-
-    @Test
-    public void assertCommandDescriptionServiceGetsRemoved() {
-        CommandDescriptionService commandDescriptionService = mock(CommandDescriptionService.class);
-        ((ItemRegistryImpl) itemRegistry).setCommandDescriptionService(commandDescriptionService);
-
-        GenericItem item = spy(new SwitchItem("Item1"));
-        itemProvider.add(item);
-        verify(item).setCommandDescriptionService(any(CommandDescriptionService.class));
-
-        ((ItemRegistryImpl) itemRegistry).unsetCommandDescriptionService(commandDescriptionService);
-        verify(item).setCommandDescriptionService(null);
     }
 
 }

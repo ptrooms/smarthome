@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -22,11 +22,8 @@ import org.eclipse.smarthome.core.common.registry.Identifiable;
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.library.types.PercentType;
 import org.eclipse.smarthome.core.types.Command;
-import org.eclipse.smarthome.core.types.CommandDescription;
-import org.eclipse.smarthome.core.types.CommandOption;
 import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.core.types.StateDescription;
-import org.eclipse.smarthome.core.types.StateOption;
 import org.eclipse.smarthome.core.types.UnDefType;
 
 /**
@@ -154,26 +151,5 @@ public interface Item extends Identifiable<String> {
      * @return state description (can be null)
      */
     public @Nullable StateDescription getStateDescription(@Nullable Locale locale);
-
-    /**
-     * Returns the {@link CommandDescription} for this item. In case no dedicated {@link CommandDescription} is
-     * provided the {@link StateOption}s from the {@link StateDescription} will be served as valid
-     * {@link CommandOption}s.
-     *
-     * @return the {@link CommandDescription} for the default locale (can be null).
-     */
-    public default @Nullable CommandDescription getCommandDescription() {
-        return getCommandDescription(null);
-    }
-
-    /**
-     * Returns the {@link CommandDescription} for the given locale. In case no dedicated {@link CommandDescription} is
-     * provided the {@link StateOption}s from the {@link StateDescription} will be served as valid
-     * {@link CommandOption}s.
-     *
-     * @param locale locale (can be null)
-     * @return command description (can be null)
-     */
-    public @Nullable CommandDescription getCommandDescription(@Nullable Locale locale);
 
 }

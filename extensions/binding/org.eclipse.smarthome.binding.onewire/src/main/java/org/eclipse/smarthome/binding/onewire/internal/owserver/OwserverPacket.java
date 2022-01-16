@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -98,11 +98,7 @@ public class OwserverPacket {
         setPayload(path);
         setTemperatureScale(OwserverTemperatureScale.CENTIGRADE);
         setControlFlags(owControlFlags);
-        if (owMessageType == OwserverMessageType.WRITE) {
-            packetSize = 0x00000000;
-        } else {
-            packetSize = 0x00010000;
-        }
+        packetSize = 0x00001000;
     }
 
     /**
@@ -163,7 +159,7 @@ public class OwserverPacket {
     }
 
     /**
-     * set (or replace) this packet's payload from a string
+     * set this packet payload from a string
      *
      * @param payload string representation of the payload
      */
@@ -172,23 +168,6 @@ public class OwserverPacket {
         payloadLength = bytes.length + 1;
         this.payload = new byte[payloadLength];
         System.arraycopy(bytes, 0, this.payload, 0, bytes.length);
-    }
-
-    /**
-     * append to this packet's payload from a string
-     *
-     * @param payload string representation of the payload to append
-     */
-    public void appendPayload(String payload) {
-        byte appendBytes[] = payload.getBytes();
-
-        byte[] fullPayload = new byte[this.payload.length + appendBytes.length];
-        System.arraycopy(this.payload, 0, fullPayload, 0, this.payload.length);
-        System.arraycopy(appendBytes, 0, fullPayload, this.payload.length, appendBytes.length);
-
-        this.packetSize += appendBytes.length;
-        this.payloadLength = fullPayload.length;
-        this.payload = fullPayload;
     }
 
     /**

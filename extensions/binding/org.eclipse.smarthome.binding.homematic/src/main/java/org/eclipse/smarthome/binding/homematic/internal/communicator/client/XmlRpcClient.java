@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -83,12 +83,12 @@ public class XmlRpcClient extends RpcClient<String> {
                     .timeout(config.getTimeout(), TimeUnit.SECONDS)
                     .header(HttpHeader.CONTENT_TYPE, "text/xml;charset=" + config.getEncoding()).send();
 
+            String result = new String(response.getContent(), config.getEncoding());
             if (logger.isTraceEnabled()) {
-                String result = new String(response.getContent(), config.getEncoding());
                 logger.trace("Client XmlRpcResponse (port {}):\n{}", port, result);
             }
 
-            Object[] data = new XmlRpcResponse(new ByteArrayInputStream(response.getContent()),
+            Object[] data = new XmlRpcResponse(new ByteArrayInputStream(result.getBytes(config.getEncoding())),
                     config.getEncoding()).getResponseData();
             return new RpcResponseParser(request).parse(data);
         } catch (UnknownRpcFailureException | UnknownParameterSetException ex) {

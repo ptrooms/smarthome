@@ -17,7 +17,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="weather">
+	<channel-group-type id="current">
 		<label>Current Weather</label>
 		<description>This is the current weather.</description>
 		<channels>
@@ -25,7 +25,6 @@
 			<channel id="condition" typeId="condition" />
 			<channel id="condition-id" typeId="condition-id" />
 			<channel id="icon" typeId="condition-icon" />
-			<channel id="icon-id" typeId="condition-icon-id" />
 			<channel id="temperature" typeId="system.outdoor-temperature" />
 			<channel id="pressure" typeId="system.barometric-pressure" />
 			<channel id="humidity" typeId="system.atmospheric-humidity" />
@@ -46,7 +45,6 @@
 			<channel id="condition" typeId="forecasted-condition" />
 			<channel id="condition-id" typeId="condition-id" />
 			<channel id="icon" typeId="condition-icon" />
-			<channel id="icon-id" typeId="condition-icon-id" />
 			<channel id="temperature" typeId="forecasted-outdoor-temperature" />
 			<channel id="pressure" typeId="forecasted-barometric-pressure" />
 			<channel id="humidity" typeId="forecasted-atmospheric-humidity" />
@@ -67,7 +65,6 @@
 			<channel id="condition" typeId="forecasted-condition" />
 			<channel id="condition-id" typeId="condition-id" />
 			<channel id="icon" typeId="condition-icon" />
-			<channel id="icon-id" typeId="condition-icon-id" />
 			<channel id="min-temperature" typeId="forecasted-min-outdoor-temperature" />
 			<channel id="max-temperature" typeId="forecasted-max-outdoor-temperature" />
 			<channel id="pressure" typeId="forecasted-barometric-pressure" />
@@ -78,24 +75,6 @@
 			<channel id="cloudiness" typeId="forecasted-cloudiness" />
 			<channel id="rain" typeId="forecasted-rain" />
 			<channel id="snow" typeId="forecasted-snow" />
-		</channels>
-	</channel-group-type>
-
-	<channel-group-type id="uvindex">
-		<label>Current UV Index</label>
-		<description>This is the current UV Index.</description>
-		<channels>
-			<channel id="time-stamp" typeId="daily-forecast-time-stamp" />
-			<channel id="uvindex" typeId="uvindex" />
-		</channels>
-	</channel-group-type>
-
-	<channel-group-type id="uvindexForecast">
-		<label>Forecasted UV Index</label>
-		<description>This is the forecasted UV Index.</description>
-		<channels>
-			<channel id="time-stamp" typeId="daily-forecast-time-stamp" />
-			<channel id="uvindex" typeId="forecasted-uvindex" />
 		</channels>
 	</channel-group-type>
 
@@ -165,13 +144,6 @@
 		<item-type>Image</item-type>
 		<label>Icon</label>
 		<description>Icon representing the weather condition.</description>
-		<state readOnly="true" />
-	</channel-type>
-
-	<channel-type id="condition-icon-id" advanced="true">
-		<item-type>String</item-type>
-		<label>Icon Id</label>
-		<description>Id of the icon to create the URL.</description>
 		<state readOnly="true" />
 	</channel-type>
 
@@ -293,20 +265,6 @@
 		<description>Forecasted snow volume for the next 3 hours.</description>
 		<category>Snow</category>
 		<state readOnly="true" pattern="%.2f %unit%" />
-	</channel-type>
-
-	<channel-type id="uvindex">
-		<item-type>Number</item-type>
-		<label>UV Index</label>
-		<description>Current UV Index.</description>
-		<state readOnly="true" pattern="%.1f" />
-	</channel-type>
-
-	<channel-type id="forecasted-uvindex">
-		<item-type>Number</item-type>
-		<label>Forecasted UV Index</label>
-		<description>Forecasted UV Index.</description>
-		<state readOnly="true" pattern="%.1f" />
 	</channel-type>
 
 </thing:thing-descriptions>

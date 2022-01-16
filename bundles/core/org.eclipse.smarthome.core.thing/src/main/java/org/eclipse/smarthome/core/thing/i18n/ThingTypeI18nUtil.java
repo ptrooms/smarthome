@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -113,13 +113,6 @@ public class ThingTypeI18nUtil {
             String defaultOptionLabel, @Nullable Locale locale) {
         String key = I18nUtil.stripConstantOr(defaultOptionLabel,
                 () -> inferChannelKey(channelTypeUID, "state.option." + optionValue));
-        return i18nProvider.getText(bundle, key, defaultOptionLabel, locale);
-    }
-
-    public @Nullable String getChannelCommandOption(Bundle bundle, ChannelTypeUID channelTypeUID, String optionValue,
-            String defaultOptionLabel, @Nullable Locale locale) {
-        String key = I18nUtil.stripConstantOr(defaultOptionLabel,
-                () -> inferChannelKey(channelTypeUID, "command.option." + optionValue));
         return i18nProvider.getText(bundle, key, defaultOptionLabel, locale);
     }
 

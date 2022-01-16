@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -23,9 +23,15 @@ import javax.measure.quantity.Temperature;
 import org.eclipse.smarthome.binding.homematic.internal.converter.type.AbstractTypeConverter;
 import org.eclipse.smarthome.binding.homematic.internal.converter.type.DecimalTypeConverter;
 import org.eclipse.smarthome.binding.homematic.internal.converter.type.QuantityTypeConverter;
+import org.eclipse.smarthome.binding.homematic.internal.model.HmChannel;
 import org.eclipse.smarthome.binding.homematic.internal.model.HmDatapoint;
+import org.eclipse.smarthome.binding.homematic.internal.model.HmDevice;
+import org.eclipse.smarthome.binding.homematic.internal.model.HmInterface;
+import org.eclipse.smarthome.binding.homematic.internal.model.HmParamsetType;
+import org.eclipse.smarthome.binding.homematic.internal.model.HmValueType;
 import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.QuantityType;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -34,15 +40,28 @@ import org.junit.Test;
  * @author Michael Reitler - Initial Contribution
  *
  */
-public class ConvertToBindingTest extends BaseConverterTest {
+public class ConvertToBindingTest {
+
+    private final HmDatapoint floatDp = new HmDatapoint("floatDp", "", HmValueType.FLOAT, null, false,
+            HmParamsetType.VALUES);
+    private final HmDatapoint integerDp = new HmDatapoint("integerDp", "", HmValueType.INTEGER, null, false,
+            HmParamsetType.VALUES);
+    private final HmDatapoint floatQuantityDp = new HmDatapoint("floatQuantityDp", "", HmValueType.FLOAT, null, false,
+            HmParamsetType.VALUES);
+    private final HmDatapoint integerQuantityDp = new HmDatapoint("floatIntegerDp", "", HmValueType.INTEGER, null,
+            false, HmParamsetType.VALUES);
+
+    @Before
+    public void setup() {
+        HmChannel stubChannel = new HmChannel("stubChannel", 0);
+        stubChannel.setDevice(new HmDevice("LEQ123456", HmInterface.RF, "HM-STUB-DEVICE", "", "", ""));
+        floatDp.setChannel(stubChannel);
+    }
 
     @Test
     public void testDecimalTypeConverter() throws ConverterException {
         Object convertedValue;
         TypeConverter<?> dTypeConverter = new DecimalTypeConverter();
-        
-        // the binding is backwards compatible, so clients may still use DecimalType, even if a unit is used
-        floatDp.setUnit("°C");
 
         convertedValue = dTypeConverter.convertToBinding(new DecimalType(99.9), floatDp);
         assertThat(convertedValue, is(99.9));
@@ -65,8 +84,6 @@ public class ConvertToBindingTest extends BaseConverterTest {
 
         convertedValue = qTypeConverter.convertToBinding(new QuantityType<Temperature>("99.9 °C"), floatQuantityDp);
         assertThat(convertedValue, is(99.9));
-        
-        floatQuantityDp.setUnit("Â°C"); // at some points datapoints come with such unit instead of °C
 
         convertedValue = qTypeConverter.convertToBinding(new QuantityType<Temperature>("451 °F"), floatQuantityDp);
         assertThat(convertedValue, is(232.777778));
@@ -86,17 +103,6 @@ public class ConvertToBindingTest extends BaseConverterTest {
 
         convertedValue = qTypeConverter.convertToBinding(new QuantityType<Dimensionless>("1"), integerQuantityDp);
         assertThat(convertedValue, is(100));
-
-        floatQuantityDp.setUnit("100%"); // not really a unit, but it occurs in homematic datapoints
-
-        convertedValue = qTypeConverter.convertToBinding(new QuantityType<Dimensionless>("99.0 %"), floatQuantityDp);
-        assertThat(convertedValue, is(0.99));
-
-        convertedValue = qTypeConverter.convertToBinding(new QuantityType<Dimensionless>("99.9 %"), floatQuantityDp);
-        assertThat(convertedValue, is(0.999));
-
-        convertedValue = qTypeConverter.convertToBinding(new QuantityType<Dimensionless>("1"), floatQuantityDp);
-        assertThat(convertedValue, is(1.0));
 
         integerQuantityDp.setUnit("Lux");
 

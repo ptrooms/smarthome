@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -14,8 +14,6 @@ package org.eclipse.smarthome.core.thing.type;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.core.types.CommandDescription;
-import org.eclipse.smarthome.core.types.CommandOption;
 import org.eclipse.smarthome.core.types.StateDescription;
 
 /**
@@ -42,14 +40,5 @@ public interface StateChannelTypeBuilder extends ChannelTypeBuilder<StateChannel
      * @return this builder
      */
     StateChannelTypeBuilder withAutoUpdatePolicy(@Nullable AutoUpdatePolicy autoUpdatePolicy);
-
-    /**
-     * Sets the list of {@link CommandOption}s for the ChannelType
-     *
-     * @param commandOptions the list of {@link CommandOption}s
-     * @return this builder
-     *
-     */
-    StateChannelTypeBuilder withCommandDescription(@Nullable CommandDescription commandDescription);
 
 }

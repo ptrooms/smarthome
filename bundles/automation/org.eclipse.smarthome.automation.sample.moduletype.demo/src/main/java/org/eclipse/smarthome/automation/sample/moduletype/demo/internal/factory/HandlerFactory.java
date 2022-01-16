@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -30,7 +30,6 @@ import org.eclipse.smarthome.automation.sample.moduletype.demo.internal.handlers
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author Plamen Peev - Initial contribution
  */
-@Component(immediate = true, service = ModuleHandlerFactory.class)
 public class HandlerFactory extends BaseModuleHandlerFactory implements ModuleHandlerFactory {
 
     /**

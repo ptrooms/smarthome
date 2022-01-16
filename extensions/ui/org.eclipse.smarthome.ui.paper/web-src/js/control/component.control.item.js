@@ -4,8 +4,7 @@
 
     angular.module('PaperUI.control').component('itemControl', {
         bindings : {
-            itemName : '<',
-            channel : '<'
+            itemName : '<'
         },
         templateUrl : 'partials/control/component.control.item.html',
         controller : ItemControlController

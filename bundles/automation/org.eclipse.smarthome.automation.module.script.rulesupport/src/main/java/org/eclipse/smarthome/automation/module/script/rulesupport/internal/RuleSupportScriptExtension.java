@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -46,8 +46,6 @@ import org.eclipse.smarthome.automation.type.ModuleType;
 import org.eclipse.smarthome.automation.type.TriggerType;
 import org.eclipse.smarthome.config.core.ConfigDescriptionParameter;
 import org.eclipse.smarthome.config.core.Configuration;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * This Script-Extension provides types and presets to support writing Rules using a ScriptEngine.
@@ -56,7 +54,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Simon Merschjohann
  *
  */
-@Component(immediate = true)
 public class RuleSupportScriptExtension implements ScriptExtensionProvider {
     private static final String RULE_SUPPORT = "RuleSupport";
     private static final String RULE_REGISTRY = "ruleRegistry";
@@ -113,50 +110,24 @@ public class RuleSupportScriptExtension implements ScriptExtensionProvider {
                         "ConfigDescriptionParameter", "ModuleType", "ActionType", "Visibility"));
     }
 
-    @Reference
     public void setRuleRegistry(RuleRegistry ruleRegistry) {
         this.ruleRegistry = ruleRegistry;
     }
 
-    public void unsetRuleRegistry(RuleRegistry ruleRegistry) {
-        this.ruleRegistry = null;
-    }
-
-    @Reference
     public void setRuleProvider(ScriptedRuleProvider ruleProvider) {
         this.ruleProvider = ruleProvider;
     }
 
-    public void unsetRuleProvider(ScriptedRuleProvider ruleProvider) {
-        this.ruleProvider = null;
-    }
-
-    @Reference
     public void setScriptedCustomModuleHandlerFactory(ScriptedCustomModuleHandlerFactory factory) {
         this.scriptedCustomModuleHandlerFactory = factory;
     }
 
-    public void unsetScriptedCustomModuleHandlerFactory(ScriptedCustomModuleHandlerFactory factory) {
-        this.scriptedCustomModuleHandlerFactory = null;
-    }
-
-    @Reference
     public void setScriptedCustomModuleTypeProvider(ScriptedCustomModuleTypeProvider scriptedCustomModuleTypeProvider) {
         this.scriptedCustomModuleTypeProvider = scriptedCustomModuleTypeProvider;
     }
 
-    public void unsetScriptedCustomModuleTypeProvider(
-            ScriptedCustomModuleTypeProvider scriptedCustomModuleTypeProvider) {
-        this.scriptedCustomModuleTypeProvider = null;
-    }
-
-    @Reference
     public void setScriptedPrivateModuleHandlerFactory(ScriptedPrivateModuleHandlerFactory factory) {
         this.scriptedPrivateModuleHandlerFactory = factory;
-    }
-
-    public void unsetScriptedPrivateModuleHandlerFactory(ScriptedPrivateModuleHandlerFactory factory) {
-        this.scriptedPrivateModuleHandlerFactory = null;
     }
 
     @Override

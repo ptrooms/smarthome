@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -19,7 +19,6 @@ import java.util.HashMap;
 import org.eclipse.smarthome.automation.Rule;
 import org.eclipse.smarthome.automation.RuleProvider;
 import org.eclipse.smarthome.core.common.registry.ProviderChangeListener;
-import org.osgi.service.component.annotations.Component;
 
 /**
  * This RuleProvider keeps Rules at added by scripts during the runtime. This ensures that Rules are not kept on reboot,
@@ -28,7 +27,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Simon Merschjohann
  *
  */
-@Component(immediate = true, service = { ScriptedRuleProvider.class, RuleProvider.class })
 public class ScriptedRuleProvider implements RuleProvider {
     private final Collection<ProviderChangeListener<Rule>> listeners = new ArrayList<ProviderChangeListener<Rule>>();
 

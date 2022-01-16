@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,7 +20,6 @@ import org.eclipse.smarthome.core.thing.type.ChannelKind;
 import org.eclipse.smarthome.core.thing.type.ChannelType;
 import org.eclipse.smarthome.core.thing.type.ChannelTypeUID;
 import org.eclipse.smarthome.core.thing.type.StateChannelTypeBuilder;
-import org.eclipse.smarthome.core.types.CommandDescription;
 import org.eclipse.smarthome.core.types.StateDescription;
 
 /**
@@ -36,7 +35,6 @@ public class StateChannelTypeBuilderImpl extends AbstractChannelTypeBuilder<Stat
     private final String itemType;
     private @Nullable StateDescription stateDescription;
     private @Nullable AutoUpdatePolicy autoUpdatePolicy;
-    private @Nullable CommandDescription commandDescription;
 
     public StateChannelTypeBuilderImpl(ChannelTypeUID channelTypeUID, String label, String itemType) {
         super(channelTypeUID, label);
@@ -61,20 +59,9 @@ public class StateChannelTypeBuilderImpl extends AbstractChannelTypeBuilder<Stat
     }
 
     @Override
-    public StateChannelTypeBuilder withCommandDescription(@Nullable CommandDescription commandDescription) {
-        this.commandDescription = commandDescription;
-        return this;
-    }
-
-    @Override
     public ChannelType build() {
-        if (stateDescription != null) {
-            return new ChannelType(channelTypeUID, advanced, itemType, ChannelKind.STATE, label, description, category,
-                    tags.isEmpty() ? null : tags, stateDescription, null, configDescriptionURI, autoUpdatePolicy);
-        }
-
-        return new ChannelType(channelTypeUID, advanced, itemType, label, description, category,
-                tags.isEmpty() ? null : tags, commandDescription, configDescriptionURI, autoUpdatePolicy);
+        return new ChannelType(channelTypeUID, advanced, itemType, ChannelKind.STATE, label, description, category,
+                tags.isEmpty() ? null : tags, stateDescription, null, configDescriptionURI, autoUpdatePolicy);
     }
 
 }

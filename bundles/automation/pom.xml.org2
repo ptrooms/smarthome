@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.smarthome</groupId>
+    <artifactId>bundles</artifactId>
+    <version>0.10.0.oh240</version>
+  </parent>
+  <groupId>org.eclipse.smarthome.bundles</groupId>
+  <artifactId>automation</artifactId>
+
+  <packaging>pom</packaging>
+
+  <name>Eclipse SmartHome Automation</name>
+
+  <modules>
+    <module>org.eclipse.smarthome.automation.api</module>
+    <module>org.eclipse.smarthome.automation.commands</module>
+    <module>org.eclipse.smarthome.automation.parser.gson</module>
+    <module>org.eclipse.smarthome.automation.providers</module>
+    <module>org.eclipse.smarthome.automation.provider.file</module>
+    <module>org.eclipse.smarthome.automation.core</module>
+    <module>org.eclipse.smarthome.automation.core.test</module>
+    <module>org.eclipse.smarthome.automation.sample.extension.json</module>
+    <module>org.eclipse.smarthome.automation.module.core</module>
+    <module>org.eclipse.smarthome.automation.module.core.test</module>
+    <module>org.eclipse.smarthome.automation.module.media</module>
+    <module>org.eclipse.smarthome.automation.module.script</module>
+    <module>org.eclipse.smarthome.automation.module.script.defaultscope</module>
+    <module>org.eclipse.smarthome.automation.module.script.defaultscope.test</module>
+    <module>org.eclipse.smarthome.automation.module.script.rulesupport</module>
+    <module>org.eclipse.smarthome.automation.module.script.test</module>
+    <module>org.eclipse.smarthome.automation.event.test</module>
+    <module>org.eclipse.smarthome.automation.integration.test</module>
+    <module>org.eclipse.smarthome.automation.sample.extension.java</module>
+    <module>org.eclipse.smarthome.automation.rest</module>
+    <module>org.eclipse.smarthome.automation.sample.rest.api</module>
+    <module>org.eclipse.smarthome.automation.sample.java.demo</module>
+    <module>org.eclipse.smarthome.automation.sample.json.demo</module>
+    <module>org.eclipse.smarthome.automation.sample.moduletype.demo</module>
+    <module>org.eclipse.smarthome.automation.thingsupport</module>
+  </modules>
+
+</project>
