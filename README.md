@@ -61,12 +61,17 @@ If you want to become a contributor to the project, please read about [contribut
 4\. Modifications
 =================
 
-In this version, we modified the FolderObserver code to aleviate from overloaded, simultaneously change refreshes.
+In this oh240 version, we modified the FolderObserver code to aleviate from overloaded, simultaneously change refreshes.
 When  the QNAP is configured via SMB, a single filesave may result in two(2) file(system) changes; (one for setting attributes and one for contents).
 Each detected change will normally result by openHAB into a refresh of its applicable internal configuration.
 As refreshes are also executed using multiple threads in parallelel, this may conflict and overload the QNAP. 
 
-With the modication, the second subsequent observed filechamnge will be ignored.
-Note: in case of directly modifying a configuration-fie  directly on the QNAP itself, a sconday file(save) may not
-result in a file-item. The exact behavior whether a file change is followed by a refresh, can be observed in the log file.
+With the modication, the second subsequent observed filechange will be ignored if the number of bytes int he file are the same.
+If an expected change does not result in a refresh, consider adding a byte.
+The exact behavior whether a file change is followed by a refresh, can be observed in the log file.
+
+18jan22 In addtion we found that org.eclipse.smarthome.automation.module.timer dees not compile
+due to in accessible or disfunctional org.eclipse.smarthome.core.scheduler. This means that
+we cannot use schedules inside rules. It appears that during the transition to 2.5.0 @openhab, this
+issue was flunked.
 
