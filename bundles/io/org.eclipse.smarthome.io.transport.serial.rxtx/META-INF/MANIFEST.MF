@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-ClassPath: .
 Bundle-Name: Eclipse SmartHome Serial Transport for RXTX
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-SymbolicName: org.eclipse.smarthome.io.transport.serial.rxtx;si
- ngleton:=true
+Bundle-SymbolicName: org.eclipse.smarthome.io.transport.serial.rxtx;singleton:=true
 Bundle-Vendor: Eclipse.org/SmartHome
 Bundle-Version: 0.10.0.oh240
 Import-Package: gnu.io,
@@ -12,7 +11,7 @@ Import-Package: gnu.io,
  org.eclipse.smarthome.io.transport.serial,
  org.slf4j 
 Service-Component: OSGI-INF/*.xml
-Provide-Capability: osgi.service;objectClass:List<String>="org.eclipse
- .smarthome.io.transport.serial.SerialPortProvider"
+Provide-Capability: osgi.service;objectClass:List<String>="org.eclipse.smarthome.io.transport.serial.SerialPortProvider"
 Automatic-Module-Name: org.eclipse.smarthome.io.transport.serial.rxtx
 Export-Package: org.eclipse.smarthome.io.transport.serial.rxtx
+Bundle-ClassPath: .

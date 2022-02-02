@@ -163,6 +163,10 @@
 <unit id="org.eclipse.jetty.xml" version="0.0.0"/>
 <repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.3.15.v20161220"/>
 </location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.neuronrobotics.nrjavaserial" version="0.0.0"/>
+<repository location="https://dl.bintray.com/openhab/p2/openhab-deps-repo/1.0.28"/>
+</location>
 <location path="${project_loc:targetplatform}/third-party" type="Directory"/>
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
         <unit id="org.eclipse.xtext.sdk.feature.group" version="2.14.0.v20180523-0937"/>

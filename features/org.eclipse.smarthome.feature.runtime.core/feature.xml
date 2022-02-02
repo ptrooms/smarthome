@@ -200,12 +200,30 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.smarthome.io.transport.serial"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
          id="org.eclipse.smarthome.io.transport.serial.javacomm"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+   <plugin
+         id="org.eclipse.smarthome.io.transport.serial.rxtx"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
+   <plugin
+         id="org.eclipse.smarthome.io.transport.serial.rxtx.rfc2217"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
    <plugin
          id="org.eclipse.smarthome.config.discovery.usbserial"
          download-size="0"
@@ -222,6 +240,12 @@
 
    <plugin
          id="org.eclipse.smarthome.config.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="org.eclipse.smarthome.config.serial"
          download-size="0"
          install-size="0"
          version="0.0.0"
