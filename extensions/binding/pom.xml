@@ -15,7 +15,14 @@
   <name>Eclipse SmartHome Bindings</name>
 
   <modules>
+<!-- disabled 
+    <module>org.eclipse.smarthome.binding.astro</module>
+    <module>org.eclipse.smarthome.binding.astro.test</module>  need to resolve 
+	/home/pafoxp/code-openhab/removed_oh240/bundles/automation/org.eclipse.smarthome.automation.module.timer
+-->
     <module>org.eclipse.smarthome.binding.bluetooth</module>
+    <module>org.eclipse.smarthome.binding.bluetooth.bluegiga</module>
+    <module>org.eclipse.smarthome.binding.bluetooth.bluegiga.test</module>
     <module>org.eclipse.smarthome.binding.bluetooth.bluez</module>
     <module>org.eclipse.smarthome.binding.bluetooth.blukii</module>
     <module>org.eclipse.smarthome.binding.bluetooth.test</module>
@@ -41,6 +48,7 @@
     <module>org.eclipse.smarthome.binding.onewire</module>
     <module>org.eclipse.smarthome.binding.onewire.test</module>
     <module>org.eclipse.smarthome.binding.openweathermap</module>
+    <module>org.eclipse.smarthome.binding.serialbutton</module>
     <module>org.eclipse.smarthome.binding.sonos</module>
     <module>org.eclipse.smarthome.binding.sonyaudio</module>
     <module>org.eclipse.smarthome.binding.tradfri</module>

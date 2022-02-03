@@ -21,7 +21,7 @@
     <module>persistence</module>
     <module>transform</module>
     <module>ui</module>
-    <module>voice</module>
+    <!-- <module>voice</module> --> <!-- giving org.eclipse.equinox.p2.core.ProvisionException: offline --> 
   </modules>
 
   <dependencies>
