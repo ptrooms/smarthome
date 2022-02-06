@@ -1,6 +1,9 @@
 /**
  * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
+ * 06feb22 ptro added isPostOnly for usage in ChannelState.java
+ * 06feb22 ptro added import import org.eclipse.jdt.annotation.Nullable; to allow @Nullable
+ *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -19,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.binding.mqtt.generic.internal.handler.GenericThingHandler;
 import org.eclipse.smarthome.core.library.CoreItemFactory;
 import org.eclipse.smarthome.core.library.types.DecimalType;
@@ -117,6 +121,16 @@ public abstract class Value {
      * @exception IllegalArgumentException Thrown if for example a text is assigned to a number type.
      */
     public abstract void update(Command command) throws IllegalArgumentException;
+    /**
+     * Returns the given command if it cannot be handled by {@link #update(Command)}
+     * or {@link #update(byte[])} and need to be posted straight to the framework instead.
+     * Returns null otherwise.
+     *
+     * @param command The command to decide about
+     */
+    public @Nullable Command isPostOnly(Command command) {
+        return null;
+    }
 
     /**
      * Updates the internal value state with the given binary payload.
