@@ -13,6 +13,19 @@
 /** -----------------------------------------------------------------------
  * 10jan22 - modified to monitor files
   ------------------------------------------------------------------------*/
+/* Doc for development
+	file class https://www.geeksforgeeks.org/file-class-in-java/
+	watch: 	https://docs.oracle.com/javase/7/docs/api/java/nio/file/WatchService.html
+			/home/pafoxp/code-openhab/ptrooms_smarthome/bundles/core/org.eclipse.smarthome.core/
+			src/main/java/org/eclipse/smarthome/core/service/AbstractWatchService.java
+
+
+using         super(ConfigConstants.getConfigFolder());  
+			--> // .../bundles/config/org.eclipse.smarthome.config.core/
+					src/main/java/org/eclipse/smarthome/config/core/ConfigConstants.java
+
+*/
+
 package org.eclipse.smarthome.model.core.internal.folder;
 
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -65,7 +78,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 public class FolderObserver extends AbstractWatchService {
 
     public FolderObserver() {
-        super(ConfigConstants.getConfigFolder());
+        super(ConfigConstants.getConfigFolder()); 
     }
 
     /* the model repository is provided as a service */
