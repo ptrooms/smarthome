@@ -24,20 +24,26 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+//   import java.util.logging.Logger;   // 16mar24 ptro: removed to fix type error
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.config.core.Configuration;
-import org.eclipse.smarthome.config.core.ConfigurationDeserializer;
-import org.eclipse.smarthome.core.storage.Storage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;			// 16mar24 ptro: fix ava.util.logging.Logger collides
+// import java.util.logging.Level;
+// import java.util.logging.Logger;
+
+
+import javax.security.auth.login.Configuration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.smarthome.config.core.ConfigurationDeserializer;
+import org.eclipse.smarthome.core.storage.Storage;
+import org.slf4j.LoggerFactory;
 
 /**
  * The JsonStorage is concrete implementation of the {@link Storage} interface.

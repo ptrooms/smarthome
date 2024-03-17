@@ -1,4 +1,6 @@
 target/
+target1/
+target2/
 src-gen/
 xtend-gen/
 bin/
@@ -9,9 +11,16 @@ bin/
 *.iml
 .idea/
 
+# ignore vscode 08mar24
+.vscode/
+.classpath
+.settings
+*.code-workspace
+.project
 *.deleted
 *.org
 oh240_*.txt
+
 
 distribution/smarthome/logs/*.log
 distribution/smarthome/*.zip

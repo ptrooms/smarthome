@@ -45,7 +45,7 @@ import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.ui.chart.ChartProvider;
 import org.eclipse.smarthome.ui.internal.chart.ChartServlet;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
-import org.knowm.xchart.Chart;
+import org.knowm.xchart.Chart;			// https://github.com/knowm/XChart
 import org.knowm.xchart.ChartBuilder;
 import org.knowm.xchart.Series;
 import org.knowm.xchart.SeriesMarker;
