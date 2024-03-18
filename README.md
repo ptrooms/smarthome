@@ -131,7 +131,7 @@ addon version1:
 - org.openhab.io.caldav: Fix BETWEEN (EventUtils)
 - MochadX10CommandParser.java: fix/enhance X10 PL & RF
 
-addon version1:
+addon version2:
 - org.openhab.binding.network : display dhcp'ed connection to ease visual detection
 - org.openhab.binding.avmfritz2: added to solved singleton failures that else would block other jetty httpclients
 - org.openhab.binding.tibber:  @NonNullByDefault  fix null-hell (TibberHandler.java)
