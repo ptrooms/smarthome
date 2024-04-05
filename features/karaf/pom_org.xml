@@ -17,7 +17,7 @@
     <module>esh-tp</module>
     <module>esh-core</module>
     <module>esh-ext</module>
-    <!-- <module>verify</module> -->
+    <module>verify</module>
   </modules>
 
   <repositories>
