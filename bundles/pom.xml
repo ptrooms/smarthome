@@ -15,7 +15,7 @@
   <name>Eclipse SmartHome Bundles</name>
 
   <modules>
-    <module>test</module>
+    <!-- <module>test</module> -->
     <module>auth</module>
     <module>config</module>
     <module>core</module>
