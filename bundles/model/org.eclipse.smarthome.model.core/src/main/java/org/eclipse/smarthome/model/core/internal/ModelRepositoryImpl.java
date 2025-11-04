@@ -27,9 +27,9 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.IOUtils;       // https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/IOUtils.html
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.URI;     // datalayer https://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/resource/package-summary.html#details
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.smarthome.model.core.EventType;
 import org.eclipse.smarthome.model.core.ModelRepository;
 import org.eclipse.smarthome.model.core.ModelRepositoryChangeListener;
-import org.eclipse.xtext.resource.SynchronizedXtextResourceSet;
+import org.eclipse.xtext.resource.SynchronizedXtextResourceSet;     // language https://eclipse.dev/Xtext/  --> framework programming languages
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.osgi.service.component.annotations.Component;
@@ -86,13 +86,18 @@ public class ModelRepositoryImpl implements ModelRepository {
     }
 
     @Override
+    /*
+        name = filename
+        inputstream = data
+    */
     public boolean addOrRefreshModel(String name, final InputStream originalInputStream) {
         Resource resource = null;
+        // try statement allows you to define a block of code to be tested for errors while it is being executed.
         try {
             InputStream inputStream = null;
             if (originalInputStream != null) {
-                byte[] bytes = IOUtils.toByteArray(originalInputStream);
-                String validationResult = validateModel(name, new ByteArrayInputStream(bytes));
+                byte[] bytes = IOUtils.toByteArray(originalInputStream);    // Gets the contents of a resource as a byte array.
+                String validationResult = validateModel(name, new ByteArrayInputStream(bytes)); // internal buffer containing bytes read from stream.
                 if (validationResult != null) {
                     logger.warn("Configuration model '{}' has errors, therefore ignoring it: {}", name,
                             validationResult);
@@ -102,6 +107,7 @@ public class ModelRepositoryImpl implements ModelRepository {
                 inputStream = new ByteArrayInputStream(bytes);
             }
             resource = getResource(name);
+                // --> createURI(name) Represents a Uniform Resource Identifier (URI) reference. https://docs.oracle.com/javase/8/docs/api/java/net/URI.html
             if (resource == null) {
                 synchronized (resourceSet) {
                     // try again to retrieve the resource as it might have been created by now
@@ -293,6 +299,7 @@ public class ModelRepositoryImpl implements ModelRepository {
                 }
             }
         } finally {
+            // included from 
             resourceSet.getResources().remove(resource);
         }
         return null;

@@ -28,7 +28,10 @@ using         super(ConfigConstants.getConfigFolder());
 
 package org.eclipse.smarthome.model.core.internal.folder;
 
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -269,6 +272,8 @@ public class FolderObserver extends AbstractWatchService {
 									nameSizeMap.put(file.getName(), inputStream.available());		// 17jan22 ptro: Filename map with number of bytes  
                                     logger.debug("Model/ptro file {} of {} bytes added to RefreshModel.", file.getName(), nameSizeMap.get(file.getName()) ); // 17jan22 ptro eliminate duplicates
                                     modelRepo.addOrRefreshModel(file.getName(), inputStream);
+                                    // file /home/pafoxp/code-openhab/ptrooms_smarthome/bundles/model/org.eclipse.smarthome.model.core
+                                    //          /src/main/java/org/eclipse/smarthome/model/core/internal/ModelRepositoryImpl.java
                                 }
                             } catch (IOException e) {
                                 logger.warn("Error while opening file during update: {}", file.getAbsolutePath());

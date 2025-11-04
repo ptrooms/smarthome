@@ -585,7 +585,7 @@
         </plugins>
       </build>
     </profile>
-    <!-- static code analysis profiles -->
+    <!-- static code analysis profiles ignore via -DskipChecks -->
     <profile>
       <id>skip-check</id>
       <activation>
