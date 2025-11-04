@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -45,7 +45,7 @@ import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.ui.chart.ChartProvider;
 import org.eclipse.smarthome.ui.internal.chart.ChartServlet;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
-import org.knowm.xchart.Chart;
+import org.knowm.xchart.Chart;			// https://github.com/knowm/XChart
 import org.knowm.xchart.ChartBuilder;
 import org.knowm.xchart.Series;
 import org.knowm.xchart.SeriesMarker;
@@ -159,7 +159,10 @@ public class DefaultChartProvider implements ChartProvider {
         }
 
         // Create Chart
-        Chart chart = new ChartBuilder().width(width).height(height).build();
+        // 04nov25 ptrooms add name
+        // Chart chart = new ChartBuilder().width(width).height(height).build();
+        // Chart chart = new ChartBuilder().width(width).height(height).title(getClass().getSimpleName()).build();
+        Chart chart = new ChartBuilder().width(width).height(height).title(items).build();
 
         // Define the time axis - the defaults are not very nice
         long period = (endTime.getTime() - startTime.getTime()) / 1000;
@@ -196,13 +199,34 @@ public class DefaultChartProvider implements ChartProvider {
         chart.getStyleManager().setLegendBackgroundColor(chartTheme.getLegendBackgroundColor());
         chart.getStyleManager().setLegendFont(chartTheme.getLegendFont(dpi));
         chart.getStyleManager().setLegendSeriesLineLength(chartTheme.getLegendSeriesLineLength(dpi));
+        
+        // set logscale, note: negative values are by definition not supported
+        if (dpi == 123) chart.getStyleManager().setYAxisLogarithmic(true);      // activate log
+        // if (dpi == 123) chart.getStyleManager().setYAxisMin(-10);            // test behavior, negativ, no graph
 
         // Loop through all the items
         if (items != null) {
             String[] itemNames = items.split(",");
             for (String itemName : itemNames) {
-                Item item = itemUIRegistry.getItem(itemName);
-                if (addItem(chart, persistenceService, startTime, endTime, item, seriesCounter, chartTheme, dpi)) {
+                String itemString = itemName;
+                double itemZoom = 0;
+                double itemAdd  = 0;
+                if (itemName != null && 
+                    !(itemName.contains("*") && itemName.contains("-")) &&
+                     (itemName.contains("*") || itemName.contains("-")) ) {        // Not XOR , either A or B
+                    if (itemName.contains("*")) itemString = itemName.substring(0, itemName.indexOf('*'));
+                    if (itemName.contains("-")) itemString = itemName.substring(0, itemName.indexOf('-'));
+
+                    if (itemName.contains("*") && itemName.indexOf('*') < (itemName.length()-1) ) {
+                        itemZoom = Double.valueOf(itemName.substring(itemName.indexOf('*')+1,itemName.length()));
+                    }
+                    if (itemName.contains("-") && itemName.indexOf('-') < (itemName.length()-1) ) {
+                        itemAdd = Double.valueOf(itemName.substring(itemName.indexOf('-')+1,itemName.length()))*-1;
+                    }
+
+                }
+                Item item = itemUIRegistry.getItem(itemString);
+                if (addItem(chart, persistenceService, startTime, endTime, item, seriesCounter, chartTheme, dpi, itemZoom, itemAdd)) {
                     seriesCounter++;
                 }
             }
@@ -212,12 +236,29 @@ public class DefaultChartProvider implements ChartProvider {
         if (groups != null) {
             String[] groupNames = groups.split(",");
             for (String groupName : groupNames) {
-                Item item = itemUIRegistry.getItem(groupName);
+                double itemZoom = 0;
+                double itemAdd  = 0;
+                String groupString = groupName;
+                if (groupString != null && 
+                    !(groupString.contains("*") && groupString.contains("*")) &&
+                     (groupString.contains("*") || groupString.contains("*")) ) {
+                    if (groupString.contains("*")) groupString = groupString.substring(0, groupString.indexOf('*'));
+                    if (groupString.contains("-")) groupString = groupString.substring(0, groupString.indexOf('-'));
+
+                    if (groupName.indexOf('*') < (groupName.length()-1) ) {
+                        itemZoom = Double.valueOf(groupName.substring(groupName.indexOf('*')+1,groupName.length()));
+                    }
+                    if (groupName.indexOf('-') < (groupName.length()-1) ) {
+                        itemAdd = Double.valueOf(groupName.substring(groupName.indexOf('-')+1,groupName.length()))*-1;
+                    }
+                }
+
+                Item item = itemUIRegistry.getItem(groupString);
                 if (item instanceof GroupItem) {
                     GroupItem groupItem = (GroupItem) item;
                     for (Item member : groupItem.getMembers()) {
                         if (addItem(chart, persistenceService, startTime, endTime, member, seriesCounter, chartTheme,
-                                dpi)) {
+                                dpi, itemZoom, itemAdd) ) {
                             seriesCounter++;
                         }
                     }
@@ -290,9 +331,9 @@ public class DefaultChartProvider implements ChartProvider {
             return 0;
         }
     }
-
+    
     boolean addItem(Chart chart, QueryablePersistenceService service, Date timeBegin, Date timeEnd, Item item,
-            int seriesCounter, ChartTheme chartTheme, int dpi) {
+            int seriesCounter, ChartTheme chartTheme, int dpi, double itemZoom, double itemAdd ) {
         Color color = chartTheme.getLineColor(seriesCounter);
 
         // Get the item label
@@ -332,7 +373,22 @@ public class DefaultChartProvider implements ChartProvider {
 
             state = historicItem.getState();
             xData.add(timeBegin);
-            yData.add(convertData(state));
+            // yData.add(convertData(state)); // Double.valueOf(itemZoom)
+            // ptrooms 02nov25, check if we can influence value by label
+            if (itemZoom != 0) {
+                yData.add(convertData(state)*Double.valueOf(itemZoom));
+            } else if (itemAdd != 0) {
+                yData.add(convertData(state)+Double.valueOf(itemAdd));
+            } else if (label.contains("*1") && (state instanceof DecimalType)) {
+                // yData.add((((DecimalType) state).doubleValue()));
+                yData.add(convertData(state)*Double.valueOf(1));
+            } else if (label.contains("*2") && (state instanceof DecimalType)) {
+                yData.add(convertData(state)*Double.valueOf(2));
+            } else if (label.contains("*3") && (state instanceof DecimalType)) {
+                yData.add(convertData(state)*Double.valueOf(3));
+            } else {
+                yData.add(convertData(state));
+            }
         }
 
         // Now, get all the data between the start and end time
@@ -356,18 +412,62 @@ public class DefaultChartProvider implements ChartProvider {
                 cal.setTime(historicItem.getTimestamp());
                 cal.add(Calendar.MILLISECOND, -1);
                 xData.add(cal.getTime());
-                yData.add(convertData(state));
+                // yData.add(convertData(state));
+                // ptrooms 02nov25, check if we can influence value by label                
+                if (itemZoom != 0) {
+                    yData.add(convertData(state)*Double.valueOf(itemZoom));
+                } else if (itemAdd != 0) {
+                    yData.add(convertData(state)+Double.valueOf(itemAdd));
+                } else if (label.contains("*1") && (state instanceof DecimalType)) {
+                    // yData.add((((DecimalType) state).doubleValue()));
+                    yData.add(convertData(state)*Double.valueOf(1));
+                } else if (label.contains("*2") && (state instanceof DecimalType)) {
+                    yData.add(convertData(state)*Double.valueOf(2));
+                } else if (label.contains("*3") && (state instanceof DecimalType)) {
+                    yData.add(convertData(state)*Double.valueOf(3));
+                } else {
+                    yData.add(convertData(state));
+                }
             }
 
             state = historicItem.getState();
             xData.add(historicItem.getTimestamp());
-            yData.add(convertData(state));
+            // yData.add(convertData(state));
+            // ptrooms 02nov25, check if we can influence value by label
+            if (itemZoom != 0) {
+                yData.add(convertData(state)*Double.valueOf(itemZoom));
+            } else if (itemAdd != 0) {
+                yData.add(convertData(state)+Double.valueOf(itemAdd));
+            } else if (label.contains("*1") && (state instanceof DecimalType)) {
+                // yData.add((((DecimalType) state).doubleValue()));
+                yData.add(convertData(state)*Double.valueOf(1));
+            } else if (label.contains("*2") && (state instanceof DecimalType)) {
+                yData.add(convertData(state)*Double.valueOf(2));
+            } else if (label.contains("*3") && (state instanceof DecimalType)) {
+                yData.add(convertData(state)*Double.valueOf(3));
+            } else {
+                yData.add(convertData(state));
+            }
         }
 
         // Lastly, add the final state at the endtime
         if (state != null) {
             xData.add(timeEnd);
-            yData.add(convertData(state));
+            // ptrooms 02nov25, check if we can influence value by label
+            if (itemZoom != 0) {
+                yData.add(convertData(state)*Double.valueOf(itemZoom));
+            } else if (itemAdd != 0) {
+                yData.add(convertData(state)+Double.valueOf(itemAdd));
+            } else if (label.contains("*1") && (state instanceof DecimalType)) {
+                // yData.add((((DecimalType) state).doubleValue()));
+                yData.add(convertData(state)*Double.valueOf(1));
+            } else if (label.contains("*2") && (state instanceof DecimalType)) {
+                yData.add(convertData(state)*Double.valueOf(2));
+            } else if (label.contains("*3") && (state instanceof DecimalType)) {
+                yData.add(convertData(state)*Double.valueOf(3));
+            } else {
+                yData.add(convertData(state));
+            }
         }
 
         // Add the new series to the chart - only if there's data elements to display
@@ -381,7 +481,7 @@ public class DefaultChartProvider implements ChartProvider {
             xData.add(xData.iterator().next());
             yData.add(yData.iterator().next());
         }
-
+        
         Series series = chart.addSeries(label, xData, yData);
         float lineWidth = (float) chartTheme.getLineWidth(dpi);
         series.setLineStyle(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
