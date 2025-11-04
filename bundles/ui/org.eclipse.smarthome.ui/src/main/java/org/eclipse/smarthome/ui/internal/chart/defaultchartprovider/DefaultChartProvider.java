@@ -9,6 +9,7 @@
  * http://www.eclipse.org/legal/epl-2.0
  *
  * SPDX-License-Identifier: EPL-2.0
+ * 04nov25 ptrooms: support mulitplication & addition to values using item/groupname+- and logaritme with dpi=123
  */
 package org.eclipse.smarthome.ui.internal.chart.defaultchartprovider;
 
