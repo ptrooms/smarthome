@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" output="target/classes" path="src/main/resources"/>
 	<classpathentry kind="src" output="target/classes" path="src/main/java"/>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources"/>
-	<classpathentry exported="true" kind="lib" path="lib/xchart-2.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/smarthome/model/org.eclipse.smarthome.model.core/0.11.0-SNAPSHOT/org.eclipse.smarthome.model.core-0.11.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/smarthome/core/org.eclipse.smarthome.core/0.10.0.oh240/org.eclipse.smarthome.core-0.10.0.oh240.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/apache/felix/org.apache.felix.http.jetty/4.0.14/org.apache.felix.http.jetty-4.0.14.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/osgi/org.osgi.compendium/4.3.1/org.osgi.compendium-4.3.1.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/smarthome/io/org.eclipse.smarthome.io.http/0.10.0.oh240/org.eclipse.smarthome.io.http-0.10.0.oh240.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/osgi/org.osgi.framework/1.8.0/org.osgi.framework-1.8.0.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/smarthome/core/org.eclipse.smarthome.core.transform/0.10.0.oh240/org.eclipse.smarthome.core.transform-0.10.0.oh240.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/jetty/jetty-proxy/9.4.20.v20190813/jetty-proxy-9.4.20.v20190813.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/jetty/jetty-util/9.3.15.v20161220/jetty-util-9.3.15.v20161220.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/.m2/repository/org/eclipse/jetty/jetty-client/9.4.20.v20190813/jetty-client-9.4.20.v20190813.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.eclipse.smarthome.core-0.10.0.oh240.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/unit-api-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.eclipse.emf.common-2.12.0.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.eclipse.emf.ecore-2.12.0.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.eclipse.jdt.annotation-2.2.100.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.eclipse.smarthome.model.sitemap-0.10.0.oh240.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/bundles/ui/org.eclipse.smarthome.ui/lib/xchart-2.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/log4j-1.2-api-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/log4j-api-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/log4j-core-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.eclipse.smarthome.core.persistence-0.10.0.oh240.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.osgi.service.component.annotations-1.3.0.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="/home/pafoxp/code-openhab/ptrooms_smarthome/libfix/org.apache.commons.lang-2.6.0.v201404270220.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

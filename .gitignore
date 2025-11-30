@@ -15,6 +15,7 @@ bin/
 # ignore vscode 08mar24
 .vscode/
 .classpath
+
 .settings
 *.code-workspace
 .project
@@ -22,6 +23,10 @@ bin/
 *.org
 oh240_*.txt
 
+# supress deverlopment tests
+.classpath.*
+libfix/
+*.sav*
 
 distribution/smarthome/logs/*.log
 distribution/smarthome/*.zip

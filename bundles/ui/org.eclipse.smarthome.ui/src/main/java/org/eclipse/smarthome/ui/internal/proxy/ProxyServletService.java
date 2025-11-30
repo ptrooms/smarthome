@@ -33,7 +33,7 @@ import org.eclipse.jetty.util.B64Code;
 import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.smarthome.core.library.types.StringType;
 import org.eclipse.smarthome.core.types.State;
-import org.eclipse.smarthome.model.core.ModelRepository;
+import org.eclipse.smarthome.model.core.ModelRepository;    // --> /home/pafoxp/.m2/repository/org/eclipse/smarthome/model/org.eclipse.smarthome.model.core/0.11.0-SNAPSHOT/org.eclipse.smarthome.model.core-0.11.0-SNAPSHOT.jar
 import org.eclipse.smarthome.model.sitemap.Image;
 import org.eclipse.smarthome.model.sitemap.Sitemap;
 import org.eclipse.smarthome.model.sitemap.Video;

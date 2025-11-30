@@ -1,4 +1,5 @@
 /**
+ *  test
  * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
@@ -8,6 +9,9 @@
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0
  *
+ * 14nov25 - added 2Y & 4Y periods
+ *  config/scale is from xml file:///home/pafoxp/code-openhab/ptrooms_smarthome/bundles/ui/org.eclipse.smarthome.ui/ESH-INF/config/config.xml
+ * 
  * SPDX-License-Identifier: EPL-2.0
  */
 package org.eclipse.smarthome.ui.internal.chart;
@@ -51,14 +55,19 @@ import org.osgi.service.http.HttpService;
  * <ul>
  * <li>w: width in pixels of image to generate</li>
  * <li>h: height in pixels of image to generate</li>
- * <li>period: the time span for the x-axis. Value can be h,4h,8h,12h,D,3D,W,2W,M,2M,4M,Y</li>
+ * <li>period: the time span for the x-axis. Value can be h,4h,8h,12h,D,3D,W,2W,M,2M,4M,Y,2Y,4Y</li>
  * <li>items: A comma separated list of item names to display</li>
  * <li>groups: A comma separated list of group names, whose members should be displayed</li>
- * <li>service: The persistence service name. If not supplied the first service found will be used.</li>
- * <li>theme: The chart theme to use. If not supplied the chart provider uses a default theme.</li>
- * <li>dpi: The DPI (dots per inch) value. If not supplied, a default is used.</code></li>
+ * added/extended functions on fields:
+ * <li>items/groups are number to allow duplicate series.
  * <li>legend: Show the legend? If not supplied, the ChartProvider should make his own decision.</li>
- * </ul>
+ * <li>item/group names: kan be superseesed by ^n.nn of *n.nn to add or multiply  Y-axis-value</li>
+ * <li>item/group names: kan be preceded by / (slash) to pain area, and/or < or > to shift x-axis-value  back or forward one day.</li>
+  * <li>service: The persistence service name. If not supplied the first service found will be used.</li>
+ * <li>theme: The chart theme to use. If not supplied the chart provider uses a default theme.</li>
+ * <li>dpi: The DPI (dots per inch) value. If not supplied, a default is used.</li>
+ * <li>dpi: 123 will render a log chart </code></li>
+  * </ul>
  *
  * @author Chris Jackson
  * @author Holger Reichert - Support for themes, DPI, legend hiding
@@ -99,6 +108,8 @@ public class ChartServlet extends SmartHomeServlet {
         PERIODS.put("2M", 5184000000L);
         PERIODS.put("4M", 10368000000L);
         PERIODS.put("Y", 31536000000L);
+        PERIODS.put("2Y",  63072000000L);       // ptrooms: 11nov25 add this interval
+        PERIODS.put("4Y", 126144000000L);       // ptrooms: 11nov25 add this interval
     }
 
     protected static Map<String, ChartProvider> chartProviders = new ConcurrentHashMap<String, ChartProvider>();
