@@ -62,6 +62,7 @@ import org.eclipse.smarthome.ui.items.ItemUIRegistry;       // file:///home/pafo
 import org.knowm.xchart.Chart;			// https://github.com/knowm/XChart
 import org.knowm.xchart.ChartBuilder;
 import org.knowm.xchart.Series;
+import org.knowm.xchart.SeriesLineStyle;
 import org.knowm.xchart.SeriesMarker;
 // import org.apache.logging.log4j.Logger.*;
 
@@ -100,10 +101,14 @@ public class DefaultChartProvider implements ChartProvider {
     public static final int DPI_DEFAULT = 96;
 
 
-    private String numericString  = "01234567890.-";  // ptrooms: used to check for numerics using operators
+    private String numericString  = "01234567890-.";  // ptrooms: used to check for numerics using operators
     private double itemZoom = 0;    // used in calculations multiply
+    /* define Y-axsis addition  */
     private double itemAdd  = 0;    // used in calculation adding value
-    private boolean itemArea  = false;  // line chart, else area
+    private int itemArea     = -1;  // line chart, else area with color 0-11
+    private int itemLineType = -1;  // Xchart SeriesLineStyle : 0/NONE, 1/SOLID, 1/DASH_DOT, 2/DASH_DASH, 3/DOT_DOT 
+    private int itemMarker   = -1;  // Xchart SeriesMarker :     -1/NONE, 0/CIRCLE, 1/DIAMOND, 2/SQUARE, 3/4 TRIANGLE_DOWN/UP
+    private int itemColor    = -1;  // Xchart SeriesColo   : default, 0-11/BLUE,GREEN,RED,YELLOW,MAGENTA,PINK,LIGHT_GREY, CYAN, BROWN,BLACK
     private long itemTime  = 0L;        // shifttime
 
     @Reference              // Annotation Type Referenc, form of metadata 
@@ -244,13 +249,17 @@ public class DefaultChartProvider implements ChartProvider {
             String[] itemNames = items.split(",");
             for (String itemName : itemNames) {
                 itemTime  = 0L;
-                itemArea  = false;                         // line chart, else area
+                itemArea  = -1;                         // line chart, else area
                 itemZoom  = 0;
                 itemAdd   = 0;
+                itemLineType = -1;   // solid line
+                itemMarker   = -1;     // no markers
+                itemColor    = -1;   //  automatic
+
                 String itemString = processFormula(itemName);
                 Item item = itemUIRegistry.getItem(itemString);
-                if (addItem(chart, persistenceService, startTime, 
-                        endTime, item, seriesCounter, chartTheme, dpi, itemZoom, itemAdd, itemTime, itemArea)) {
+                if (addItem(chart, persistenceService, startTime, endTime, item, seriesCounter, chartTheme, 
+                        dpi, itemZoom, itemAdd, itemTime, itemArea, itemLineType, itemMarker, itemColor)) {
                     seriesCounter++;
                 }
             }
@@ -260,19 +269,22 @@ public class DefaultChartProvider implements ChartProvider {
             logger.debug("Processing groups: {}", groups);
             String[] groupNames = groups.split(",");
             for (String groupName : groupNames) {
-                itemZoom = 0;
-                itemAdd  = 0;
-                itemTime  = 0L;
-                itemArea  = false;
-                String groupString = processFormula(groupName);
+                itemZoom = 0;       // no mulitplication
+                itemAdd  = 0;       // no addition
+                itemTime  = 0L;     // shifttime
+                itemArea  = -1;  // no area
+                itemLineType = -1;   // solid line
+                itemMarker   = -1;   // no markers
+                itemColor    = -1;   //  automatic                String groupString = processFormula(groupName);
+                String itemString = processFormula(groupName);
+                Item item = itemUIRegistry.getItem(itemString);
 
-                Item item = itemUIRegistry.getItem(groupString);
                 if (item instanceof GroupItem) {
                     GroupItem groupItem = (GroupItem) item;
                     for (Item member : groupItem.getMembers()) {
-                        logger.trace("Getting group: {}, item: {}", groupString, member);
+                        logger.trace("Getting group: {}, item: {}", itemString, member);
                         if (addItem(chart, persistenceService, startTime, endTime, member, seriesCounter, chartTheme,
-                                dpi, itemZoom, itemAdd, itemTime, itemArea) ) {
+                                dpi, itemZoom, itemAdd, itemTime, itemArea, itemLineType, itemMarker, itemColor) ) {
                             seriesCounter++;
                         }
                     }
@@ -349,8 +361,12 @@ public class DefaultChartProvider implements ChartProvider {
     }
     
     boolean addItem(Chart chart, QueryablePersistenceService service, Date timeBegin, Date timeEnd, Item item,
-            int seriesCounter, ChartTheme chartTheme, int dpi, double itemZoom, double itemAdd, long itemTime, boolean itemArea ) {
+            int seriesCounter, ChartTheme chartTheme, int dpi, 
+            double itemZoom, double itemAdd, long itemTime, 
+            int itemArea, int itemLineType, int itemMarker, int itemColor) {
+                
         Color color = chartTheme.getLineColor(seriesCounter);
+        if  (itemColor >= 0) color = chartTheme.getLineColor(itemColor);    // see Xchart SeriesColor 0/BLUE-11/BLACK
 
         // Get the item label
         String label = null;
@@ -475,17 +491,32 @@ public class DefaultChartProvider implements ChartProvider {
             yData.add(yData.iterator().next());
         }
         
-/* tbd
- *      series.setChartXYSeriesRenderStyle(series.XYSeriesRenderStyle.Area); // https://knowm.org/open-source/xchart/xchart-example-code/
- * 
- */
+        /* tbd
+        *      series.setChartXYSeriesRenderStyle(series.XYSeriesRenderStyle.Area); // https://knowm.org/open-source/xchart/xchart-example-code/
+        * 
+        */
 
         Series series = chart.addSeries( (String) (seriesCounter+"="+label), xData, yData);
         float lineWidth = (float) chartTheme.getLineWidth(dpi);
-        series.setLineStyle(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+        
+        // series.setLineStyle(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));        
+        series.setLineStyle(SeriesLineStyle.SOLID);        
+        if      (itemLineType ==  0) series.setLineStyle(SeriesLineStyle.NONE);
+        else if (itemLineType ==  1) series.setLineStyle(SeriesLineStyle.DASH_DOT);
+        else if (itemLineType ==  2) series.setLineStyle(SeriesLineStyle.DASH_DASH);
+        else if (itemLineType ==  3) series.setLineStyle(SeriesLineStyle.DOT_DOT);
+  
         series.setMarker(SeriesMarker.NONE);
+        if      (itemMarker   ==  0) series.setMarker(SeriesMarker.CIRCLE);
+        else if (itemMarker   ==  1) series.setMarker(SeriesMarker.DIAMOND);
+        else if (itemMarker   ==  2) series.setMarker(SeriesMarker.SQUARE);
+        else if (itemMarker   ==  3) series.setMarker(SeriesMarker.TRIANGLE_DOWN);
+        else if (itemMarker   ==  4) series.setMarker(SeriesMarker.TRIANGLE_UP);
+
         series.setLineColor(color);
-        if (itemArea == true) series.setSeriesType(Series.SeriesType.Area);     // see file:///home/pafoxp/code-xchart/xchart-demo/src/main/java/org/knowm/xchart/demo/charts/area/AreaLineChart03.java
+
+
+        if (itemArea>= 0) series.setSeriesType(Series.SeriesType.Area);     // see file:///home/pafoxp/code-xchart/xchart-demo/src/main/java/org/knowm/xchart/demo/charts/area/AreaLineChart03.java
 
 
         // If the start value is below the median, then count legend position down
@@ -508,9 +539,41 @@ public class DefaultChartProvider implements ChartProvider {
     String processFormula(String inputString) {
                 // itemString = itemString.replace(">", "");
         String itemString = inputString;
+
+        while (itemString.length() > 0 &&                               // set linetype
+                itemString.indexOf('-') == 0 ) {   // starts with "-"
+                itemLineType++;
+                if (itemString.length() > 0) itemString = itemString.substring(1);      
+                else itemString = ""; 
+        }
+
+        while (itemString.length() > 0 &&                               // set markertype
+                itemString.indexOf('.') == 0 ) {   // starts with "-"
+                itemMarker++;
+                if (itemString.length() > 0) itemString = itemString.substring(1);      
+                else itemString = ""; 
+        }
+
+        while (itemString.length() > 0 &&                                  // set Color
+                numericString.indexOf(itemString.substring(0,1)) >= 0  &&
+                numericString.indexOf(itemString.substring(0,1)) <= 9 ) {
+                if (itemString.indexOf('0') == 0 ) itemColor++;                 // increase the color
+                else itemColor = Integer.valueOf(itemString.substring(0,1));    // set color 1-9
+                if (itemString.length() > 0) itemString = itemString.substring(1);      
+                else itemString = ""; 
+        }
+        
         while (itemString.contains("/") && itemString.length() > 1 ) {      // check area
-            itemArea = !itemArea;
+            itemArea++;
             itemString = itemString.replace("/", "");
+            if (itemString.indexOf('/') == 0 ) {                               // at begin
+                itemString = itemString.substring(1);
+            } else if (itemString.indexOf('/') == itemString.length()-1 ) {           // at end
+                itemString = itemString.substring(0, itemString.length());   
+            } else {                                                                // in between
+                itemString = itemString.substring(0, itemString.indexOf('/')-1) + 
+                itemString.substring(itemString.indexOf('/')+1, itemString.length()+1 );
+            }
         }
 
         while (itemString.contains("<") && itemString.length() > 1 ) {      // shift left in time
