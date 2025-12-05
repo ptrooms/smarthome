@@ -12,7 +12,7 @@
  */
 package org.eclipse.smarthome.ui.internal.chart.defaultchartprovider;
 
-import java.awt.Color;
+import java.awt.Color;      // https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html
 import java.awt.Font;
 
 /**

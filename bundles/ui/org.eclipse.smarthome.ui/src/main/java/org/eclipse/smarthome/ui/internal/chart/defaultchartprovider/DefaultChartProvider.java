@@ -67,6 +67,8 @@ import org.knowm.xchart.SeriesMarker;
 // import org.apache.logging.log4j.Logger.*;
 
 import org.knowm.xchart.StyleManager.LegendPosition;
+import org.knowm.xchart.internal.chartpart.Axis;
+import org.knowm.xchart.internal.style.SeriesColorMarkerLineStyle;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -102,14 +104,16 @@ public class DefaultChartProvider implements ChartProvider {
 
 
     private String numericString  = "01234567890-.";  // ptrooms: used to check for numerics using operators
-    private double itemZoom = 0;    // used in calculations multiply
-    /* define Y-axsis addition  */
-    private double itemAdd  = 0;    // used in calculation adding value
+    private double itemDivide = 0;  // used in calculation reciproke value ! --> a/x
+    private double itemZoom   = 0;  // used in calculation multiply by     * --> x*a
+    private double itemAdd    = 0;  // used in calculation add value       ^ --> x+a
     private int itemArea     = -1;  // line chart, else area with color 0-11
     private int itemLineType = -1;  // Xchart SeriesLineStyle : 0/NONE, 1/SOLID, 1/DASH_DOT, 2/DASH_DASH, 3/DOT_DOT 
     private int itemMarker   = -1;  // Xchart SeriesMarker :     -1/NONE, 0/CIRCLE, 1/DIAMOND, 2/SQUARE, 3/4 TRIANGLE_DOWN/UP
-    private int itemColor    = -1;  // Xchart SeriesColo   : default, 0-11/BLUE,GREEN,RED,YELLOW,MAGENTA,PINK,LIGHT_GREY, CYAN, BROWN,BLACK
-    private long itemTime  = 0L;        // shifttime
+    private int itemLineColor= -1;  // Xchart SeriesColo   : default, 0-11/BLUE,GREEN,RED,YELLOW,MAGENTA,PINK,LIGHT_GREY, CYAN, BROWN,BLACK
+    private int itemAreaColor= -1;  // Xchart SeriesColo   : default, 0-11/BLUE,GREEN,RED,YELLOW,MAGENTA,PINK,LIGHT_GREY, CYAN, BROWN,BLACK
+    private long itemTime    = 0L;  // shifttime
+    private long chartCount  = 0L;  // accumulate the chart for administration
 
     @Reference              // Annotation Type Referenc, form of metadata 
     public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
@@ -192,11 +196,15 @@ public class DefaultChartProvider implements ChartProvider {
         // 04nov25 ptrooms add name
         // Chart chart = new ChartBuilder().width(width).height(height).build();
         // Chart chart = new ChartBuilder().width(width).height(height).title(getClass().getSimpleName()).build();
+        
+        /* set title of graph */
         String titleString = "";
         if (items  != null) titleString += items;
         if (titleString.length() > 0) titleString += ":"; 
         if (groups != null) titleString += groups;
         if (titleString.length() == 0) titleString += "None"; 
+        titleString += " #" + String.valueOf(chartCount); // add generation number
+
         Chart chart = new ChartBuilder().width(width).height(height).title(titleString).build();
 
         // Define the time axis - the defaults are not very nice
@@ -242,40 +250,26 @@ public class DefaultChartProvider implements ChartProvider {
         if (dpi == 123) chart.getStyleManager().setYAxisLogarithmic(true);      // activate log
         // if (dpi == 123) chart.getStyleManager().setYAxisMin(-10);            // test behavior, negativ, no graph
         // logger.debug("Processing groups: {}, items: {}", groups, items );
-        // Loop through all the items
-        // String numericString  = "01234567890.-";        // ptrooms: used to check for numerics using operators
-        if (items != null) {
-            logger.debug("Processing items: {}", items);
-            String[] itemNames = items.split(",");
-            for (String itemName : itemNames) {
-                itemTime  = 0L;
-                itemArea  = -1;                         // line chart, else area
-                itemZoom  = 0;
-                itemAdd   = 0;
-                itemLineType = -1;   // solid line
-                itemMarker   = -1;     // no markers
-                itemColor    = -1;   //  automatic
 
-                String itemString = processFormula(itemName);
-                Item item = itemUIRegistry.getItem(itemString);
-                if (addItem(chart, persistenceService, startTime, endTime, item, seriesCounter, chartTheme, 
-                        dpi, itemZoom, itemAdd, itemTime, itemArea, itemLineType, itemMarker, itemColor)) {
-                    seriesCounter++;
-                }
-            }
-        }
+        // String numericString  = "01234567890.-";        // ptrooms: used to check for numerics using operators
+        
+        /* first we do the groups, thereafter the individual items */
+        
         // Loop through all the groups and add each item from each group
         if (groups != null) {
             logger.debug("Processing groups: {}", groups);
             String[] groupNames = groups.split(",");
             for (String groupName : groupNames) {
-                itemZoom = 0;       // no mulitplication
-                itemAdd  = 0;       // no addition
-                itemTime  = 0L;     // shifttime
-                itemArea  = -1;  // no area
-                itemLineType = -1;   // solid line
-                itemMarker   = -1;   // no markers
-                itemColor    = -1;   //  automatic                String groupString = processFormula(groupName);
+                itemZoom     = 0;   // no mulitplication
+                itemDivide   = 0;   // no division
+                itemAdd      = 0;   // no addition
+                itemTime     = 0L;  // shifttime
+                itemArea     = -1;  // no area
+                itemLineType = -1;  // solid line
+                itemMarker   = -1;  // no markers
+                itemLineColor= -1;  //  automatic                String groupString = processFormula(groupName);
+                itemAreaColor= -1;  //  automatic                String groupString = processFormula(groupName);
+
                 String itemString = processFormula(groupName);
                 Item item = itemUIRegistry.getItem(itemString);
 
@@ -283,8 +277,9 @@ public class DefaultChartProvider implements ChartProvider {
                     GroupItem groupItem = (GroupItem) item;
                     for (Item member : groupItem.getMembers()) {
                         logger.trace("Getting group: {}, item: {}", itemString, member);
-                        if (addItem(chart, persistenceService, startTime, endTime, member, seriesCounter, chartTheme,
-                                dpi, itemZoom, itemAdd, itemTime, itemArea, itemLineType, itemMarker, itemColor) ) {
+                        if (addItem(chart, persistenceService, startTime, endTime, member, null, seriesCounter, chartTheme, dpi,
+                                itemDivide, itemZoom, itemAdd, itemTime, 
+                                itemArea, itemLineType, itemMarker, itemLineColor, itemAreaColor) ) {
                             seriesCounter++;
                         }
                     }
@@ -293,6 +288,46 @@ public class DefaultChartProvider implements ChartProvider {
                 }
             }
         }
+
+        // Loop through all the items
+        if (items != null) {
+            logger.debug("Processing items: {}", items);
+            String[] itemNames = items.split(",");
+            for (String itemName : itemNames) {
+                itemZoom     = 0;   // no mulitplication
+                itemDivide   = 0;   // no division
+                itemAdd      = 0;   // no addition
+                itemTime     = 0L;  // shifttime
+                itemArea     = -1;  // no area
+                itemLineType = -1;  // solid line
+                itemMarker   = -1;  // no markers
+                itemLineColor= -1;  //  automatic                String groupString = processFormula(groupName);
+                itemAreaColor= -1;  //  automatic                String groupString = processFormula(groupName);
+
+
+                String itemString = processFormula(itemName);
+                String[] itemCompare = itemString.split(":");
+                String itemName2 = ""; 
+                Item   item2     = null;
+                if (itemCompare.length > 1) {               // we have a compare function
+                    if (itemName.equals(itemName2)) {
+                         itemString = itemCompare[0]; 
+                         itemName2  = itemCompare[1];
+                         item2 = itemUIRegistry.getItem(itemString);
+                    }                         
+                }
+
+                Item item = itemUIRegistry.getItem(itemString);
+
+                
+                if (addItem(chart, persistenceService, startTime, endTime, item, item2, seriesCounter, chartTheme, dpi, 
+                    itemDivide, itemZoom, itemAdd, itemTime, 
+                    itemArea, itemLineType, itemMarker, itemLineColor, itemAreaColor) ) {
+
+                    seriesCounter++;
+                }
+            }
+        }    
 
         Boolean showLegend = null;
 
@@ -344,6 +379,7 @@ public class DefaultChartProvider implements ChartProvider {
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D lGraphics2D = lBufferedImage.createGraphics();
         chart.paint(lGraphics2D);
+        chartCount++;               // increase generation number
         return lBufferedImage;
     }
 
@@ -360,16 +396,41 @@ public class DefaultChartProvider implements ChartProvider {
         }
     }
     
-    boolean addItem(Chart chart, QueryablePersistenceService service, Date timeBegin, Date timeEnd, Item item,
+    /**
+     * Get item states of series in timerange, calculate (& rebase if item2) values and plot these to color type.
+     * @param chart
+     * @param service rrd4j
+     * @param timeBegin 
+     * @param timeEnd - end time
+     * @param item  - plot
+     * @param item2 - compare againt
+     * @param seriesCounter
+     * @param chartTheme - black, white, dark, bright
+     * @param dpi - linewidht, when 123 we go to logmode
+     * @param itemDivide - operation 
+     * @param itemZoom   - operation multiply
+     * @param itemAdd    - operation add
+     * @param itemTime   - shift mS 
+     * @param itemArea   - fille below plot
+     * @param itemLineType - -1/default, 0/none, 1/DASHDOT, 2/DASHDASH, 3/DOTDOT
+     * @param itemMarker  - -1/default, 0/Circle, 1/Diamond, 2/Square, 3/TriangleDown, 4/TriangleUp, else/None
+     * @param lineColor   - Color rgb
+     * @param areaColor   - Color rgb (will get Alpah 120 added)
+     * @return
+     */
+    boolean addItem(Chart chart, QueryablePersistenceService service, Date timeBegin, Date timeEnd, Item item, Item item2,
             int seriesCounter, ChartTheme chartTheme, int dpi, 
-            double itemZoom, double itemAdd, long itemTime, 
-            int itemArea, int itemLineType, int itemMarker, int itemColor) {
+            double itemDivide, double itemZoom, double itemAdd, long itemTime, 
+            int itemArea, int itemLineType, int itemMarker, int lineColor, int areaColor) {
                 
-        Color color = chartTheme.getLineColor(seriesCounter);
-        if  (itemColor >= 0) color = chartTheme.getLineColor(itemColor);    // see Xchart SeriesColor 0/BLUE-11/BLACK
-
+        Color colorLine = chartTheme.getLineColor(seriesCounter);
+        Color colorArea = chartTheme.getLineColor(seriesCounter);
+        if  (lineColor >= 0) colorLine = chartTheme.getLineColor(lineColor);    // see Xchart SeriesColor 0/BLUE-11/BLACK
+        if  (areaColor >= 0) colorArea = chartTheme.getLineColor(areaColor);    // see Xchart SeriesFillColor 0/BLUE-11/BLACK
+        
         // Get the item label
         String label = null;
+        
         if (itemUIRegistry != null) {
             // Get the item label
             label = itemUIRegistry.getLabel(item.getName());
@@ -377,11 +438,14 @@ public class DefaultChartProvider implements ChartProvider {
                 label = label.substring(0, label.indexOf('['));
             }
         }
+        
         if (label == null) {
             label = item.getName();
         }
-
-        Iterable<HistoricItem> result;
+        
+        
+        Iterable<HistoricItem> result;      // items to plot
+        Iterable<HistoricItem> result2;                             // rebase on this value
         FilterCriteria filter;
 
         // Generate data collections
@@ -389,7 +453,8 @@ public class DefaultChartProvider implements ChartProvider {
         List<Number> yData = new ArrayList<Number>();
 
         // Declare state here so it will hold the last value at the end of the process
-        State state = null;
+        State state  = null;
+        State state2 = null;                                        // for compare rebase to
 
         // First, get the value at the start time.
         // This is necessary for values that don't change often otherwise data will start
@@ -399,11 +464,21 @@ public class DefaultChartProvider implements ChartProvider {
         filter.setItemName(item.getName());
         filter.setPageSize(1);
         filter.setOrdering(Ordering.DESCENDING);
-        result = service.query(filter);
+        result  = service.query(filter);
+        result2 = result;                                           // for compare rebase to
+        if (item2 != null) {
+            filter.setItemName(item2.getName());
+            result2 = service.query(filter);                        // for compare rebase to
+        }
+
         if (result.iterator().hasNext()) {
             HistoricItem historicItem = result.iterator().next();
+            HistoricItem historicItem2 = historicItem;              // for compare rebase to
+            if (item2 != null) historicItem2 = result2.iterator().next();
+
 
             state = historicItem.getState();
+            if (item2 != null) state2 = historicItem2.getState();   // for compare rebase to
             
             // xData.add(timeBegin);                                // java.util.date
             xData.add(new Date(timeBegin.getTime() + itemTime));    // ptrooms: we shift X-axis by item symbol gt/lt
@@ -411,10 +486,11 @@ public class DefaultChartProvider implements ChartProvider {
             // yData.add(convertData(state)); // Double.valueOf(itemZoom)
             // ptrooms 02nov25, check if we can influence value by label
             logger.debug("Plotting item {}, date: {}, value: {}", item.getName(), (new Date(timeBegin.getTime())) , convertData(state) );
-            yData.add( calculateState(state, label, itemZoom, itemAdd) );
+            yData.add( calculateState(state, state2, label, itemDivide, itemZoom, itemAdd) );
         }
 
         // Now, get all the data between the start and end time
+        filter.setItemName(item.getName());
         filter.setBeginDate(ZonedDateTime.ofInstant(timeBegin.toInstant(), timeZoneProvider.getTimeZone()));
         filter.setEndDate(ZonedDateTime.ofInstant(timeEnd.toInstant(), timeZoneProvider.getTimeZone()));
         filter.setPageSize(Integer.MAX_VALUE);
@@ -422,11 +498,20 @@ public class DefaultChartProvider implements ChartProvider {
 
         // Get the data from the persistence store
         result = service.query(filter);
-        Iterator<HistoricItem> it = result.iterator();
+        
+        Iterator<HistoricItem> it  = result.iterator();
+        Iterator<HistoricItem> it2 = null;
+
+        if (item2 != null) {                        // for compare rebase to
+            filter.setItemName(item2.getName());
+            result2 = service.query(filter);
+            it2 = result2.iterator();       
+        }
 
         // Iterate through the data
         while (it.hasNext()) {
             HistoricItem historicItem = it.next();
+            HistoricItem historicItem2 = historicItem;
 
             // For 'binary' states, we need to replicate the data
             // to avoid diagonal lines
@@ -442,7 +527,9 @@ public class DefaultChartProvider implements ChartProvider {
                 // xData.add(new Date(date + itemTime)); // ??? ptrooms we want to shift 
                 // yData.add(convertData(state));
                 // ptrooms 02nov25, check if we can influence value by label                
-                
+                yData.add( calculateState(state, null, label, itemDivide, itemZoom, itemAdd) );
+
+                /*
                 if (itemZoom != 0 && itemZoom != 0) {
                     yData.add((convertData(state)*Double.valueOf(itemZoom))+Double.valueOf(itemAdd) );
                 } else if (itemZoom != 0) {
@@ -459,15 +546,19 @@ public class DefaultChartProvider implements ChartProvider {
                 } else {
                     yData.add(convertData(state));
                 }
+                */
             }
 
-            state = historicItem.getState();
+            state  = historicItem.getState();
+            state2 = null;
+            if (item2 != null) state2 = historicItem.getState();
+
             // xData.add(historicItem.getTimestamp());
             logger.trace("Plotting item {}, date: {}, value: {}", item.getName(), (new Date((historicItem.getTimestamp()).getTime())) , convertData(state) );
             xData.add(new Date((historicItem.getTimestamp()).getTime() + itemTime));
             // yData.add(convertData(state));
             // ptrooms 02nov25, check if we can influence value by label
-            yData.add( calculateState(state, label, itemZoom, itemAdd) );
+            yData.add( calculateState(state, state2, label, itemDivide, itemZoom, itemAdd) );
         }
 
         // Lastly, add the final state at the endtime
@@ -476,7 +567,7 @@ public class DefaultChartProvider implements ChartProvider {
             // xData.add(timeEnd);
             xData.add(new Date(timeEnd.getTime() + itemTime));
             // ptrooms 02nov25, check if we can influence value by label
-            yData.add( calculateState(state, label, itemZoom, itemAdd) );
+            yData.add( calculateState(state, state2, label, itemDivide, itemZoom, itemAdd) );
         }
 
         // Add the new series to the chart - only if there's data elements to display
@@ -496,28 +587,97 @@ public class DefaultChartProvider implements ChartProvider {
         * 
         */
 
+       
+        //  public Series(String name, 
+        //      List<?> xData, 
+        //      Axis.AxisType xAxisType, 
+        //      List<? extends Number> yData, 
+        //      Axis.AxisType yAxisType, 
+        //      List<? extends Number> errorBars, 
+        //      SeriesColorMarkerLineStyle seriesColorMarkerLineStyle) {
         Series series = chart.addSeries( (String) (seriesCounter+"="+label), xData, yData);
-        float lineWidth = (float) chartTheme.getLineWidth(dpi);
+
+        /*        Color colorLine = chartTheme.getLineColor(seriesCounter);
+        Color colorArea = chartTheme.getLineColor(seriesCounter);
+        if  (lineColor >= 0) colorLine = chartTheme.getLineColor(lineColor);    // see Xchart SeriesColor 0/BLUE-11/BLACK
+        if  (areaColor >= 0) colorArea = chartTheme.getLineColor(areaColor);    // see Xchart SeriesFillColor 0/BLUE-11/BLACK
+        */
+        logger.debug("Color_get item {}, series {}, line={}, area={} ", item.getName(), seriesCounter, series.getStrokeColor(), series.getFillColor()  );
         
-        // series.setLineStyle(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));        
-        series.setLineStyle(SeriesLineStyle.SOLID);        
-        if      (itemLineType ==  0) series.setLineStyle(SeriesLineStyle.NONE);
-        else if (itemLineType ==  1) series.setLineStyle(SeriesLineStyle.DASH_DOT);
-        else if (itemLineType ==  2) series.setLineStyle(SeriesLineStyle.DASH_DASH);
-        else if (itemLineType ==  3) series.setLineStyle(SeriesLineStyle.DOT_DOT);
+        // 1: Blueish  Color item SonoffEsp001Temp,     line=java.awt.Color[r=0,g=55,b=255],  area=java.awt.Color[r=0,g=55,b=255]
+        // 2: Organish Color item SonoffEsp001Temp2,    line=java.awt.Color[r=255,g=172,b=0], area=java.awt.Color[r=255,g=172,b=0]
+        // 3: 1/Green  Color item SonoffEsp001Temp3,  line=java.awt.Color[r=128,g=0,b=255], area=java.awt.Color[r=128,g=0,b=255]
+        // auto:
+        //1st: Dblue  Color item SonoffEsp001Temp,      line=java.awt.Color[r=0,g=55,b=255],  area=java.awt.Color[r=0,g=55,b=255]
+        //2nd: Orange Color item SonoffEsp001Temp2,     line=java.awt.Color[r=255,g=172,b=0], area=java.awt.Color[r=255,g=172,b=0]
+        //3rd: Purple Color item SonoffEsp001Temp3,     line=java.awt.Color[r=128,g=0,b=255], area=java.awt.Color[r=128,g=0,b=255] 
+
+        if (lineColor >= 0) series.setLineColor(colorLine);
+        if (itemArea  >= 0) series.setSeriesType(Series.SeriesType.Area);     // see file:///home/pafoxp/code-xchart/xchart-demo/src/main/java/org/knowm/xchart/demo/charts/area/AreaLineChart03.java
+
+        /* resolve / test area color transparancy */
+            // if (areaColor >= 0) series.setMarkerColor(colorArea);
+            // if (areaColor >= 0) series.setFillColor(colorArea);   // see Xchart Series setFillColor 0/BLUE-11/BLACK 
+            // int colorAreaRed = colorArea.getRed();
+            // int colorAreaGreen = colorArea.getGreen();
+            // int colorAreaBlue = colorArea.getBlue();
+            // int colorAreaTransparancy = colorArea.getTransparency();
+        
+        if (areaColor >= 0) {
+                // alpha 120) (was 180);   // see Xchart Series setFillColor 0/BLUE-11/BLACK 
+                series.setFillColor(new Color(colorArea.getRed(), colorArea.getGreen(), colorArea.getBlue(), 120));
+                logger.debug("Color_area item {}, series {}, line={}, area={}, alpha={} ", 
+                        item.getName(), seriesCounter, series.getStrokeColor(), 
+                        series.getFillColor(),  series.getFillColor().getAlpha() );
+        }
+        if (itemMarker >= 0) {      // set markercolor same as linecolor with high transparancy
+            series.setMarkerColor(new Color(colorLine.getRed(), colorLine.getGreen(), colorLine.getBlue(), 120));
+        }
+
+
+        
+        /*
+            if      (itemLineType ==  0) series.setLineStyle(SeriesLineStyle.NONE);
+            else if (itemLineType ==  1) series.setLineStyle(SeriesLineStyle.DASH_DOT);
+            else if (itemLineType ==  2) series.setLineStyle(SeriesLineStyle.DASH_DASH);
+            else if (itemLineType ==  3) series.setLineStyle(SeriesLineStyle.DOT_DOT);
+            else if (itemLineType  >  3)  series.setLineStyle(SeriesLineStyle.SOLID);
+
+            // fromfile:///home/pafoxp/code-xchart/xchart/src/main/java/org/knowm/xchart/SeriesLineStyle.java
+            // SOLID(0, new BasicStroke(2.0F, 0, 0)),
+            // DASH_DOT(1, new BasicStroke(2.0F, 0, 0, 10.0F, new float[]{3.0F, 1.0F}, 0.0F)),
+            // DASH_DASH(2, new BasicStroke(2.0F, 0, 0, 10.0F, new float[]{3.0F, 3.0F}, 0.0F)),
+            // DOT_DOT(3, new BasicStroke(2.0F, 0, 1, 10.0F, new float[]{2.0F}, 0.0F));
+            // NONE(-1, (BasicStroke)null),
+
+            // @ConstructorProperties({"lineWidth", "endCap", "lineJoin", "miterLimit", "dashArray", "dashPhase"})
+        
+        */
+        float lineWidth = (float) chartTheme.getLineWidth(dpi);     
+        // series.setLineStyle(new BasicStroke(lineWidth));                // re-instate linewidth
+        /*
+        if      (itemLineType ==  0) series.setLineStyle(SeriesLineStyle.NONE);         // NONE
+        else if (itemLineType ==  1) series.setLineStyle(new BasicStroke(lineWidth, 0, 0));  // SOLID
+        else if (itemLineType ==  2) series.setLineStyle(new BasicStroke(lineWidth, 0, 0, 10.0F, new float[]{3.0F, 1.0F}, 0.0F)); // DASH DOT
+        else if (itemLineType ==  3) series.setLineStyle(new BasicStroke(lineWidth, 0, 0, 10.0F, new float[]{3.0F, 3.0F}, 0.0F)); // DASH DASH
+        else if (itemLineType >=  4) series.setLineStyle(new BasicStroke(lineWidth, 0, 1, 10.0F, new float[]{2.0F}, 0.0F));  // DOT DOT
+        else                         series.setLineStyle(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+        */
+
+        if      (itemLineType ==  0) series.setLineStyle(SeriesLineStyle.NONE);         // NONE
+        else if (itemLineType ==  1) series.setLineStyle(new BasicStroke(lineWidth, 0, 0));  // SOLID
+        else if (itemLineType ==  2) series.setLineStyle(new BasicStroke(lineWidth, 0, 0, 10.0F, new float[]{lineWidth*1.5F, lineWidth/2.0F}, 0.0F)); // DASH DOT
+        else if (itemLineType ==  3) series.setLineStyle(new BasicStroke(lineWidth, 0, 0, 10.0F, new float[]{lineWidth*1.5F, lineWidth*1.5F}, 0.0F)); // DASH DASH
+        else if (itemLineType >=  4) series.setLineStyle(new BasicStroke(lineWidth, 0, 1, 10.0F, new float[]{lineWidth}, 0.0F));  // DOT DOT
+        else                         series.setLineStyle(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
   
-        series.setMarker(SeriesMarker.NONE);
         if      (itemMarker   ==  0) series.setMarker(SeriesMarker.CIRCLE);
         else if (itemMarker   ==  1) series.setMarker(SeriesMarker.DIAMOND);
         else if (itemMarker   ==  2) series.setMarker(SeriesMarker.SQUARE);
         else if (itemMarker   ==  3) series.setMarker(SeriesMarker.TRIANGLE_DOWN);
         else if (itemMarker   ==  4) series.setMarker(SeriesMarker.TRIANGLE_UP);
-
-        series.setLineColor(color);
-
-
-        if (itemArea>= 0) series.setSeriesType(Series.SeriesType.Area);     // see file:///home/pafoxp/code-xchart/xchart-demo/src/main/java/org/knowm/xchart/demo/charts/area/AreaLineChart03.java
-
+        else                         series.setMarker(SeriesMarker.NONE);
+        
 
         // If the start value is below the median, then count legend position down
         // Otherwise count up.
@@ -532,55 +692,45 @@ public class DefaultChartProvider implements ChartProvider {
     }
 
     /**
-     * Process formula for shifting/moving/fille graph values
-     * Input: (/area<|>timeshift)itemString(*multiplynumber^addnumber)
-     * returns: stripped "itemname" with updated itemArea, itemTime, itemZoom, itemAdd
+     * Process formula for shifting/moving/fille graph color/values
+     * Input: start-ch     : [ [.marker(number0-4)] [-linetype] [0-9linecolor] [/area(0-9fillcolor)] ]
+     *        somewhere-ch : [ <|>timeshift) [/area]
+     *        next-word    : itemString
+     *        end          : [ (*mulitply)(^)[+-(dec)number) ]
+     * returns: stripped "itemname" with updated itemArea, itemTime, itemZoom, itemAdd, itemLineColor, itemAreaColor
      */    
     String processFormula(String inputString) {
                 // itemString = itemString.replace(">", "");
         String itemString = inputString;
 
-        while (itemString.length() > 0 &&                               // set linetype
-                itemString.indexOf('-') == 0 ) {   // starts with "-"
-                itemLineType++;
-                if (itemString.length() > 0) itemString = itemString.substring(1);      
-                else itemString = ""; 
-        }
+        while (itemString.length() > 0 &&
+            ( ( itemString.indexOf('-') == 0 || 
+                itemString.indexOf('.') == 0 ||
+                itemString.indexOf('/') == 0 )   ||
+              ( numericString.indexOf(itemString.substring(0,1)) >= 0  &&
+                numericString.indexOf(itemString.substring(0,1)) <= 9 ) ) ) {   // starts with "-|.|number"
+            if      (itemString.indexOf('-') == 0)  itemLineType++;             // activate Linetype
+            else if (itemString.indexOf('.') == 0)  itemMarker++;               // activate Marker
+            else if (itemString.indexOf('/') == 0 ) itemArea++;                 // increase the color at every "/"
+            else if (itemString.indexOf('0') == 0 && itemArea >= 0  ) itemAreaColor++;   // increase the Fillcolor if Area                
+            else if (itemString.indexOf('0') == 0 && itemArea  < 0  ) itemLineColor++;           // increase the color at every "0"                
+            else if (itemArea >= 0) itemAreaColor = Integer.valueOf(itemString.substring(0,1));    // set AreaColor
+            else                    itemLineColor = Integer.valueOf(itemString.substring(0,1));    // or  LineColor
 
-        while (itemString.length() > 0 &&                               // set markertype
-                itemString.indexOf('.') == 0 ) {   // starts with "-"
-                itemMarker++;
-                if (itemString.length() > 0) itemString = itemString.substring(1);      
-                else itemString = ""; 
-        }
-
-        while (itemString.length() > 0 &&                                  // set Color
-                numericString.indexOf(itemString.substring(0,1)) >= 0  &&
-                numericString.indexOf(itemString.substring(0,1)) <= 9 ) {
-                if (itemString.indexOf('0') == 0 ) itemColor++;                 // increase the color
-                else itemColor = Integer.valueOf(itemString.substring(0,1));    // set color 1-9
-                if (itemString.length() > 0) itemString = itemString.substring(1);      
-                else itemString = ""; 
+            if (itemString.length() > 0) itemString = itemString.substring(1);      
+            else itemString = ""; 
         }
         
-        while (itemString.contains("/") && itemString.length() > 1 ) {      // check area
+        while (itemString.contains("/") ) {      // check area somewhere else in string
             itemArea++;
-            itemString = itemString.replace("/", "");
-            if (itemString.indexOf('/') == 0 ) {                               // at begin
-                itemString = itemString.substring(1);
-            } else if (itemString.indexOf('/') == itemString.length()-1 ) {           // at end
-                itemString = itemString.substring(0, itemString.length());   
-            } else {                                                                // in between
-                itemString = itemString.substring(0, itemString.indexOf('/')-1) + 
-                itemString.substring(itemString.indexOf('/')+1, itemString.length()+1 );
-            }
+            itemString = itemString.replace("/", "");                       // remove "/"
         }
 
-        while (itemString.contains("<") && itemString.length() > 1 ) {      // shift left in time
+        while (itemString.contains("<") && itemString.length() > 1 ) {      // shift-- left in time 24hrs
             // minus 1 day , tbd to improve in matching period of calling ChartServlet.java
             itemTime -= 86400000L;
             // itemString = itemString.replace("<", "");
-                   if (itemString.indexOf('<') == 0 ) {                               // at begin
+            if        (itemString.indexOf('<') == 0 ) {                               // at begin
                        itemString = itemString.substring(1);
             } else if (itemString.indexOf('<') == itemString.length()-1 ) {           // at end
                        itemString = itemString.substring(0, itemString.length()-2 );   
@@ -589,26 +739,31 @@ public class DefaultChartProvider implements ChartProvider {
                        itemString.substring(itemString.indexOf('<')+1, itemString.length()-1 );
             }
         }
-        while (itemString.contains(">") && itemString.length() > 1 ) {      // shift right intime
+        while (itemString.contains(">") && itemString.length() > 1 ) {      // shift++ right time 12hrs
             // minus 1 day , tbd to improve in matching period of calling ChartServlet.java
-            itemTime += 86400000L;
+            if (itemTime == 0L) itemTime += 86400000L;      // 24hrs
+            else                itemTime += 43200000L;      // 12hrs
             // itemString = itemString.replace(">", "");
-                   if (itemString.indexOf('>') == 0 ) {                               // at begin
-                    itemString = itemString.substring(1);
+            if        (itemString.indexOf('>') == 0 ) {                               // at begin
+                       itemString = itemString.substring(1);
             } else if (itemString.indexOf('>') == itemString.length()-1 ) {           // at end
-                    itemString = itemString.substring(0, itemString.length()-2 );   
+                       itemString = itemString.substring(0, itemString.length()-2 );   
             } else {                                                                // in between
-                    itemString = itemString.substring(0, itemString.indexOf('>')-1) + itemString.substring(itemString.indexOf('>')+1, itemString.length()-1 );
+                       itemString = itemString.substring(0, itemString.indexOf('>')-1) +
+                       itemString.substring(itemString.indexOf('>')+1, itemString.length()-1 );
             }
         }
 
         // itemTime  = new Date(startTime_Here.getTime() + itemTime);
 
-        while (itemString != null && itemString.length() > 0 
-                && (itemString.contains("^") || itemString.contains("*") ) ) {
-
-            int pos = itemString.indexOf('*');          // get our operator
-            if (pos < 0) pos = itemString.indexOf('^'); 
+        while (itemString != null && itemString.length() > 0 &&
+                (itemString.contains("^") || 
+                 itemString.contains("*") || 
+                 itemString.contains("|") ) ) {
+                        
+            int pos = itemString.indexOf('|');          // get our reciproke operator
+            if (pos < 0) pos = itemString.indexOf('*'); // check multiplication
+            if (pos < 0) pos = itemString.indexOf('^'); // check addition
             pos++;                                      // position after operator
             if (pos >= (itemString.length())) {         // operator is only or toward end of string
                 if (pos == 1) itemString = ""; 
@@ -631,7 +786,9 @@ public class DefaultChartProvider implements ChartProvider {
             }
 
             /* set operator value */  // note substring is from-including, until (excluding)
-            if (itemString.substring(pos-1,pos).equals("*"))
+            if (itemString.substring(pos-1,pos).equals("|"))
+                    itemDivide = Double.valueOf(valuestring);
+            else if (itemString.substring(pos-1,pos).equals("*"))
                     itemZoom = Double.valueOf(valuestring);
             else    itemAdd  = Double.valueOf(valuestring);
             
@@ -654,13 +811,25 @@ public class DefaultChartProvider implements ChartProvider {
      * return double State by multiplying and/or adding paramters
      *   at no fomrula, check/test label for operator *1,2,3 to multiply by 1,2,3
      */
-    double calculateState(State state, String label, double itemZoom, double itemAdd) {
-        if (itemZoom != 0 && itemZoom != 0) {
+    double calculateState(State state, State state2, String label, double itemDivide, double itemZoom, double itemAdd) {
+        
+        if (itemDivide != 0) {      // reciproke
+            if (convertData(state) == 0) return (Double.valueOf(itemDivide));
+            if         (itemZoom != 0 && itemZoom != 0) {
+               return ((Double.valueOf(itemDivide)/convertData(state))*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
+            } else if (itemZoom != 0) {
+                return ((Double.valueOf(itemDivide)/convertData(state))*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
+            } else if (itemAdd != 0) {
+                return ((Double.valueOf(itemDivide)/convertData(state))+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
+            } else return (Double.valueOf(itemDivide)/convertData(state));
+
+        } else if (itemZoom != 0 && itemZoom != 0) {
             return (convertData(state)*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
         } else if (itemZoom != 0) {
             return (convertData(state)*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
         } else if (itemAdd != 0) {
             return (convertData(state)+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
+
         } else if (label.contains("*1") && (state instanceof DecimalType)) {
             // yData.add((((DecimalType) state).doubleValue()));
             return (convertData(state)*Double.valueOf(1));
@@ -671,7 +840,6 @@ public class DefaultChartProvider implements ChartProvider {
         }
         return (convertData(state));
     }
-
 
     @Override
     public ImageType getChartType() {
