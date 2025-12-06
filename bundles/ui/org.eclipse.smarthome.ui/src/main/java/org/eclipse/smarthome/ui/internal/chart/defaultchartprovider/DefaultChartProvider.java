@@ -114,6 +114,7 @@ public class DefaultChartProvider implements ChartProvider {
     private int itemAreaColor= -1;  // Xchart SeriesColo   : default, 0-11/BLUE,GREEN,RED,YELLOW,MAGENTA,PINK,LIGHT_GREY, CYAN, BROWN,BLACK
     private long itemTime    = 0L;  // shifttime
     private long chartCount  = 0L;  // accumulate the chart for administration
+    private boolean itemComparePlus = false; // when using compare of two items, we add else we substract the second from the first
 
     @Reference              // Annotation Type Referenc, form of metadata 
     public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
@@ -256,6 +257,7 @@ public class DefaultChartProvider implements ChartProvider {
         /* first we do the groups, thereafter the individual items */
         
         // Loop through all the groups and add each item from each group
+
         if (groups != null) {
             logger.debug("Processing groups: {}", groups);
             String[] groupNames = groups.split(",");
@@ -306,17 +308,21 @@ public class DefaultChartProvider implements ChartProvider {
 
 
                 String itemString = processFormula(itemName);
-                String[] itemCompare = itemString.split(":");
-                String itemName2 = ""; 
-                Item   item2     = null;
-                if (itemCompare.length > 1) {               // we have a compare function
-                    if (itemName.equals(itemName2)) {
-                         itemString = itemCompare[0]; 
-                         itemName2  = itemCompare[1];
-                         item2 = itemUIRegistry.getItem(itemString);
-                    }                         
+                String[] itemCompare = itemString.split(";");   // check for substraction splits
+                itemComparePlus = false;
+                if (itemCompare.length < 2) {
+                    itemCompare = itemString.split(":");        // check for additions splits
+                    itemComparePlus = true;
                 }
 
+                Item   item2     = null;
+                if (itemCompare.length > 1) {               // we have a compare function
+                    logger.debug("processing rebase splits {}: item count={}, item1={}, item2={}", 
+                                    (itemComparePlus ? "addition" : "substraction") ,
+                                    itemCompare.length, itemCompare[0], itemCompare[1]);
+                    itemString = itemCompare[0]; 
+                    item2 = itemUIRegistry.getItem(itemCompare[1]);
+                }
                 Item item = itemUIRegistry.getItem(itemString);
 
                 
@@ -383,7 +389,8 @@ public class DefaultChartProvider implements ChartProvider {
         return lBufferedImage;
     }
 
-    double convertData(State state) {
+    double convertData(State state, State state2) {
+    /*
         if (state instanceof DecimalType) {
             return ((DecimalType) state).doubleValue();
         } else if (state instanceof OnOffType) {
@@ -394,6 +401,35 @@ public class DefaultChartProvider implements ChartProvider {
             logger.debug("Unsupported item type in chart: {}", state.getClass().toString());
             return 0;
         }
+    */     
+        double value1 = 0;
+        double value2 = 0;          // value to rebase
+        if (state instanceof DecimalType) {
+            value1 = ((DecimalType) state).doubleValue();
+        } else if (state instanceof OnOffType) {
+            value1 = (state == OnOffType.OFF) ? 0 : 1;
+        } else if (state instanceof OpenClosedType) {
+            value1 = (state == OpenClosedType.CLOSED) ? 0 : 1;
+        } else {
+            logger.debug("Unsupported item1 type in chart: {}", state.getClass().toString());
+            return 0;
+        }
+
+        /* if we have a secondary item to rebase with ghet the value */
+        if (state2 != null) {
+            if (state2 instanceof DecimalType) {
+                value2 = ((DecimalType) state2).doubleValue();
+            } else if (state2 instanceof OnOffType) {
+                value2 = (state2 == OnOffType.OFF) ? 0 : 1;
+            } else if (state2 instanceof OpenClosedType) {
+                value2 = (state2 == OpenClosedType.CLOSED) ? 0 : 1;
+            } else {
+                logger.debug("Unsupported item2 type in chart: {}", state2.getClass().toString());
+                return 0;
+            }
+        }
+        if (itemComparePlus) return value1+value2;      // if we compare, return addition
+        return value1-value2;                           // else return substraction
     }
     
     /**
@@ -465,6 +501,7 @@ public class DefaultChartProvider implements ChartProvider {
         filter.setPageSize(1);
         filter.setOrdering(Ordering.DESCENDING);
         result  = service.query(filter);
+        
         result2 = result;                                           // for compare rebase to
         if (item2 != null) {
             filter.setItemName(item2.getName());
@@ -474,18 +511,18 @@ public class DefaultChartProvider implements ChartProvider {
         if (result.iterator().hasNext()) {
             HistoricItem historicItem = result.iterator().next();
             HistoricItem historicItem2 = historicItem;              // for compare rebase to
-            if (item2 != null) historicItem2 = result2.iterator().next();
-
-
             state = historicItem.getState();
-            if (item2 != null) state2 = historicItem2.getState();   // for compare rebase to
+            if (item2 != null) {
+                    historicItem2 = result2.iterator().next();
+                    state2        = historicItem2.getState();   // for compare rebase to
+            }
             
             // xData.add(timeBegin);                                // java.util.date
             xData.add(new Date(timeBegin.getTime() + itemTime));    // ptrooms: we shift X-axis by item symbol gt/lt
 
             // yData.add(convertData(state)); // Double.valueOf(itemZoom)
             // ptrooms 02nov25, check if we can influence value by label
-            logger.debug("Plotting item {}, date: {}, value: {}", item.getName(), (new Date(timeBegin.getTime())) , convertData(state) );
+            logger.debug("Plotting item {}, date: {}, value: {}", item.getName(), (new Date(timeBegin.getTime())) , convertData(state,state2) );
             yData.add( calculateState(state, state2, label, itemDivide, itemZoom, itemAdd) );
         }
 
@@ -505,13 +542,17 @@ public class DefaultChartProvider implements ChartProvider {
         if (item2 != null) {                        // for compare rebase to
             filter.setItemName(item2.getName());
             result2 = service.query(filter);
-            it2 = result2.iterator();       
+            it2     = result2.iterator();       
         }
 
         // Iterate through the data
         while (it.hasNext()) {
             HistoricItem historicItem = it.next();
             HistoricItem historicItem2 = historicItem;
+            if (item2 != null) {
+                if (it2.hasNext()) historicItem2 = it2.next();
+                else break; // break away when state of secondary oitem is exhausted
+            }
 
             // For 'binary' states, we need to replicate the data
             // to avoid diagonal lines
@@ -520,14 +561,14 @@ public class DefaultChartProvider implements ChartProvider {
                 cal.setTime(historicItem.getTimestamp());   //      set field with value of historicItem (= using java.util.Date)
                 cal.add(Calendar.MILLISECOND, -1);          // get and set indicating the millisecond within the second
 
-                //// example: xData.add(  new Date(timeBegin.getTime() + itemTime)  );  // Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT 
+                // example: xData.add(  new Date(timeBegin.getTime() + itemTime)  );  // Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT 
                 // xData.add(cal.getTime());                       // Returns a Date object representing this Calendar's time value
                 xData.add( new Date((cal.getTime()).getTime() + itemTime) );  // Get Date(get cal to Date) to millies + time)
 
                 // xData.add(new Date(date + itemTime)); // ??? ptrooms we want to shift 
                 // yData.add(convertData(state));
                 // ptrooms 02nov25, check if we can influence value by label                
-                yData.add( calculateState(state, null, label, itemDivide, itemZoom, itemAdd) );
+                yData.add( calculateState(state, state2, label, itemDivide, itemZoom, itemAdd) );
 
                 /*
                 if (itemZoom != 0 && itemZoom != 0) {
@@ -551,10 +592,10 @@ public class DefaultChartProvider implements ChartProvider {
 
             state  = historicItem.getState();
             state2 = null;
-            if (item2 != null) state2 = historicItem.getState();
+            if (item2 != null) state2 = historicItem2.getState();       // get rebase against value
 
             // xData.add(historicItem.getTimestamp());
-            logger.trace("Plotting item {}, date: {}, value: {}", item.getName(), (new Date((historicItem.getTimestamp()).getTime())) , convertData(state) );
+            logger.trace("Plotting item {}, date: {}, value: {}", item.getName(), (new Date((historicItem.getTimestamp()).getTime())) , convertData(state, state2) );
             xData.add(new Date((historicItem.getTimestamp()).getTime() + itemTime));
             // yData.add(convertData(state));
             // ptrooms 02nov25, check if we can influence value by label
@@ -563,7 +604,7 @@ public class DefaultChartProvider implements ChartProvider {
 
         // Lastly, add the final state at the endtime
         if (state != null) {
-            logger.debug("Plotting last item {}, date: {}, value: {}", item.getName(), (new Date(timeEnd.getTime())) , convertData(state) );
+            logger.debug("Plotting last item {}, date: {}, value: {}", item.getName(), (new Date(timeEnd.getTime())) , convertData(state,state2) );
             // xData.add(timeEnd);
             xData.add(new Date(timeEnd.getTime() + itemTime));
             // ptrooms 02nov25, check if we can influence value by label
@@ -814,31 +855,31 @@ public class DefaultChartProvider implements ChartProvider {
     double calculateState(State state, State state2, String label, double itemDivide, double itemZoom, double itemAdd) {
         
         if (itemDivide != 0) {      // reciproke
-            if (convertData(state) == 0) return (Double.valueOf(itemDivide));
+            if (convertData(state,state2) == 0) return (Double.valueOf(itemDivide));
             if         (itemZoom != 0 && itemZoom != 0) {
-               return ((Double.valueOf(itemDivide)/convertData(state))*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
+               return ((Double.valueOf(itemDivide)/convertData(state,state2))*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
             } else if (itemZoom != 0) {
-                return ((Double.valueOf(itemDivide)/convertData(state))*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
+                return ((Double.valueOf(itemDivide)/convertData(state,state2))*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
             } else if (itemAdd != 0) {
-                return ((Double.valueOf(itemDivide)/convertData(state))+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
-            } else return (Double.valueOf(itemDivide)/convertData(state));
+                return ((Double.valueOf(itemDivide)/convertData(state,state2))+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
+            } else return (Double.valueOf(itemDivide)/convertData(state,state2));
 
         } else if (itemZoom != 0 && itemZoom != 0) {
-            return (convertData(state)*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
+            return (convertData(state,state2)*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
         } else if (itemZoom != 0) {
-            return (convertData(state)*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
+            return (convertData(state,state2)*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
         } else if (itemAdd != 0) {
-            return (convertData(state)+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
+            return (convertData(state,state2)+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
 
         } else if (label.contains("*1") && (state instanceof DecimalType)) {
             // yData.add((((DecimalType) state).doubleValue()));
-            return (convertData(state)*Double.valueOf(1));
+            return (convertData(state,state2)*Double.valueOf(1));
         } else if (label.contains("*2") && (state instanceof DecimalType)) {
-            return (convertData(state)*Double.valueOf(2));
+            return (convertData(state,state2)*Double.valueOf(2));
         } else if (label.contains("*3") && (state instanceof DecimalType)) {
-            return (convertData(state)*Double.valueOf(3));
+            return (convertData(state,state2)*Double.valueOf(3));
         }
-        return (convertData(state));
+        return (convertData(state,state2));
     }
 
     @Override
