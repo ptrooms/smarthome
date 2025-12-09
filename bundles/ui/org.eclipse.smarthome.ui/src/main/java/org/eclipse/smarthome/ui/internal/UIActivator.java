@@ -12,8 +12,11 @@
  */
 package org.eclipse.smarthome.ui.internal;
 
+// import org.eclipse.smarthome.ui.internal.chart.defaultchartprovider.DefaultChartProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Extension of the default OSGi bundle activator
@@ -21,6 +24,7 @@ import org.osgi.framework.BundleContext;
  * @author Kai Kreuzer - Initial contribution
  */
 public final class UIActivator implements BundleActivator {
+    private final Logger logger = LoggerFactory.getLogger(UIActivator.class);
 
     private static BundleContext context;
 
@@ -30,6 +34,8 @@ public final class UIActivator implements BundleActivator {
     @Override
     public void start(BundleContext bc) throws Exception {
         context = bc;
+        System.out.println("UIActivator.java start bc={}" + context );
+        logger.info("UIActivator.java start UI(mapdb) bc={}", bc.getBundle().getHeaders() );
     }
 
     /**
@@ -37,6 +43,8 @@ public final class UIActivator implements BundleActivator {
      */
     @Override
     public void stop(BundleContext bc) throws Exception {
+        logger.info("UIActivator.java start bc={}", context );
+        System.out.println("UIActivator.java stop UI(mapdb) bc={}" + context );
         context = null;
     }
 
