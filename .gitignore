@@ -22,6 +22,7 @@ bin/
 *.deleted
 *.org
 oh240_*.txt
+*.bak
 
 # supress deverlopment tests
 .classpath.*

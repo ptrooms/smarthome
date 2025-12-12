@@ -40,24 +40,28 @@
   <distributionManagement>
     <repository>
       <id>bintray</id>
-      <name>openHAB SmartHome Repository - Releases</name>
-      <url>https://api.bintray.com/maven/openhab/mvn/smarthome/;publish=1;override=1</url>
+      <name>PafoQnap openHAB SmartHome Repository - Releases</name>
+      <!-- <url>https://api.bintray.com/maven/openhab/mvn/smarthome/;publish=1;override=1</url> -->
+      <url>http://192.168.1.8/openhab/bintray/maven/openhab/mvn/smarthome/</url>
     </repository>
     <snapshotRepository>
       <id>repo.eclipse.org</id>
-      <name>Eclipse SmartHome Repository - Snapshots</name>
-      <url>https://repo.eclipse.org/content/repositories/smarthome-snapshots/</url>
+      <name>PafoQnap Eclipse SmartHome Repository - Snapshots</name>
+      <!-- <url>https://repo.eclipse.org/content/repositories/smarthome-snapshots/</url> -->
+      <url>http://192.168.1.8/openhab/eclipse/content/repositories/smarthome-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
   <scm>
       <connection>scm:git:${scm.gitBaseUrl}/smarthome.git</connection>
       <developerConnection>scm:git:${scm.gitBaseUrl}/smarthome.git</developerConnection>
-      <url>https://github.com/openhab/smarthome</url>
-<tag>0.10.0.oh240</tag>
+      <!-- <url>https://github.com/openhab/smarthome</url> -->
+      <url>https://github.com/ptrooms/smarthome</url>
+      <tag>0.10.0.oh240</tag>
   </scm>
 
   <properties>
+	<!-- SCM Git (Source Control Management using Git) https://gitscripts.com/scm-git -->
     <scm.gitBaseUrl>https://github.com/openhab</scm.gitBaseUrl>
     <esh.java.version>1.8</esh.java.version>
     <maven.compiler.source>${esh.java.version}</maven.compiler.source>
@@ -75,6 +79,8 @@
   </properties>
 
   <repositories>
+
+	<!--
     <repository>
       <releases>
         <enabled>true</enabled>
@@ -86,7 +92,20 @@
       <id>jcenter</id>
       <name>JCenter Repository</name>
       <url>https://jcenter.bintray.com</url>
+    </repository> -->
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jcenter</id>
+      <name>PafoQnap Repository</name>
+      <url>http://192.168.1.8/openhab/jcenter/</url>
     </repository>
+
     <repository>
       <releases>
         <enabled>true</enabled>
@@ -96,15 +115,18 @@
         <enabled>false</enabled>
       </snapshots>
       <id>esh-3rdparty-mvn</id>
-      <name>Eclipse SmartHome 3rd party Maven Repository</name>
-      <url>http://eclipse.github.io/smarthome/third-party/m2-repo/</url>
+      <!-- <name>Eclipse SmartHome 3rd party Maven Repository</name> -->
+      <name>PafoQnap Eclipse SmartHome 3rd party Maven Repository</name>
+      <!-- <url>http://eclipse.github.io/smarthome/third-party/m2-repo/</url> -->
+      <url>http://192.168.1.8/openhab/eclipse/smarthome/third-party/m2-repo/</url>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
       <id>jcenter</id>
-      <url>https://jcenter.bintray.com</url>
+      <!-- <url>https://jcenter.bintray.com</url> -->
+      <url>http://192.168.1.8/openhab/jcenter/</url> 
     </pluginRepository>
   </pluginRepositories>
 
