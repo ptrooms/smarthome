@@ -12,18 +12,6 @@ bin/
 *.iml
 .idea/
 
-# ignore vscode 08mar24
-.vscode/
-.classpath
-
-.settings
-*.code-workspace
-.project
-*.deleted
-*.org
-oh240_*.txt
-*.bak
-
 # supress deverlopment tests
 .classpath.*
 libfix/
@@ -44,3 +32,18 @@ bundles/storage/org.eclipse.smarthome.storage.mapdb.test/userdata/mapdb/storage.
 features/karaf/*/src/main/history
 
 Californium.properties
+
+# ptro ignore this playground
+/tools/ptro
+# ignore vscode 08mar24
+.vscode/
+.classpath
+
+.settings
+*.code-workspace
+.project
+*.deleted
+*.org
+oh240_*.txt
+*.bak
+
