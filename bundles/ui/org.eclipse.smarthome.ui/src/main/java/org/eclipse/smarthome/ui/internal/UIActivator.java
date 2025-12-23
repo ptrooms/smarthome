@@ -35,7 +35,7 @@ public final class UIActivator implements BundleActivator {
     public void start(BundleContext bc) throws Exception {
         context = bc;
         System.out.println("UIActivator.java start bc={}" + context );
-        logger.info("UIActivator.java start UI(mapdb) bc={}", bc.getBundle().getHeaders() );
+        logger.info("UIActivator.java start 20dec25 19u52 UI(mapdb) bc={}", bc.getBundle().getHeaders() );
     }
 
     /**
