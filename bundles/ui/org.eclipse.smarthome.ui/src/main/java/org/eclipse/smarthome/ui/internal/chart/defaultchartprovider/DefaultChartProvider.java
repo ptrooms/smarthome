@@ -744,9 +744,11 @@ public class DefaultChartProvider implements ChartProvider {
                 // itemString = itemString.replace(">", "");
         String itemString = inputString;
 
+        // "-" = line type
+        // "." = markertype
         while (itemString.length() > 0 &&
-            ( ( itemString.indexOf('-') == 0 || 
-                itemString.indexOf('.') == 0 ||
+            ( ( itemString.indexOf('-') == 0 ||     
+                itemString.indexOf('.') == 0 ||     
                 itemString.indexOf('/') == 0 )   ||
               ( numericString.indexOf(itemString.substring(0,1)) >= 0  &&
                 numericString.indexOf(itemString.substring(0,1)) <= 9 ) ) ) {   // starts with "-|.|number"
@@ -856,7 +858,7 @@ public class DefaultChartProvider implements ChartProvider {
         
         if (itemDivide != 0) {      // reciproke
             if (convertData(state,state2) == 0) return (Double.valueOf(itemDivide));
-            if         (itemZoom != 0 && itemZoom != 0) {
+            if         (itemZoom != 0 && itemAdd != 0) {
                return ((Double.valueOf(itemDivide)/convertData(state,state2))*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
             } else if (itemZoom != 0) {
                 return ((Double.valueOf(itemDivide)/convertData(state,state2))*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
@@ -864,7 +866,7 @@ public class DefaultChartProvider implements ChartProvider {
                 return ((Double.valueOf(itemDivide)/convertData(state,state2))+Double.valueOf(itemAdd));  // ptrooms: we shift Y-axis datascale by item symbol mulitply *
             } else return (Double.valueOf(itemDivide)/convertData(state,state2));
 
-        } else if (itemZoom != 0 && itemZoom != 0) {
+        } else if (itemZoom != 0 && itemAdd != 0) {
             return (convertData(state,state2)*Double.valueOf(itemZoom))+Double.valueOf(itemAdd);
         } else if (itemZoom != 0) {
             return (convertData(state,state2)*Double.valueOf(itemZoom)); // ptrooms: we change Y-axis datascale by item symbol mulitply *
