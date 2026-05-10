@@ -1,7 +1,9 @@
+/test/
 target/
 target.sav/
 target1/
 target2/
+target-original/
 src-gen/
 xtend-gen/
 bin/
@@ -46,4 +48,5 @@ Californium.properties
 *.org
 oh240_*.txt
 *.bak
+test_compile*.txt
 

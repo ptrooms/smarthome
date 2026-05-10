@@ -42,7 +42,8 @@
       <id>bintray</id>
       <name>PafoQnap openHAB SmartHome Repository - Releases</name>
       <!-- <url>https://api.bintray.com/maven/openhab/mvn/smarthome/;publish=1;override=1</url> -->
-      <url>http://192.168.1.8/openhab/bintray/maven/openhab/mvn/smarthome/</url>
+      <!-- 09may26 <url>http://192.168.1.8/openhab/bintray/maven/openhab/mvn/smarthome/</url> -->
+      <url>http://192.168.1.8/openhab/bintray/repo_mvn_smarthome/</url>
     </repository>
     <snapshotRepository>
       <id>repo.eclipse.org</id>
@@ -62,7 +63,8 @@
 
   <properties>
 	<!-- SCM Git (Source Control Management using Git) https://gitscripts.com/scm-git -->
-    <scm.gitBaseUrl>https://github.com/openhab</scm.gitBaseUrl>
+    <!-- 09may26 scm.gitBaseUrl>https://github.com/openhab</scm.gitBaseUrl> -->
+    <scm.gitBaseUrl>https://github.com/ptrooms</scm.gitBaseUrl>
     <esh.java.version>1.8</esh.java.version>
     <maven.compiler.source>${esh.java.version}</maven.compiler.source>
     <maven.compiler.target>${esh.java.version}</maven.compiler.target>
@@ -466,6 +468,26 @@
                 <exclude>.gitignore</exclude>
               </excludes>
             </fileset>
+            <fileset>
+              <directory>${basedir}/src-gen</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <excludes>
+                <exclude>.gitignore</exclude>
+              </excludes>
+            </fileset>
+	<!-- do not use as it will also delete oer to be kept
+            <fileset>
+              <directory>${basedir}/model</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <excludes>
+                <exclude>.gitignore</exclude>
+              </excludes>
+            </fileset>
+	-->
             <fileset>
               <directory>${basedir}/src/main/generated-sources/xtend</directory>
               <includes>

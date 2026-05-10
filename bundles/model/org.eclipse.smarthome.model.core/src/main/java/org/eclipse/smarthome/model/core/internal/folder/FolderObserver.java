@@ -14,15 +14,15 @@
  * 10jan22 - modified to monitor files
   ------------------------------------------------------------------------*/
 /* Doc for development
-	file class https://www.geeksforgeeks.org/file-class-in-java/
-	watch: 	https://docs.oracle.com/javase/7/docs/api/java/nio/file/WatchService.html
-			/home/pafoxp/code-openhab/ptrooms_smarthome/bundles/core/org.eclipse.smarthome.core/
-			src/main/java/org/eclipse/smarthome/core/service/AbstractWatchService.java
+    file class https://www.geeksforgeeks.org/file-class-in-java/
+    watch:     https://docs.oracle.com/javase/7/docs/api/java/nio/file/WatchService.html
+            /home/pafoxp/code-openhab/ptrooms_smarthome/bundles/core/org.eclipse.smarthome.core/
+            src/main/java/org/eclipse/smarthome/core/service/AbstractWatchService.java
 
 
-using         super(ConfigConstants.getConfigFolder());  
-			--> // .../bundles/config/org.eclipse.smarthome.config.core/
-					src/main/java/org/eclipse/smarthome/config/core/ConfigConstants.java
+    using         super(ConfigConstants.getConfigFolder());  
+            --> // .../bundles/config/org.eclipse.smarthome.config.core/
+                    src/main/java/org/eclipse/smarthome/config/core/ConfigConstants.java
 
 */
 
@@ -96,7 +96,7 @@ public class FolderObserver extends AbstractWatchService {
     /* set of files that have been ignored due to a missing parser */
     private final Set<File> ignoredFiles = new HashSet<>();
     private final Map<String, File> nameFileMap  = new HashMap<>();
-    private final Map<String, Integer>  nameSizeMap  = new HashMap<>();		// ptro 17jan22: extend map with number of bytes
+    private final Map<String, Integer>  nameSizeMap  = new HashMap<>();        // ptro 17jan22: extend map with number of bytes
 
     @Reference
     public void setModelRepository(ModelRepository modelRepo) {
@@ -160,7 +160,7 @@ public class FolderObserver extends AbstractWatchService {
         this.folderFileExtMap.clear();
         this.parsers.clear();
         this.nameFileMap.clear();
-        this.nameSizeMap.clear();	// ptro 17jan22 added to to hold/ceck if file was already processed
+        this.nameSizeMap.clear();    // ptro 17jan22 added to to hold/ceck if file was already processed
     }
 
     private void processIgnoredFiles(String extension) {
@@ -204,7 +204,7 @@ public class FolderObserver extends AbstractWatchService {
                         for (File file : files) {
                             // we omit parsing of hidden files possibly created by editors or operating systems
                             if (!file.isHidden()) {
-								logger.info("Adding model/ptro file {} .",file);	// 09jan22 ptro
+                                logger.info("Adding model/ptro file {} .",file);    // 09jan22 ptro
                                 checkFile(modelRepo, file, ENTRY_CREATE);
                             }
                         }
@@ -262,14 +262,14 @@ public class FolderObserver extends AbstractWatchService {
                             } else {
                                 logger.debug("Model/ptro created file: {}", file.getAbsolutePath()); // 09jan22 ptro
                             }
-							try (FileInputStream inputStream = FileUtils.openInputStream(file)) {
-                            //    if (nameSizeMap.containsValue(file) && 		//  17jan21  ptro if check files exist, ignore already processed file
-                                if (nameSizeMap.containsKey(file.getName()) && 		//  17jan21  ptro if check files exist, ignore already processed file
-                                    nameSizeMap.get(file.getName()) == inputStream.available() ) {	
+                            try (FileInputStream inputStream = FileUtils.openInputStream(file)) {
+                            //    if (nameSizeMap.containsValue(file) &&         //  17jan21  ptro if check files exist, ignore already processed file
+                                if (nameSizeMap.containsKey(file.getName()) &&         //  17jan21  ptro if check files exist, ignore already processed file
+                                    nameSizeMap.get(file.getName()) == inputStream.available() ) {    
                                     logger.warn("Model/ptro already processed, file {} of {} bytes ignored.", file.getName(), inputStream.available() ); // 09jan22 ptro eliminate duplicates
                                 } else {
                                     nameFileMap.put(file.getName(), file);
-									nameSizeMap.put(file.getName(), inputStream.available());		// 17jan22 ptro: Filename map with number of bytes  
+                                    nameSizeMap.put(file.getName(), inputStream.available());        // 17jan22 ptro: Filename map with number of bytes  
                                     logger.debug("Model/ptro file {} of {} bytes added to RefreshModel.", file.getName(), nameSizeMap.get(file.getName()) ); // 17jan22 ptro eliminate duplicates
                                     modelRepo.addOrRefreshModel(file.getName(), inputStream);
                                     // file /home/pafoxp/code-openhab/ptrooms_smarthome/bundles/model/org.eclipse.smarthome.model.core
@@ -285,7 +285,7 @@ public class FolderObserver extends AbstractWatchService {
                         logger.debug("Model/ptro deleted from queue file: {}", file.getName()); // 09jan22 ptro
                         modelRepo.removeModel(file.getName());
                         nameFileMap.remove(file.getName());
-                        nameSizeMap.remove(file.getName()); 	// 17jan22 ptro: filename map with number of bytes  
+                        nameSizeMap.remove(file.getName());     // 17jan22 ptro: filename map with number of bytes  
                     } else {
                         logger.trace("Model/ptro trigger-only by file: {}", file.getAbsolutePath()); // 09jan22 ptro
                     }
