@@ -1,0 +1,66 @@
+{
+	"folders": [
+		{
+			"name": "ptrooms_smarthome",
+			"path": "."
+		},
+		{
+			"name": "git-addons_R240",
+			"path": "../git-addons_R240"
+		},
+		{
+			"name": "git-habpanel_R240",
+			"path": "../git-habpanel_R240"
+		},
+		{
+			"name": "git_addons_S114",
+			"path": "../git_addons_S114"
+		},
+		{
+			"name": "git-openhab-distro",
+			"path": "../git-openhab-distro"
+		},
+		{
+			"path": "../git_addons_S114/bundles/persistence/org.openhab.persistence.rrd4j"
+		},
+		{
+			"path": "bundles/core/org.eclipse.smarthome.core"
+		},
+		{
+			"path": "../../code-xchart"
+		},
+		{
+			"path": "../code-mapdb"
+		}
+	],
+	"settings": {
+		"maven.view": "hierarchical",
+		"maven.executable.options": "-o -DskipTests=true -Dcheckstyle.skip -DskipChecks",
+		"java.project.sourcePaths": [
+			""
+		],
+		"java.dependency.packagePresentation": "flat",
+		"java.format.settings.url": "eclipse-formatter.xml",
+		"java.project.referencedLibraries": [
+			""
+		],
+		"java.configuration.maven.globalSettings": "/home/pafoxp/.m2",
+		"java.completion.filteredTypes": [
+
+			"java.awt.*",
+			"com.sun.*",
+			"sun.*",
+			"jdk.*",
+			"org.graalvm.*",
+			"io.micrometer.shaded.*"
+		],
+		"java.completion.importOrder": [
+
+			"java",
+			"javax",
+			"com",
+			"org"
+		],
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

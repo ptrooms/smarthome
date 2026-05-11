@@ -43,6 +43,7 @@ Californium.properties
 
 .settings
 *.code-workspace
+!openhab240.code-workspace
 .project
 *.deleted
 *.org
