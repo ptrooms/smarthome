@@ -83,10 +83,6 @@
 <repository location="http://download.eclipse.org/eclipse/updates/4.7/R-4.7-201706120950"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.jupnp.feature.feature.group" version="0.0.0"/>
-<repository location="http://www.jupnp.org/update-site/2.5.1"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.eclipsesource.jaxrs.connector.feature.feature.group" version="0.0.0"/>
 <unit id="com.eclipsesource.jaxrs.connector.feature.source.feature.group" version="0.0.0"/>
 <unit id="com.eclipsesource.jaxrs.jersey.runtime.feature.source.feature.group" version="0.0.0"/>
@@ -140,10 +136,6 @@
 <repository location="http://eclipse.github.io/smarthome/third-party/target/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.jmdns.feature.feature.group" version="0.0.0"/>
-<repository location="http://www.jmdns.org/update-site/3.5.5"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jetty.client" version="0.0.0"/>
 <unit id="org.eclipse.jetty.websocket.api" version="0.0.0"/>
 <unit id="org.eclipse.jetty.websocket.common" version="0.0.0"/>
@@ -162,10 +154,6 @@
 <unit id="org.eclipse.jetty.webapp" version="0.0.0"/>
 <unit id="org.eclipse.jetty.xml" version="0.0.0"/>
 <repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.3.15.v20161220"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.neuronrobotics.nrjavaserial" version="0.0.0"/>
-<repository location="https://dl.bintray.com/openhab/p2/openhab-deps-repo/1.0.28"/>
 </location>
 <location path="${project_loc:targetplatform}/third-party" type="Directory"/>
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
