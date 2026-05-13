@@ -468,26 +468,7 @@
                 <exclude>.gitignore</exclude>
               </excludes>
             </fileset>
-            <fileset>
-              <directory>${basedir}/src-gen</directory>
-              <includes>
-                <include>**</include>
-              </includes>
-              <excludes>
-                <exclude>.gitignore</exclude>
-              </excludes>
-            </fileset>
-	<!-- do not use as it will also delete oer to be kept
-            <fileset>
-              <directory>${basedir}/model</directory>
-              <includes>
-                <include>**</include>
-              </includes>
-              <excludes>
-                <exclude>.gitignore</exclude>
-              </excludes>
-            </fileset>
-	-->
+
             <fileset>
               <directory>${basedir}/src/main/generated-sources/xtend</directory>
               <includes>
