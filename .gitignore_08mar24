@@ -1,9 +1,6 @@
-/test/
 target/
-target.sav/
 target1/
 target2/
-target-original/
 src-gen/
 xtend-gen/
 bin/
@@ -14,10 +11,16 @@ bin/
 *.iml
 .idea/
 
-# supress deverlopment tests
-.classpath.*
-libfix/
-*.sav*
+# ignore vscode 08mar24
+.vscode/
+.classpath
+.settings
+*.code-workspace
+.project
+*.deleted
+*.org
+oh240_*.txt
+
 
 distribution/smarthome/logs/*.log
 distribution/smarthome/*.zip
@@ -34,20 +37,3 @@ bundles/storage/org.eclipse.smarthome.storage.mapdb.test/userdata/mapdb/storage.
 features/karaf/*/src/main/history
 
 Californium.properties
-
-# ptro ignore this playground
-/tools/ptro
-# ignore vscode 08mar24
-.vscode/
-.classpath
-
-.settings
-*.code-workspace
-!openhab240.code-workspace
-.project
-*.deleted
-*.org
-oh240_*.txt
-*.bak
-test_compile*.txt
-
