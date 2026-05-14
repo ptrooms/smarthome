@@ -14,4 +14,16 @@
 
   <name>Eclipse SmartHome Configuration mDNS Discovery</name>
 
+
+  <!-- added 13may26 to fix Missing requirement javax/jmdns/jmdns 3.2.2  (14may26 failed)-->
+  <!-- added 13may26 to fix Missing requirement javax/jmdns/jmdns 3.5.5 
+		from https://repo1.maven.org/maven2/org/jmdns/jmdns/3.5.5/jmdns-3.5.5.jar-->
+  <dependencies>
+          <dependency>
+              <groupId>javax.jmdns</groupId>
+              <artifactId>jmdns</artifactId>
+              <version>3.5.5</version>
+          </dependency>
+  </dependencies> 
+
 </project>

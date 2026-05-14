@@ -13,5 +13,13 @@
   <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome Configuration UPnP Discovery</name>
+  <!-- added 13may26 to support -->
+  <dependencies>
+          <dependency>
+              <groupId>org.jupnp</groupId>
+              <artifactId>jupnp</artifactId>
+              <version>2.5.1</version>
+          </dependency>
+  </dependencies>
 
 </project>
