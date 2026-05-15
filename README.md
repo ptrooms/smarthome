@@ -39,7 +39,9 @@ Make sure that the "mvn" command is available on your path
 ============
 
 Checkout the source code from GitHub, e.g. by running
-$ git clone https://github.com/eclipse/smarthome.git
+$ git clone https://github.com/ptrooms/smarthome.git
+
+Note: edit: 
 
 3\. Building with Maven
 =======================
@@ -114,9 +116,14 @@ and install this into the .m2 repo via
 
 5\. Modifications
 =================
+09may26 - 
+- branch _04nov25\_xchart_ : implement chart options
 
+- branch _08mar24_
 18mar24: we revised a bit to make (-o-ffline compilation working, as lots of artifacts are renewed)
-the nett- result is successfull (and useful)
+	the effective result is successfull (and useful)
+
+- branch _my240_ 
 
 16jan16-18mar24: we revised a couple of bundles, summarized
 

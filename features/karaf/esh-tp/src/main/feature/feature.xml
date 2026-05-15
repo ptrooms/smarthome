@@ -146,10 +146,12 @@
     <bundle>mvn:org.eclipse.kura/org.eclipse.soda.dk.comm.x86_64/1.2.201</bundle>
   </feature>
 
+<!-- block as we cannot resolve gnu.io .....
   <feature name="esh.tp-serial-rxtx" version="${project.version}">
     <capability>esh.tp;feature=serial;impl=rxtx</capability>
     <bundle>mvn:com.neuronrobotics/nrjavaserial/3.14.0</bundle>
   </feature>
+--> 
 
   <feature name="esh.tp-xtext" description="Xtext - Language Engineering Made Easy" version="${project.version}">
     <capability>esh.tp;feature=xtext;version=2.14.0</capability>

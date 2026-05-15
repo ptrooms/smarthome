@@ -29,7 +29,11 @@
     "openlayers": "4.2.0",
     "roboto-fontface": "0.4.2",
     "sprintf-js": "1.0.3",
-    "tinycolor2": "1.1.2"
+    "tinycolor2": "1.1.2",
+    "tough-cookie": "2.3.3"
+  },
+  "overrides": {
+    "tough-cookie": "2.3.3"
   },
   "engines": {
     "node": ">=0.12.3"

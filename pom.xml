@@ -9,6 +9,21 @@
 
   <name>Eclipse SmartHome</name>
 
+  <!-- added 13may26 to support -->
+  <dependencies>
+          <dependency>
+              <groupId>javax.jmdns</groupId>
+              <artifactId>jmdns</artifactId>
+              <version>3.5.5</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.jupnp</groupId>
+              <artifactId>jupnp</artifactId>
+              <version>2.5.1</version>
+          </dependency>
+  </dependencies>
+
   <description>This is the Eclipse SmartHome project</description>
 
   <organization>
