@@ -480,8 +480,29 @@
         <version>2.5</version>
         <configuration>
           <filesets>
+
             <fileset>
               <directory>${basedir}/xtend-gen</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <excludes>
+                <exclude>.gitignore</exclude>
+              </excludes>
+            </fileset>
+
+		<!-- added 17may26 to sneure that generated files are removed -->
+            <fileset>
+              <directory>${basedir}/src-gen</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <excludes>
+                <exclude>.gitignore</exclude>
+              </excludes>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/model/generated</directory>
               <includes>
                 <include>**</include>
               </includes>
@@ -499,6 +520,7 @@
                 <exclude>.gitignore</exclude>
               </excludes>
             </fileset>
+
             <fileset>
               <directory>${basedir}/OSGI-INF</directory>
               <includes>
@@ -508,6 +530,7 @@
                 <exclude>.gitignore</exclude>
               </excludes>
             </fileset>
+
           </filesets>
         </configuration>
       </plugin>
