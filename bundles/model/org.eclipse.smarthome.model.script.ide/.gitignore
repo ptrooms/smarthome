@@ -1,0 +1,3 @@
+# process this directory as its required for rebuild
+!src-gen/
+
