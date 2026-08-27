@@ -211,7 +211,6 @@
          install-size="0"
          version="0.10.0.oh240"
          unpack="false"/>
-
 <!-- block as gnu.io cannot be resolved 
    <plugin
          id="org.eclipse.smarthome.io.transport.serial.rxtx"

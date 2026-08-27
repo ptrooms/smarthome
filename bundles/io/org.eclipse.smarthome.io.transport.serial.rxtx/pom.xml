@@ -22,4 +22,14 @@
 		</dependency>
 	</dependencies>
 
+
+<!--
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.io</groupId>
+      <artifactId>org.eclipse.smarthome.io.transport.serial</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+--> 
 </project>
