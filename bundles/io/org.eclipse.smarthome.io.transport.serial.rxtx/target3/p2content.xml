@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='2'>
+  <unit id='org.eclipse.smarthome.io.transport.serial.rxtx' version='0.10.0.oh240' generation='2'>
+    <update id='org.eclipse.smarthome.io.transport.serial.rxtx' range='[0.0.0,0.10.0.oh240)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='Eclipse SmartHome Serial Transport for RXTX'/>
+      <property name='org.eclipse.equinox.p2.provider' value='Eclipse.org/SmartHome'/>
+      <property name='maven-groupId' value='org.eclipse.smarthome.io'/>
+      <property name='maven-artifactId' value='org.eclipse.smarthome.io.transport.serial.rxtx'/>
+      <property name='maven-version' value='0.10.0.oh240'/>
+    </properties>
+    <provides size='6'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.smarthome.io.transport.serial.rxtx' version='0.10.0.oh240'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.smarthome.io.transport.serial.rxtx' version='0.10.0.oh240'/>
+      <provided namespace='java.package' name='org.eclipse.smarthome.io.transport.serial.rxtx' version='0.0.0'/>
+      <provided namespace='osgi.identity' name='org.eclipse.smarthome.io.transport.serial.rxtx' version='0.10.0.oh240'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='osgi.service' name='org.eclipse.smarthome.io.transport.serial.rxtx_0.10.0.oh240-1' version='0.0.0'>
+        <properties size='1'>
+          <property name='objectClass' value='org.eclipse.smarthome.io.transport.serial.SerialPortProvider' type='List'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='5'>
+      <required namespace='java.package' name='gnu.io' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.jdt.annotation' range='0.0.0' optional='true' greedy='false'/>
+      <required namespace='java.package' name='org.eclipse.smarthome.io.transport.serial' range='0.0.0'/>
+      <required namespace='java.package' name='org.slf4j' range='0.0.0'/>
+      <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=1.8))'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.smarthome.io.transport.serial.rxtx' version='0.10.0.oh240'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.smarthome.io.transport.serial.rxtx;singleton:=true&#xA;Bundle-Version: 0.10.0.oh240&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='org.eclipse.smarthome.io.transport.serial.rxtx.source' version='0.10.0.oh240' singleton='false'>
+    <update id='org.eclipse.smarthome.io.transport.serial.rxtx.source' range='[0.0.0,0.10.0.oh240)' severity='0'/>
+    <properties size='9'>
+      <property name='df_LT.bundleVendor' value='Eclipse.org/SmartHome'/>
+      <property name='df_LT.bundleName' value='Eclipse SmartHome Serial Transport for RXTX Source'/>
+      <property name='org.eclipse.equinox.p2.name' value='%bundleName'/>
+      <property name='org.eclipse.equinox.p2.provider' value='%bundleVendor'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='OSGI-INF/l10n/bundle-src'/>
+      <property name='maven-groupId' value='org.eclipse.smarthome.io'/>
+      <property name='maven-artifactId' value='org.eclipse.smarthome.io.transport.serial.rxtx'/>
+      <property name='maven-version' value='0.10.0.oh240'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.smarthome.io.transport.serial.rxtx.source' version='0.10.0.oh240'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.smarthome.io.transport.serial.rxtx.source' version='0.10.0.oh240'/>
+      <provided namespace='osgi.identity' name='org.eclipse.smarthome.io.transport.serial.rxtx.source' version='0.10.0.oh240'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.eclipse.smarthome.io.transport.serial.rxtx.source' version='0.10.0.oh240'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.eclipse.smarthome.io.transport.serial.rxtx.source&#xA;Bundle-Version: 0.10.0.oh240&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

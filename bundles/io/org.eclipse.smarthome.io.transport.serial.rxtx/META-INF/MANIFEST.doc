@@ -1,0 +1,41 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-ClassPath: .
+Bundle-Name: Eclipse SmartHome Serial Transport for RXTX
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-SymbolicName: org.eclipse.smarthome.io.transport.serial.rxtx;singleton:=true
+Bundle-Vendor: Eclipse.org/SmartHome
+Bundle-Version: 0.10.0.oh240
+Import-Package: gnu.io,
+ org.eclipse.jdt.annotation;resolution:=optional,
+ org.eclipse.smarthome.io.transport.serial,
+ org.slf4j 
+Service-Component: OSGI-INF/*.xml
+Provide-Capability: osgi.service;objectClass:List<String>="org.eclipse.smarthome.io.transport.serial.SerialPortProvider"
+Automatic-Module-Name: org.eclipse.smarthome.io.transport.serial.rxtx
+Export-Package: org.eclipse.smarthome.io.transport.serial.rxtx
+
+https://www.baeldung.com/java-jar-manifest
+
+Manifest-Version: 1.0
+Automatic-Module-Name: org.openhab.core.io.transport.serial.rxtx
+Bnd-LastModified: 1712102935962
+Bundle-Description: This project contains the core components of openHAB
+Bundle-Developers: openhab;email="info@openhab.org";name=openHAB;organization=openHAB;organizationUrl="https://www.openHAB.org"
+Bundle-DocURL: https://github.com/openhab/infrastructure/org.openhab.c ore.reactor/org.openhab.core.reactor.bundles/org.openhab.core.io.transport.serial.rxtx
+Bundle-License: "Eclipse Public License 2.0";link="https://www.eclipse.org/legal/epl-2.0/"
+Bundle-ManifestVersion: 2
+Bundle-Name: openHAB Core :: Bundles :: Serial Transport for RXTX
+Bundle-SCM: url="https://github.com/openhab/openhab-core/org.openhab.core.reactor.bundles/org.openhab.core.io.transport.serial.rxtx",connection="scm:git:https://github.com/openhab/openhab-core.git/org.openhab.core.reactor.bundles/org.openhab.core.io.transport.serial.rxtx",developer-connection="scm:git:https://github.com/openhab/openhab-core.git/org.openhab.core.reactor.bundles/org.openhab.core.io.transport.serial.rxtx",tag=HEAD
+Bundle-SymbolicName: org.openhab.core.io.transport.serial.rxtx
+Bundle-Vendor: openHAB.org
+Bundle-Version: 2.5.0
+Created-By: 1.8.0_392 (Private Build)
+Export-Package: org.eclipse.smarthome.io.transport.serial.rxtx;uses:="gnu.io,org.eclipse.smarthome.io.transport.serial";version="2.5.0"
+Import-Package: gnu.io;version="[3.14,4)",org.eclipse.smarthome.io.transport.serial;version="[2.5,3)",org.slf4j;version="[1.7,2)"
+Private-Package: org.eclipse.smarthome.io.transport.serial.internal
+Provide-Capability: osgi.service;objectClass:List<String>="org.eclipse.smarthome.io.transport.serial.SerialPortProvider";uses:="org.eclipse.smarthome.io.transport.serial"
+Require-Capability: osgi.extender;filter:="(&(osgi.extender=osgi.component)(version>=1.4.0)(!(version>=2.0.0)))",osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Service-Component: OSGI-INF/org.eclipse.smarthome.io.transport.serial.internal.RxTxPortProvider.xml
+Tool: Bnd-4.3.0.201909301554
+
