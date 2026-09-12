@@ -20,6 +20,7 @@ bin/
 libfix/
 *.sav*
 
+
 distribution/smarthome/logs/*.log
 distribution/smarthome/*.zip
 distribution/smarthome/runtime/etc/mapdb/storage.mapdb
@@ -51,4 +52,4 @@ Californium.properties
 oh240_*.txt
 *.bak
 test_compile*.txt
-
+*.org.jar
